@@ -1,0 +1,27 @@
+{
+    "name": "desc-simplify-api",
+    "version": "1.0.0",
+    "description": "RESTful json API for the DESC simplify project",
+    "main": "index.js",
+    "scripts": {
+        "serve:dev": "DEBUG=app babel-node src/server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jasonsjones/desc-simplify-api.git"
+    },
+    "author": "Jason S. Jones",
+    "license": "MIT",
+    "dependencies": {
+        "dotenv": "^6.0.0",
+        "ejs": "^2.6.1",
+        "express": "^4.16.3",
+        "morgan": "^1.9.0"
+    },
+    "devDependencies": {
+        "babel-cli": "^6.26.0",
+        "babel-core": "^6.26.3",
+        "babel-env": "^2.4.1",
+        "debug": "^3.1.0"
+    }
+}
