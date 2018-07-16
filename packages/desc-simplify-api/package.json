@@ -5,11 +5,12 @@
     "main": "index.js",
     "scripts": {
         "prebuild": "npm run clean",
-        "build": "babel src -d build -s",
-        "clean": "rm -rf build && mkdir build",
+        "build": "babel src -d build --ignore *test.js",
+        "clean": "rimraf build",
         "serve:dev": "DEBUG=app babel-node src/server.js",
-        "prestart": "npm run build",
-        "start": "node build/server.js"
+        "preserve:prod": "npm run build",
+        "serve:prod": "node build/server.js",
+        "start": "npm run serve:dev"
     },
     "repository": {
         "type": "git",
@@ -24,7 +25,8 @@
         "dotenv": "^6.0.0",
         "ejs": "^2.6.1",
         "express": "^4.16.3",
-        "morgan": "^1.9.0"
+        "morgan": "^1.9.0",
+        "rimraf": "^2.6.2"
     },
     "devDependencies": {
         "babel-eslint": "^8.2.6",
