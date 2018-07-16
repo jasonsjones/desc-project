@@ -4,7 +4,12 @@
     "description": "RESTful json API for the DESC simplify project",
     "main": "index.js",
     "scripts": {
-        "serve:dev": "DEBUG=app babel-node src/server.js"
+        "prebuild": "npm run clean",
+        "build": "babel src -d build -s",
+        "clean": "rm -rf build && mkdir build",
+        "serve:dev": "DEBUG=app babel-node src/server.js",
+        "prestart": "npm run build",
+        "start": "node build/server.js"
     },
     "repository": {
         "type": "git",
