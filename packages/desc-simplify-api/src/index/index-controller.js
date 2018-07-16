@@ -1,7 +1,9 @@
+import config from '../config/config';
+
 export const getRootAPIRoute = (req, res) => {
     res.json({
-        name: 'desc-simplify-api',
-        version: '1.0.0'
+        name: config.name,
+        version: config.version
     });
 };
 
