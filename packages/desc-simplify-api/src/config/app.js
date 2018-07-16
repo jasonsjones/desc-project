@@ -1,22 +1,18 @@
 import express from 'express';
 import morgan from 'morgan';
+import debug from 'debug';
+
+import config from './config';
+import applyMiddleware from './apply-middleware';
+import attachRouters from './attach-routers';
 
 const app = express();
+const log = debug('app');
+log(`app starting up in ${config.env} mode`);
 
 app.set('view engine', 'ejs');
-app.use(express.static('public'));
 
-app.use(morgan('dev'));
-
-app.get('/api', (req, res) => {
-    res.json({
-        name: 'desc-simplify-api',
-        version: '1.0.0'
-    });
-});
-
-app.get('/', (req, res) => {
-    res.render('index');
-});
+applyMiddleware(app);
+attachRouters(app);
 
 export default app;
