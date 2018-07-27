@@ -6,8 +6,8 @@ import config from './config';
 import applyMiddleware from './apply-middleware';
 import attachRouters from './attach-routers';
 
-const app = express();
 const log = debug('app');
+const app = express();
 log(`app starting up in ${config.env} mode`);
 
 app.set('view engine', 'ejs');

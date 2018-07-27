@@ -7,12 +7,12 @@
         "prebuild": "npm run clean",
         "build": "babel src -d build --ignore *test.js",
         "clean": "rimraf build",
-        "serve:dev": "DEBUG=app babel-node src/server.js",
+        "serve:dev": "DEBUG=app,db* babel-node src/server.js",
         "preserve:prod": "npm run build",
         "serve:prod": "node build/server.js",
         "start": "npm run serve:dev",
         "test": "npm run test:unit -s && npm run test:acceptance -s",
-        "test:acceptance": "NODE_ENV=testing DEBUG=app,test mocha src/**/*.a-test.js --require babel-register",
+        "test:acceptance": "NODE_ENV=testing DEBUG=app,test,db:* mocha src/utils/db-test-setup.js src/**/*.a-test.js --require babel-register",
         "test:unit": "mocha src/**/*.u-test.js --require babel-register"
     },
     "repository": {
@@ -29,6 +29,7 @@
         "dotenv": "^6.0.0",
         "ejs": "^2.6.1",
         "express": "^4.16.3",
+        "mongoose": "^5.2.5",
         "morgan": "^1.9.0",
         "rimraf": "^2.6.2"
     },

@@ -3,9 +3,6 @@ import request from 'supertest';
 
 import config from '../config/config';
 import app from '../config/app';
-import testSetup from '../utils/test-setup';
-
-testSetup();
 
 describe('Index acceptance tests', () => {
     context('GET /', () => {
