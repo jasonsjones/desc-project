@@ -114,7 +114,59 @@ describe('User Controller', () => {
                 .chain('exec')
                 .rejects(new Error('Oops, something went wrong fetching the users'));
 
-            const promise = Controller.getUsers();
+            const promise = Controller.getUsers(mockUser._id);
+            expect(promise).to.be.a('Promise');
+
+            return promise.catch(err => {
+                expect(err).to.exist;
+                expect(err).to.be.an('Error');
+            });
+        });
+    });
+
+    describe('getUser(id)', () => {
+        let UserMock;
+        beforeEach(() => {
+            UserMock = sinon.mock(User);
+        });
+
+        afterEach(() => {
+            UserMock.restore();
+        });
+
+        it('returns the user with the given id', () => {
+            UserMock.expects('findById')
+                .withArgs(mockUser._id)
+                .chain('exec')
+                .resolves(mockUser);
+
+            const promise = Controller.getUser(mockUser._id);
+            expect(promise).to.be.a('Promise');
+
+            return promise.then(response => {
+                expect(response).to.be.an('object');
+                expect(response).to.have.property('name');
+                expect(response.name).to.be.an('object');
+                expect(response).to.have.property('email');
+            });
+        });
+
+        it('rejects with an error if id is not provided', () => {
+            const promise = Controller.getUser();
+            expect(promise).to.be.a('Promise');
+
+            return promise.catch(err => {
+                expect(err).to.exist;
+                expect(err).to.be.an('Error');
+            });
+        });
+
+        it('rejects with an error if something goes wrong with the db call', () => {
+            UserMock.expects('findById')
+                .chain('exec')
+                .rejects(new Error('Oops, something went wrong fetching the user'));
+
+            const promise = Controller.getUser(mockUser._id);
             expect(promise).to.be.a('Promise');
 
             return promise.catch(err => {

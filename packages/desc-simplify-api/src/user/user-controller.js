@@ -11,3 +11,10 @@ export const createUser = req => {
 export const getUsers = () => {
     return User.find({}).exec();
 };
+
+export const getUser = id => {
+    if (!id) {
+        return Promise.reject(new Error('id paramater is required'));
+    }
+    return User.findById(id).exec();
+};
