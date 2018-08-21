@@ -3,5 +3,5 @@ import userRouter from '../user/user-router';
 
 export default app => {
     app.use('/', indexRouter());
-    app.use('/api/user', userRouter());
+    app.use('/api/users', userRouter());
 };
