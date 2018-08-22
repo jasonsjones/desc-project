@@ -22,6 +22,14 @@ const mockUser = {
 };
 
 describe('User Controller', () => {
+    let UserMock;
+    beforeEach(() => {
+        UserMock = sinon.mock(User);
+    });
+
+    afterEach(() => {
+        UserMock.restore();
+    });
     describe('createUser()', () => {
         let req, userSaveStub;
 
@@ -53,6 +61,7 @@ describe('User Controller', () => {
 
             expect(promise).to.be.an('Promise');
             return promise.then(response => {
+                expect(userSaveStub.calledOnce).to.be.true;
                 expect(response).to.be.an('object');
                 expect(response).to.have.property('name');
             });
@@ -65,6 +74,7 @@ describe('User Controller', () => {
             expect(promise).to.be.an('Promise');
             return promise.catch(err => {
                 expect(err).to.exist;
+                expect(userSaveStub.calledOnce).to.be.true;
                 expect(err.message).to.be.a('string');
                 expect(err instanceof Error).to.be.true;
             });
@@ -77,6 +87,7 @@ describe('User Controller', () => {
             expect(promise).to.be.an('Promise');
             return promise.catch(err => {
                 expect(err).to.exist;
+                expect(userSaveStub.calledOnce).to.be.false;
                 expect(err.message).to.be.a('string');
                 expect(err instanceof Error).to.be.true;
             });
@@ -84,15 +95,6 @@ describe('User Controller', () => {
     });
 
     describe('getUsers()', () => {
-        let UserMock;
-        beforeEach(() => {
-            UserMock = sinon.mock(User);
-        });
-
-        afterEach(() => {
-            UserMock.restore();
-        });
-
         it('returns an array of all users', () => {
             UserMock.expects('find')
                 .withArgs({})
@@ -125,15 +127,6 @@ describe('User Controller', () => {
     });
 
     describe('getUser(id)', () => {
-        let UserMock;
-        beforeEach(() => {
-            UserMock = sinon.mock(User);
-        });
-
-        afterEach(() => {
-            UserMock.restore();
-        });
-
         it('returns the user with the given id', () => {
             UserMock.expects('findById')
                 .withArgs(mockUser._id)
