@@ -40,23 +40,42 @@ export default () => {
                 );
         });
 
-    userRouter.route('/:id([0-9a-zA-Z]{24})').get((req, res) => {
-        UserController.getUser(req.params.id)
-            .then(user =>
-                res.json({
-                    success: true,
-                    message: 'user fetched',
-                    payload: { user }
-                })
-            )
-            .catch(err =>
-                res.json({
-                    success: false,
-                    message: err.message,
-                    error: err
-                })
-            );
-    });
+    userRouter
+        .route('/:id([0-9a-zA-Z]{24})')
+        .get((req, res) => {
+            UserController.getUser(req.params.id)
+                .then(user =>
+                    res.json({
+                        success: true,
+                        message: 'user fetched',
+                        payload: { user }
+                    })
+                )
+                .catch(err =>
+                    res.json({
+                        success: false,
+                        message: err.message,
+                        error: err
+                    })
+                );
+        })
+        .delete((req, res) => {
+            UserController.deleteUser(req.params.id)
+                .then(user =>
+                    res.json({
+                        success: true,
+                        message: 'user deleted',
+                        payload: { user }
+                    })
+                )
+                .catch(err =>
+                    res.json({
+                        success: false,
+                        message: err.message,
+                        error: err
+                    })
+                );
+        });
 
     return userRouter;
 };

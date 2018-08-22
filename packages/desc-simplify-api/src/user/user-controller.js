@@ -18,3 +18,10 @@ export const getUser = id => {
     }
     return User.findById(id).exec();
 };
+
+export const deleteUser = id => {
+    if (!id) {
+        return Promise.reject(new Error('id paramater is required'));
+    }
+    return User.findByIdAndRemove(id).exec();
+};

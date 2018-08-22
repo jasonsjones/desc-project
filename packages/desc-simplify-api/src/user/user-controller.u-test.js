@@ -168,4 +168,47 @@ describe('User Controller', () => {
             });
         });
     });
+
+    describe('deleteUser(id)', () => {
+        it('rejects with an error if id is not provided', () => {
+            const promise = Controller.deleteUser();
+            expect(promise).to.be.a('Promise');
+
+            return promise.catch(err => {
+                expect(err).to.exist;
+                expect(err).to.be.an('Error');
+            });
+        });
+
+        it('rejects with an error if something goes wrong with the db call', () => {
+            UserMock.expects('findByIdAndRemove')
+                .chain('exec')
+                .rejects(new Error('Oops, something went wrong deleting the user'));
+
+            const promise = Controller.deleteUser(mockUser._id);
+            expect(promise).to.be.a('Promise');
+
+            return promise.catch(err => {
+                expect(err).to.exist;
+                expect(err).to.be.an('Error');
+            });
+        });
+
+        it('returns the deleted user with the given id', () => {
+            UserMock.expects('findByIdAndRemove')
+                .withArgs(mockUser._id)
+                .chain('exec')
+                .resolves(mockUser);
+
+            const promise = Controller.deleteUser(mockUser._id);
+            expect(promise).to.be.a('Promise');
+
+            return promise.then(response => {
+                expect(response).to.be.an('object');
+                expect(response).to.have.property('name');
+                expect(response.name).to.be.an('object');
+                expect(response).to.have.property('email');
+            });
+        });
+    });
 });
