@@ -169,6 +169,72 @@ describe('User Controller', () => {
         });
     });
 
+    describe('updateUser(id, userData)', () => {
+        it('rejects with an error if id is not provided', () => {
+            const promise = Controller.updateUser();
+            expect(promise).to.be.a('Promise');
+
+            return promise.catch(err => {
+                expect(err).to.exist;
+                expect(err).to.be.an('Error');
+            });
+        });
+
+        it('rejects with an error if something goes wrong with the db call', () => {
+            UserMock.expects('findByIdAndUpdate')
+                .chain('exec')
+                .rejects(new Error('Oops, something went wrong updating the user'));
+
+            const promise = Controller.updateUser(mockUser._id, { email: 'arrow@qc.com' });
+            expect(promise).to.be.a('Promise');
+
+            return promise.catch(err => {
+                expect(err).to.exist;
+                expect(err).to.be.an('Error');
+            });
+        });
+
+        it('returns the updated user with the given id', () => {
+            const email = 'arrow@qc.com';
+            let updatedUser = {
+                ...mockUser,
+                email
+            };
+            UserMock.expects('findByIdAndUpdate')
+                .withArgs(mockUser._id)
+                .chain('exec')
+                .resolves(updatedUser);
+
+            const promise = Controller.updateUser(mockUser._id, { email });
+            expect(promise).to.be.a('Promise');
+
+            return promise.then(response => {
+                expect(response).to.be.an('object');
+                expect(response).to.have.property('name');
+                expect(response.name).to.be.an('object');
+                expect(response).to.have.property('email');
+                expect(response.email).to.equal(email);
+            });
+        });
+
+        it('returns the unchaged user if no data is provided to update', () => {
+            UserMock.expects('findByIdAndUpdate')
+                .withArgs(mockUser._id)
+                .chain('exec')
+                .resolves(mockUser);
+
+            const promise = Controller.updateUser(mockUser._id);
+            expect(promise).to.be.a('Promise');
+
+            return promise.then(response => {
+                expect(response).to.be.an('object');
+                expect(response).to.have.property('name');
+                expect(response.name).to.be.an('object');
+                expect(response).to.have.property('email');
+            });
+        });
+    });
+
     describe('deleteUser(id)', () => {
         it('rejects with an error if id is not provided', () => {
             const promise = Controller.deleteUser();

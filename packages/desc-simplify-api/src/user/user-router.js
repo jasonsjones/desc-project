@@ -59,6 +59,23 @@ export default () => {
                     })
                 );
         })
+        .put((req, res) => {
+            UserController.updateUser(req.params.id, req.body)
+                .then(user =>
+                    res.json({
+                        success: true,
+                        message: 'user updated',
+                        payload: { user }
+                    })
+                )
+                .catch(err =>
+                    res.json({
+                        success: false,
+                        message: err.message,
+                        error: err
+                    })
+                );
+        })
         .delete((req, res) => {
             UserController.deleteUser(req.params.id)
                 .then(user =>
