@@ -31,12 +31,12 @@ describe('User Controller', () => {
         UserMock.restore();
     });
     describe('createUser()', () => {
-        let req, userSaveStub;
+        let newUser, userSaveStub;
 
         beforeEach(() => {
             userSaveStub = sinon.stub(User.prototype, 'save');
 
-            const newUser = {
+            newUser = {
                 name: {
                     first: 'Oliver',
                     last: 'Queen'
@@ -44,10 +44,6 @@ describe('User Controller', () => {
                 email: 'oliver@qc.com',
                 password: 'thegreenarrow',
                 roles: ['admin', 'approver']
-            };
-
-            req = {
-                body: newUser
             };
         });
 
@@ -57,7 +53,7 @@ describe('User Controller', () => {
 
         it('creates a new user with the given data', () => {
             userSaveStub.resolves(mockUser);
-            const promise = Controller.createUser(req);
+            const promise = Controller.createUser(newUser);
 
             expect(promise).to.be.an('Promise');
             return promise.then(response => {
@@ -69,7 +65,7 @@ describe('User Controller', () => {
 
         it('rejects with an error if there is an error saving the user', () => {
             userSaveStub.rejects(new Error('Error saving the user'));
-            const promise = Controller.createUser(req);
+            const promise = Controller.createUser(newUser);
 
             expect(promise).to.be.an('Promise');
             return promise.catch(err => {
@@ -80,9 +76,8 @@ describe('User Controller', () => {
             });
         });
 
-        it('rejects with an error if req.body is null', () => {
-            req.body = null;
-            const promise = Controller.createUser(req);
+        it('rejects with an error if user data is not provided', () => {
+            const promise = Controller.createUser();
 
             expect(promise).to.be.an('Promise');
             return promise.catch(err => {
@@ -116,7 +111,7 @@ describe('User Controller', () => {
                 .chain('exec')
                 .rejects(new Error('Oops, something went wrong fetching the users'));
 
-            const promise = Controller.getUsers(mockUser._id);
+            const promise = Controller.getUsers();
             expect(promise).to.be.a('Promise');
 
             return promise.catch(err => {

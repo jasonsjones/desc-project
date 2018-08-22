@@ -1,10 +1,10 @@
 import User from './user-model';
 
-export const createUser = req => {
-    if (!req.body) {
-        return Promise.reject(new Error('req.body is required'));
+export const createUser = userData => {
+    if (!userData) {
+        return Promise.reject(new Error('user data is required'));
     }
-    let newUser = new User(req.body);
+    let newUser = new User(userData);
     return newUser.save();
 };
 
