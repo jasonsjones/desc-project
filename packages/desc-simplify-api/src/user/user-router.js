@@ -23,7 +23,7 @@ export default () => {
                 );
         })
         .post((req, res) => {
-            UserController.createUser(req)
+            UserController.createUser(req.body)
                 .then(user =>
                     res.json({
                         success: true,
