@@ -1,10 +1,8 @@
 import debug from 'debug';
-
 import config from '../config/config';
-import db from '../config/db';
+import { dbConnection } from './db-test-utils';
 
 const log = debug('test');
-const dbConnection = db(config);
 
 before(() => {
     log(`Running in ${config.env} mode`);
