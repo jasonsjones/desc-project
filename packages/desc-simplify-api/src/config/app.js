@@ -1,8 +1,9 @@
 import express from 'express';
-import morgan from 'morgan';
+import passport from 'passport';
 import debug from 'debug';
 
 import config from './config';
+import passportConfig from './passport';
 import applyMiddleware from './apply-middleware';
 import attachRouters from './attach-routers';
 
@@ -12,7 +13,8 @@ log(`app starting up in ${config.env} mode`);
 
 app.set('view engine', 'ejs');
 
-applyMiddleware(app);
-attachRouters(app);
+passportConfig(passport);
+applyMiddleware(app, passport);
+attachRouters(app, passport);
 
 export default app;

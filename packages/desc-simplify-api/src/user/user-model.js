@@ -16,6 +16,7 @@ const userSchema = new Schema(
         passwordLastUpdatedAt: { type: Date },
         passwordResetToken: { type: String },
         passwordResetTokenExpiresAt: { type: Date },
+        lastLoginAt: { type: Date, default: Date.now() },
         emailVerificationToken: { type: String },
         isEmailVerified: { type: Boolean, default: false },
         roles: { type: [String], enum: ALLOWED_ROLES, default: ['unknown'] }
