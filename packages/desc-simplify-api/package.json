@@ -12,7 +12,7 @@
         "serve:prod": "node build/server.js",
         "start": "npm run serve:dev",
         "test": "npm run test:unit -s && npm run test:integration -s && npm run test:acceptance -s",
-        "test:acceptance": "NODE_ENV=testing DEBUG=app,test,db:* mocha src/utils/db-test-setup.js src/**/*.a-test.js --require babel-register",
+        "test:acceptance": "NODE_ENV=testing DEBUG=app,test,db:connection mocha src/utils/db-test-setup.js src/**/*.a-test.js --require babel-register",
         "test:integration": "NODE_ENV=testing DEBUG=app,test,db:connection mocha src/utils/db-test-setup.js src/**/*.i-test.js --require babel-register",
         "test:unit": "NODE_ENV=testing mocha src/**/*.u-test.js --require babel-register"
     },
