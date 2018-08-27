@@ -1,5 +1,6 @@
 import express from 'express';
 import * as UserController from './user-controller';
+import * as AuthUtils from '../auth/auth-utils';
 
 export default () => {
     let userRouter = express.Router();
@@ -28,7 +29,10 @@ export default () => {
                     res.json({
                         success: true,
                         message: 'user created',
-                        payload: { user }
+                        payload: {
+                            user,
+                            token: AuthUtils.generateToken(user)
+                        }
                     })
                 )
                 .catch(err =>

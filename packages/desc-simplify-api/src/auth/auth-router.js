@@ -1,4 +1,5 @@
 import express from 'express';
+import * as AuthUtils from './auth-utils';
 
 export default passport => {
     let authRouter = express.Router();
@@ -9,7 +10,8 @@ export default passport => {
             success: true,
             message: 'user authenticated',
             payload: {
-                user
+                user,
+                token: AuthUtils.generateToken(user)
             }
         });
     });

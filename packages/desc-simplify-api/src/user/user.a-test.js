@@ -49,6 +49,8 @@ describe('User acceptance tests', () => {
                     expect(json).to.have.property('success');
                     expect(json).to.have.property('message');
                     expect(json).to.have.property('payload');
+                    expect(json.payload).to.have.property('user');
+                    expect(json.payload).to.have.property('token');
                     expect(json.success).to.be.true;
                 });
         });
