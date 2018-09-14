@@ -6,7 +6,7 @@
 
 ---
 
-## To run the server locally:
+## Run the server locally
 
 To get started running the server locally, first you need to clone the repo:
 
@@ -31,12 +31,14 @@ With the dependencies installed, you will need to configure a `.env` file at the
 
 -   `DB_URL_DEV`: the mongodb connection string for a dev database
 -   `DB_URL_TEST`: the mongodb connection string for a test database
+-   `JWT_SECRET`: the secret phrase to use with the json web token
 
 Your `<project-root>/.env` should look something like this:
 
 ```yaml
 DB_URL_DEV=mongodb://localhost:27017/<name-of-dev-db>
 DB_URL_TEST=mongodb://localhost:27017/<name-of-test-db>
+JWT_SECRET=thesupersecretphrase
 ```
 
 _NOTE: If you do not have *mongodb* installed locally, check out [mLab](https://mlab.com) for a good database as a service solution. Their sandbox tier is free and should suffice for your local development needs._
@@ -44,20 +46,20 @@ _NOTE: If you do not have *mongodb* installed locally, check out [mLab](https://
 Now with the environment set up, we can spin up the local server with:
 
 ```bash
-$ npm run serve:dev
+$ npm run dev
 ```
 
 or
 
 ```bash
-$ yarn serve:dev
+$ yarn dev
 ```
 
 By default the app server should be accessible at `http://localhost:3000`.
 
 ---
 
-## To run the test suite(s) locally:
+## Run the test suite(s) locally
 
 The npm scripts located in `package.json` provide a few targets to run different types of tests.
 
