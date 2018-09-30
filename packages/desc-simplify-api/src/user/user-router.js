@@ -23,16 +23,21 @@ export default () => {
                     })
                 );
         })
-        .post((req, res) => {
+        .post((req, res, next) => {
             UserController.createUser(req.body)
                 .then(user =>
-                    res.json({
-                        success: true,
-                        message: 'user created',
-                        payload: {
-                            user,
-                            token: AuthUtils.generateToken(user)
+                    req.login(user, err => {
+                        if (err) {
+                            return next(err);
                         }
+                        return res.json({
+                            success: true,
+                            message: 'user created',
+                            payload: {
+                                user,
+                                token: AuthUtils.generateToken(user)
+                            }
+                        });
                     })
                 )
                 .catch(err =>
