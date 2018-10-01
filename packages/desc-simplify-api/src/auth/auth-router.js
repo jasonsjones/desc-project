@@ -16,5 +16,14 @@ export default passport => {
         });
     });
 
+    authRouter.get('/logout', (req, res) => {
+        req.logout();
+        res.json({
+            success: true,
+            message: 'user logged out',
+            payload: null
+        });
+    });
+
     return authRouter;
 };

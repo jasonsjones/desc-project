@@ -58,4 +58,21 @@ describe('Auth acceptance tests', () => {
             );
         });
     });
+
+    describe('GET /api/auth/logout', () => {
+        it('returns status code 200 and json payload', () => {
+            return createUser(ollie)
+                .then(() =>
+                    request(app)
+                        .get('/api/auth/logout')
+                        .expect(200)
+                )
+                .then(res => {
+                    const json = res.body;
+                    expect(json).to.have.property('success');
+                    expect(json).to.have.property('message');
+                    expect(json).to.have.property('payload');
+                });
+        });
+    });
 });
