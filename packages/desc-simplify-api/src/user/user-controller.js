@@ -1,10 +1,12 @@
 import User from './user-model';
+import { generateRandomToken } from '../auth/auth-utils';
 
 export const createUser = userData => {
     if (!userData) {
         return Promise.reject(new Error('user data is required'));
     }
     let newUser = new User(userData);
+    newUser.emailVerificationToken = generateRandomToken();
     return newUser.save();
 };
 

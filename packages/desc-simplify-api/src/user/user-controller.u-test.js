@@ -11,6 +11,7 @@ const mockUser = {
         last: 'Queen'
     },
     isEmailVerified: false,
+    emailVerificationToken: '361f0a09175b1af647dbffe7eea9e7873a1d03fa',
     roles: ['admin', 'approver'],
     _id: '5b75f1d0c6b29e1274758754',
     email: 'oliver@qc.com',

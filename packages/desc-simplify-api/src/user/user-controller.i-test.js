@@ -36,6 +36,8 @@ describe('User Controller integration tests', () => {
                 expect(newUser.name).to.have.property('last');
                 expect(newUser).to.have.property('email');
                 expect(newUser).to.have.property('roles');
+                expect(newUser).to.have.property('isEmailVerified');
+                expect(newUser).to.have.property('emailVerificationToken');
             });
         });
 
