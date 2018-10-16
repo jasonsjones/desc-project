@@ -10,6 +10,7 @@ const getDbName = url => {
 const env = process.env.NODE_ENV || 'development';
 const port = process.env.PORT || 3000;
 const token_secret = process.env.JWT_SECRET;
+const session_secret = process.env.SESSION_SECRET;
 const dbUrl = env === 'testing' ? process.env.DB_URL_TEST : process.env.DB_URL_DEV;
 const dbName = getDbName(dbUrl);
 
@@ -19,6 +20,7 @@ const config = {
     env,
     port,
     token_secret,
+    session_secret,
     dbUrl,
     dbName
 };

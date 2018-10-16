@@ -2,6 +2,8 @@ build/
 node_modules/
 data/
 uploads/
+sessions/
+test_sessions/
 npm-debug.log
 yarn-error.log
 .config/
