@@ -40,7 +40,9 @@ export default (app, passport) => {
     app.use(cors(corsOptions));
     app.use(session(sessionOptions));
 
-    if (config.env !== 'testing') {
+    if (config.env === 'development') {
         app.use(morgan('dev'));
+    } else if (config.env == 'production') {
+        app.use(morgan('combined'));
     }
 };
