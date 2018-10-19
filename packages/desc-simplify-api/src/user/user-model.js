@@ -19,7 +19,7 @@ const userSchema = new Schema(
         lastLoginAt: { type: Date, default: Date.now() },
         emailVerificationToken: { type: String },
         isEmailVerified: { type: Boolean, default: false },
-        roles: { type: [String], enum: ALLOWED_ROLES, default: ['unknown'] }
+        roles: { type: [String], enum: ALLOWED_ROLES, default: ['requestor'] }
     },
     { timestamps: true }
 );
