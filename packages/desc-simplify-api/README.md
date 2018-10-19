@@ -71,7 +71,7 @@ The following endpoints are available for the `users` resource:
 -   `GET /api/users`
 -   `GET /api/users/:id`
 -   `PUT /api/users/:id`
--   `DELETE /api/user/:id`
+-   `DELETE /api/users/:id`
 
 #### Creating a new user
 
