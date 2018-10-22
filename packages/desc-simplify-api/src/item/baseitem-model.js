@@ -11,7 +11,6 @@ const itemSchema = new Schema(
     {
         clientId: { type: String, required: true },
         submittedBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-        name: { type: String, required: true },
         numberOfItems: { type: Number },
         urgency: { type: String },
         status: { type: String },

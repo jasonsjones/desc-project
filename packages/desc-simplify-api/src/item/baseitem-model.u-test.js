@@ -44,18 +44,5 @@ describe('Base item model', () => {
                 done();
             });
         });
-
-        it('is invalid if the name field is empty', done => {
-            const item = new Item({
-                clientId: '12345678',
-                submittedBy: '5bb69cb1322fdf5690edfc0b'
-            });
-
-            item.validate(err => {
-                expect(err.errors['name']).to.exist;
-                expect(err.name).to.equal('ValidationError');
-                done();
-            });
-        });
     });
 });
