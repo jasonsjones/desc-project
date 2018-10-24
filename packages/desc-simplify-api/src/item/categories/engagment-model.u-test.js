@@ -4,7 +4,7 @@ import EngagementItem from './engagement-model';
 
 mongoose.Promise = global.Promise;
 
-describe('Household item model', () => {
+describe('Engagement item model', () => {
     describe('field validations', () => {
         it('is valid when all required fields are provided', done => {
             const item = new EngagementItem({
