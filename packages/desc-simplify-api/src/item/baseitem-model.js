@@ -12,8 +12,16 @@ const itemSchema = new Schema(
         clientId: { type: String, required: true },
         submittedBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
         numberOfItems: { type: Number },
-        urgency: { type: String },
-        status: { type: String },
+        urgency: {
+            type: String,
+            enum: ['survival', 'life-changing', 'important'],
+            default: 'important'
+        },
+        status: {
+            type: String,
+            enum: ['active', 'approved', 'wishlist', 'archive', 'denied'],
+            default: 'active'
+        },
         notes: [{ type: Schema.Types.ObjectId, ref: 'Note' }]
     },
     options
