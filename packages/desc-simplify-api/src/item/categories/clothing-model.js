@@ -54,20 +54,32 @@ const options = {
 const clothingItemSchema = new Schema(
     {
         gender: { type: String, enum: ['M', 'F'], required: true },
-        name: { type: String, required: true },
-        size: { type: String, required: true },
+        name: { type: String, enum: CLOTHING_ITEMS, required: true },
+        size: {
+            type: String,
+            // size not required for hats or scarfs
+            required: function() {
+                return !(this.name == 'hat' || this.name == 'scarf');
+            }
+        },
         style: { type: String, enum: ['casual', 'dress'] }
     },
     options
 );
 
 clothingItemSchema.path('size').validate(function(v) {
-    const sizing = SIZES[this.gender];
-    return sizing[this.name].includes(v);
+    if (!(this.name == 'hat' || this.name == 'scarf')) {
+        const sizing = SIZES[this.gender];
+        return sizing[this.name].includes(v);
+    }
+    return true;
 });
 
 clothingItemSchema.path('name').validate(function(v) {
-    if (CLOTHING_ITEMS.includes(v)) return true;
+    if (v == 'bra' && this.gender != 'F') {
+        return false;
+    }
+    return true;
 });
 
 const Clothing = Item.discriminator('Clothing', clothingItemSchema);
