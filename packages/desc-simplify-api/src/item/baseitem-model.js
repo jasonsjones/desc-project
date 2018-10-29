@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+import Note from '../note/note-model';
+
 const Schema = mongoose.Schema;
 
 const options = {
@@ -26,6 +28,12 @@ const itemSchema = new Schema(
     },
     options
 );
+
+itemSchema.post('remove', (item, next) => {
+    Note.deleteMany({ itemId: item._id })
+        .exec()
+        .then(() => next());
+});
 
 const Item = mongoose.model('Item', itemSchema);
 
