@@ -6,6 +6,7 @@ export default passport => {
 
     authRouter.post('/login', passport.authenticate('local'), (req, res) => {
         const user = req.user;
+        req.session.user = req.user;
         res.json({
             success: true,
             message: 'user authenticated',
@@ -17,11 +18,13 @@ export default passport => {
     });
 
     authRouter.get('/logout', (req, res) => {
-        req.logout();
-        res.json({
-            success: true,
-            message: 'user logged out',
-            payload: null
+        req.session.destroy(() => {
+            req.logout();
+            res.json({
+                success: true,
+                message: 'user logged out',
+                payload: null
+            });
         });
     });
 

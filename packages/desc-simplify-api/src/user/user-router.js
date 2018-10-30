@@ -25,7 +25,8 @@ export default () => {
         })
         .post((req, res, next) => {
             UserController.createUser(req.body)
-                .then(user =>
+                .then(user => {
+                    req.session.user = user;
                     req.login(user, err => {
                         if (err) {
                             return next(err);
@@ -38,8 +39,8 @@ export default () => {
                                 token: AuthUtils.generateToken(user)
                             }
                         });
-                    })
-                )
+                    });
+                })
                 .catch(err =>
                     res.json({
                         success: false,
