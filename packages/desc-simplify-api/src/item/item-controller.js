@@ -36,9 +36,19 @@ export const createItem = itemData => {
         return newNote
             .save()
             .then(note => newItem.notes.push(note._id))
-            .then(() => newItem.save());
+            .then(() => newItem.save())
+            .then(item =>
+                item
+                    .populate('notes')
+                    .populate({ path: 'submittedBy', select: 'name email' })
+                    .execPopulate()
+            );
     } else {
-        return newItem.save();
+        return newItem
+            .save()
+            .then(item =>
+                item.populate({ path: 'submittedBy', select: 'name email' }).execPopulate()
+            );
     }
 };
 
@@ -93,7 +103,14 @@ export const updateItem = (id, itemData = {}) => {
         default:
             break;
     }
-    return Category.findByIdAndUpdate(id, itemData, { new: true }).exec();
+    return Category.findByIdAndUpdate(id, itemData, { new: true })
+        .populate({ path: 'submittedBy', select: 'name email' })
+        .populate({
+            path: 'notes',
+            select: 'body',
+            populate: { path: 'submittedBy', select: 'name' }
+        })
+        .exec();
 };
 
 export const deleteItem = id => {
