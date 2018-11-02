@@ -13,7 +13,7 @@ const itemSchema = new Schema(
     {
         clientId: { type: String, required: true },
         submittedBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-        numberOfItems: { type: Number },
+        numberOfItems: { type: Number, default: 1 },
         urgency: {
             type: String,
             enum: ['survival', 'life-changing', 'important'],
