@@ -213,7 +213,7 @@ describe('Item acceptance tests', () => {
                 .then(() =>
                     request(app)
                         .put(`/api/items/${itemId}`)
-                        .send({ itemCategory: 'Clothing', size: updatedSize })
+                        .send({ size: updatedSize })
                         .expect(200)
                 )
                 .then(res => {
@@ -239,7 +239,7 @@ describe('Item acceptance tests', () => {
                 .then(() =>
                     request(app)
                         .put(`/api/items/${itemId}`)
-                        .send({ itemCategory: 'Household', name: updatedName })
+                        .send({ name: updatedName })
                         .expect(200)
                 )
                 .then(res => {
@@ -265,7 +265,7 @@ describe('Item acceptance tests', () => {
                 .then(() =>
                     request(app)
                         .put(`/api/items/${itemId}`)
-                        .send({ itemCategory: 'PersonalHygiene', urgency: updatedUrgency })
+                        .send({ urgency: updatedUrgency })
                         .expect(200)
                 )
                 .then(res => {

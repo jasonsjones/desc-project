@@ -5,6 +5,12 @@ import ClothingItem from './categories/clothing-model';
 import PersonalHygieneItem from './categories/personalhygiene-model';
 import Note from '../note/note-model';
 
+const optionsToPopulateNote = {
+    path: 'notes',
+    select: 'body',
+    populate: { path: 'submittedBy', select: 'name' }
+};
+
 export const createItem = itemData => {
     if (!itemData) {
         return Promise.reject(new Error('item data is required'));
@@ -39,7 +45,7 @@ export const createItem = itemData => {
             .then(() => newItem.save())
             .then(item =>
                 item
-                    .populate('notes')
+                    .populate(optionsToPopulateNote)
                     .populate({ path: 'submittedBy', select: 'name email' })
                     .execPopulate()
             );
@@ -55,11 +61,7 @@ export const createItem = itemData => {
 export const getItems = () => {
     return Item.find({})
         .populate({ path: 'submittedBy', select: 'name email' })
-        .populate({
-            path: 'notes',
-            select: 'body',
-            populate: { path: 'submittedBy', select: 'name' }
-        })
+        .populate(optionsToPopulateNote)
         .exec();
 };
 
@@ -70,11 +72,7 @@ export const getItem = id => {
 
     return Item.findById(id)
         .populate({ path: 'submittedBy', select: 'name email' })
-        .populate({
-            path: 'notes',
-            select: 'body',
-            populate: { path: 'submittedBy', select: 'name' }
-        })
+        .populate(optionsToPopulateNote)
         .exec();
 };
 
@@ -82,35 +80,17 @@ export const updateItem = (id, itemData = {}) => {
     if (!id) {
         return Promise.reject(new Error('id paramater is required'));
     }
-    const { itemCategory } = itemData;
-    if (!itemCategory) {
-        return Promise.reject(new Error('item category is required'));
-    }
-    let Category;
-    switch (itemCategory) {
-        case 'Clothing' || 'clothing':
-            Category = ClothingItem;
-            break;
-        case 'Household' || 'household':
-            Category = HouseholdItem;
-            break;
-        case 'Engagement' || 'engagment':
-            Category = EngagementItem;
-            break;
-        case 'PersonalHygiene' || 'personalHygiene':
-            Category = PersonalHygieneItem;
-            break;
-        default:
-            break;
-    }
-    return Category.findByIdAndUpdate(id, itemData, { new: true })
-        .populate({ path: 'submittedBy', select: 'name email' })
-        .populate({
-            path: 'notes',
-            select: 'body',
-            populate: { path: 'submittedBy', select: 'name' }
-        })
-        .exec();
+    return Item.findById(id)
+        .exec()
+        .then(item => {
+            Object.assign(item, itemData);
+            return item.save().then(item =>
+                item
+                    .populate(optionsToPopulateNote)
+                    .populate({ path: 'submittedBy', select: 'name email' })
+                    .execPopulate()
+            );
+        });
 };
 
 export const deleteItem = id => {
