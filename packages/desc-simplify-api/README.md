@@ -84,6 +84,18 @@ The following endpoints are available for the `authentication` resource
 
 Detailed usage of the `authentication` resource can be found in the [docs](docs/auth.md)
 
+### Items
+
+The following endpoints are available for the `items` resource:
+
+-   `POST /api/items`
+-   `GET /api/items`
+-   `GET /api/items/:id`
+-   `PUT /api/items/:id`
+-   `DELETE /api/items/:id`
+
+Detailed usage of the `items` resource can be found in the [docs](docs/items.md)
+
 ---
 
 ## Run the test suite(s) locally
