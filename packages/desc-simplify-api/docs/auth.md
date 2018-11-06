@@ -1,13 +1,13 @@
-## API Endpoints
+# `Authentication` API Endpoints
 
-### Authentication
+## Authentication
 
 The following endpoints are available for the `authentication` resource
 
 -   `POST /api/auth/login`
 -   `GET /api/auth/logout`
 
-#### User login
+### User login
 
 ```
 POST /api/auth/login
@@ -43,7 +43,7 @@ the JSON response will have the following shape:
 }
 ```
 
-#### User logout
+### User logout
 
 ```
 GET /api/auth/logout

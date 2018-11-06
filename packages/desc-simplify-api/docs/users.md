@@ -1,6 +1,6 @@
-## API Endpoints
+# `Users` API Endpoints
 
-### Users
+## Users
 
 The following endpoints are available for the `users` resource:
 
@@ -10,7 +10,7 @@ The following endpoints are available for the `users` resource:
 -   `PUT /api/users/:id`
 -   `DELETE /api/users/:id`
 
-#### Creating a new user
+### Create a new user
 
 ```
 POST /api/users
@@ -50,7 +50,7 @@ the JSON response will have the following shape:
 }
 ```
 
-#### Return all the user
+### Return all the users
 
 ```
 GET /api/users
@@ -80,7 +80,7 @@ the JSON response will have the following shape:
 
 _NOTE: This endpoint will likely be available for only admins to access_
 
-#### Return a single user
+### Return a single user
 
 ```
 GET /api/users/:id
@@ -106,7 +106,7 @@ the JSON response will have the following shape:
 }
 ```
 
-#### Update a single user
+### Update a single user
 
 ```
 PUT /api/users/:id
@@ -145,7 +145,7 @@ the JSON response will have the following shape:
 }
 ```
 
-#### Delete a single user
+### Delete a single user
 
 ```
 DELETE /api/users/:id
