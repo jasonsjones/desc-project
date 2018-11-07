@@ -178,8 +178,152 @@ the JSON response will have the following shape:
 
 ### Return all the items
 
+```
+GET /api/items
+```
+
+the JSON response will have the following shape:
+
+```json
+{
+    "success": "true/false",
+    "message": "descriptive message of the status",
+    "payload": {
+        "items": [
+            {
+                "_id": "idOfTheItem",
+                "clientId": "12345678",
+                "submittedBy": {
+                    "_id": "idOfTheUser",
+                    "name": {
+                        "first": "firstName",
+                        "last": "lastName"
+                    },
+                    "email": "user@example.com"
+                },
+                "numberOfItems": 2,
+                "urgency": "survival",
+                "status": "active",
+                "notes": [],
+                "itemCategory": "Household",
+                "name": "bedding"
+            }
+        ]
+    }
+}
+```
+
+_NOTE: the payload will be an array of `items`_
+
 ### Return a single item
+
+```
+GET /api/items/:id
+```
+
+the JSON response will have the following shape:
+
+```json
+{
+    "success": "true/false",
+    "message": "descriptive message of the status",
+    "payload": {
+        "item": {
+            "_id": "idOfTheItem",
+            "clientId": "12345678",
+            "submittedBy": {
+                "_id": "idOfTheUser",
+                "name": {
+                    "first": "firstName",
+                    "last": "lastName"
+                },
+                "email": "user@example.com"
+            },
+            "numberOfItems": 2,
+            "urgency": "survival",
+            "status": "active",
+            "notes": [],
+            "itemCategory": "Household",
+            "name": "bedding"
+        }
+    }
+}
+```
 
 ### Update a single item
 
+```
+PUT /api/items/:id
+```
+
+include a post body of the form that is consistent with the category of item that is to be updated.  For example, to update the actual `Household` item to 'cutlery' (assuming it was created as a `Household` item):
+
+```json
+{
+    "name": "cutlery"
+}
+```
+
+the JSON response will have the following shape:
+
+```json
+{
+    "success": "true/false",
+    "message": "descriptive message of the status",
+    "payload": {
+        "item": {
+            "_id": "idOfTheItem",
+            "clientId": "12345678",
+            "submittedBy": {
+                "_id": "idOfTheUser",
+                "name": {
+                    "first": "firstName",
+                    "last": "lastName"
+                },
+                "email": "user@example.com"
+            },
+            "numberOfItems": 2,
+            "urgency": "survival",
+            "status": "active",
+            "notes": [],
+            "itemCategory": "Household",
+            "name": "cutlery" // updated value here
+        }
+    }
+}
+```
+
 ### Delete a single item
+
+```
+DELETE /api/items/:id
+```
+
+the JSON response will have the following shape and include the item that was just deleted (if the operation was successful):
+
+```json
+{
+    "success": "true/false",
+    "message": "descriptive message of the status",
+    "payload": {
+        "item": {
+            "_id": "idOfTheItem",
+            "clientId": "12345678",
+            "submittedBy": {
+                "_id": "idOfTheUser",
+                "name": {
+                    "first": "firstName",
+                    "last": "lastName"
+                },
+                "email": "user@example.com"
+            },
+            "numberOfItems": 2,
+            "urgency": "survival",
+            "status": "active",
+            "notes": [],
+            "itemCategory": "Household",
+            "name": "cutlery"
+        }
+    }
+}
+```
