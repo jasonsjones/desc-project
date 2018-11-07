@@ -317,4 +317,10 @@ const expectItemShape = item => {
     expect(item).to.have.property('name');
     expect(item).to.have.property('notes');
     expect(item.notes).to.be.an('Array');
+
+    if (item.itemCategory === 'Clothing') {
+        expect(item).to.have.property('size');
+        expect(item).to.have.property('gender');
+        expect(item).to.have.property('style');
+    }
 };

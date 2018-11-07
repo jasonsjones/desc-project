@@ -62,7 +62,7 @@ const clothingItemSchema = new Schema(
                 return !(this.name == 'hat' || this.name == 'scarf');
             }
         },
-        style: { type: String, enum: ['casual', 'dress'] }
+        style: { type: String, enum: ['casual', 'dress'], default: 'casual' }
     },
     options
 );
