@@ -1,6 +1,6 @@
-### Items End Points
+# `Items` API Endpoints
 
-### Items
+## Items
 
 `Items` in this context refers to any item requested for one of DESC's clients. The client is anonomyous and referenced only by their client identification (clientId) number.
 
@@ -21,11 +21,13 @@ The following endpoints are available for the `items` resource:
 -   `PUT /api/items/:id`
 -   `DELETE /api/items/:id`
 
-#### Creating a new item (`Household`, `Personal Hygiene`, & `Engagement`)
+### Create a new item
 
 ```
 POST /api/items
 ```
+
+#### To create a new `Household`, `Personal Hygiene`, or `Engagement` item
 
 include a post body of the form
 
@@ -103,3 +105,81 @@ the JSON response will have the following shape:
 ```
 
 _NOTE: The `submittedBy` and `notes` properties will be populated when the newly created item is returned_
+
+#### To create a new `Clothing` item
+
+include a post body of the form
+
+```json
+{
+    "clientId": "12345678",
+    "submittedBy": "someuserId",
+    "numberOfItems": 1,
+    "urgency": "important",
+    "status": "active",
+    "itemCategory": "Clothing",
+    "name": "coat",
+    "size": "L (42-44)",
+    "gender": "M",
+    "style": "casual"
+}
+```
+
+The **required** properties are:
+
+-   `clientId`
+-   `submittedBy`
+-   `itemCategory` (need to specify `Clothing` in this case)
+-   `size`
+    -   Available values depend on `gender`
+-   `gender`
+    -   Available values are `M` or `F`
+
+The **optional** properties are:
+
+-   `numberOfItems` (defaults to 1)
+-   `urgency` (defaults to `important`)
+    -   Available values are `survivial`, `life-changing`, or `important`
+-   `status` (defaults to `active`)
+    -   Available values are `active`, `approved`, `wishlist`, `archive`, or `denied`
+-   `style` (defaults to `casual`)
+
+the JSON response will have the following shape:
+
+```json
+{
+    "success": "true/false",
+    "message": "descriptive message of the status",
+    "payload": {
+        "item": {
+            "_id": "idOfTheItem",
+            "clientId": "12345678",
+            "submittedBy": {
+                "_id": "idOfTheUser",
+                "name": {
+                    "first": "firstName",
+                    "last": "lastName"
+                },
+                "email": "user@example.com"
+            },
+            "numberOfItems": 1,
+            "urgency": "important",
+            "status": "active",
+            "notes": [],
+            "itemCategory": "Clothing",
+            "name": "coat",
+            "size": "L (42-44)",
+            "gender": "M",
+            "style": "casual"
+        }
+    }
+}
+```
+
+### Return all the items
+
+### Return a single item
+
+### Update a single item
+
+### Delete a single item
