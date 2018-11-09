@@ -74,19 +74,16 @@ const getItemData = userId => {
 
 describe('Item acceptance tests', () => {
     let barryId;
-    before(() => {
-        dropCollection(dbConnection, 'users');
-        return createBarry().then(user => (barryId = user._id));
+    before(done => dropCollection(dbConnection, 'users', done));
+    before(() => createBarry().then(user => (barryId = user._id)));
+
+    afterEach(done => {
+        dropCollection(dbConnection, 'items', () => {
+            dropCollection(dbConnection, 'notes', done);
+        });
     });
 
-    afterEach(() => {
-        dropCollection(dbConnection, 'items');
-        dropCollection(dbConnection, 'notes');
-    });
-
-    after(() => {
-        dropCollection(dbConnection, 'users');
-    });
+    after(done => dropCollection(dbConnection, 'users', done));
 
     context('POST /api/items', () => {
         it('returns status code 200 and json payload when creating a new item without a note', () => {

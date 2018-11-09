@@ -17,9 +17,10 @@ const ollie = {
 };
 
 describe('Auth acceptance tests', () => {
+    before(done => dropCollection(dbConnection, 'users', done));
+
     describe('POST /api/auth/login', () => {
-        before(() => dropCollection(dbConnection, 'users'));
-        afterEach(() => dropCollection(dbConnection, 'users'));
+        afterEach(done => dropCollection(dbConnection, 'users', done));
 
         it('returns status code of 200 and json with user and token on success', () => {
             return createUser(ollie)
@@ -60,6 +61,8 @@ describe('Auth acceptance tests', () => {
     });
 
     describe('GET /api/auth/logout', () => {
+        afterEach(done => dropCollection(dbConnection, 'users', done));
+
         it('returns status code 200 and json payload', () => {
             return createUser(ollie)
                 .then(() =>

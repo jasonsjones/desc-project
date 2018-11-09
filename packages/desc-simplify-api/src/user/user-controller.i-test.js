@@ -25,8 +25,11 @@ const dig = {
 };
 
 describe('User Controller integration tests', () => {
+    before(done => dropCollection(dbConnection, 'users', done));
+
     describe('createUser()', () => {
-        afterEach(() => dropCollection(dbConnection, 'users'));
+        afterEach(done => dropCollection(dbConnection, 'users', done));
+
         it('creates a new user with the given data', () => {
             return Controller.createUser(ollie).then(newUser => {
                 expect(newUser).to.exist;
@@ -107,7 +110,7 @@ describe('User Controller integration tests', () => {
     });
 
     describe('getUsers()', () => {
-        afterEach(() => dropCollection(dbConnection, 'users'));
+        afterEach(done => dropCollection(dbConnection, 'users', done));
 
         it('returns an array with all the users', () => {
             return Controller.createUser(ollie)
@@ -121,6 +124,7 @@ describe('User Controller integration tests', () => {
     });
 
     describe('getUser(id)', () => {
+        afterEach(done => dropCollection(dbConnection, 'users', done));
         it('returns the user with the given id', () => {
             return Controller.createUser(ollie)
                 .then(ollie => Controller.getUser(ollie._id))
@@ -137,6 +141,7 @@ describe('User Controller integration tests', () => {
     });
 
     describe('updateUser(id, userData)', () => {
+        afterEach(done => dropCollection(dbConnection, 'users', done));
         it('updates the data of the user with the given id', () => {
             const email = 'diggle@qc.com';
             return Controller.createUser(dig)
@@ -155,6 +160,7 @@ describe('User Controller integration tests', () => {
     });
 
     describe('deleteUser(id)', () => {
+        afterEach(done => dropCollection(dbConnection, 'users', done));
         it('deletes the user with the given id', () => {
             return Controller.createUser(ollie)
                 .then(ollie => Controller.deleteUser(ollie._id))

@@ -6,8 +6,11 @@ const log = debug('db:collections');
 
 export const dbConnection = db(config);
 
-export const dropCollection = (connection, collectionName) => {
+export const dropCollection = (connection, collectionName, cb) => {
     connection.dropCollection(collectionName, () => {
         log(`dropping '${collectionName}' collection`);
+        if (cb) {
+            cb();
+        }
     });
 };

@@ -36,8 +36,8 @@ const createBarry = () => {
 
 describe('User acceptance tests', () => {
     context('POST /api/users', () => {
-        before(() => dropCollection(dbConnection, 'users'));
-        afterEach(() => dropCollection(dbConnection, 'users'));
+        before(done => dropCollection(dbConnection, 'users', done));
+        afterEach(done => dropCollection(dbConnection, 'users', done));
 
         it('returns status code 200 and json payload when creating a new user', () => {
             return request(app)
@@ -70,11 +70,9 @@ describe('User acceptance tests', () => {
     });
 
     context('GET /api/users', () => {
-        before(() => {
-            return createOllie().then(() => createBarry());
-        });
+        before(() => createOllie().then(() => createBarry()));
 
-        afterEach(() => dropCollection(dbConnection, 'users'));
+        afterEach(done => dropCollection(dbConnection, 'users', done));
 
         it('returns status code 200 and json payload with all the users', () => {
             return request(app)
@@ -93,7 +91,7 @@ describe('User acceptance tests', () => {
     });
 
     context('GET /api/users/:id', () => {
-        afterEach(() => dropCollection(dbConnection, 'users'));
+        afterEach(done => dropCollection(dbConnection, 'users', done));
 
         it('returns the user with the given id', () => {
             return createBarry()
@@ -114,7 +112,7 @@ describe('User acceptance tests', () => {
     });
 
     context('PUT /api/users/:id', () => {
-        afterEach(() => dropCollection(dbConnection, 'users'));
+        afterEach(done => dropCollection(dbConnection, 'users', done));
 
         it('updates the user with the provided data', () => {
             const updatedUserData = { email: 'flash@starlabs.com' };
@@ -141,7 +139,8 @@ describe('User acceptance tests', () => {
     });
 
     context('DELETE /api/users/:id', () => {
-        afterEach(() => dropCollection(dbConnection, 'users'));
+        afterEach(done => dropCollection(dbConnection, 'users', done));
+
         it('deletes the user with the given id', () => {
             return createBarry().then(user =>
                 request(app)
