@@ -103,3 +103,22 @@ export const deleteItem = id => {
             return item.remove();
         });
 };
+
+export const addNote = (itemId, noteData) => {
+    return Item.findById(itemId)
+        .exec()
+        .then(item => {
+            let newNote = new Note(noteData);
+            newNote.itemId = item._id;
+            return newNote
+                .save()
+                .then(note => item.notes.push(note._id))
+                .then(() => item.save())
+                .then(item =>
+                    item
+                        .populate(optionsToPopulateNote)
+                        .populate({ path: 'submittedBy', select: 'name email' })
+                        .execPopulate()
+                );
+        });
+};

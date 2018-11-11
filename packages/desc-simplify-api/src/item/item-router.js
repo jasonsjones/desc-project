@@ -77,5 +77,17 @@ export default () => {
                 )
                 .catch(handleError(res));
         });
+
+    itemRouter.route('/:id([0-9a-zA-Z]{24})/notes').post((req, res) => {
+        ItemController.addNote(req.params.id, req.body)
+            .then(item =>
+                res.json({
+                    success: true,
+                    message: 'note added to item',
+                    payload: { item }
+                })
+            )
+            .catch(handleError(res));
+    });
     return itemRouter;
 };

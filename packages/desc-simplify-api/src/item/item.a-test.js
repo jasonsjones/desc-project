@@ -303,6 +303,33 @@ describe('Item acceptance tests', () => {
                 });
         });
     });
+
+    context('POST /api/items/:id/notes', () => {
+        it('updates an item with a new note', () => {
+            let itemId;
+            const itemData = getItemData(barryId).clothingItemWithNote;
+            return createItem(itemData)
+                .then(item => (itemId = item._id))
+                .then(() =>
+                    request(app)
+                        .post(`/api/items/${itemId}/notes`)
+                        .send({ submittedBy: barryId, body: 'This is another note for the item' })
+                        .expect(200)
+                )
+                .then(res => {
+                    const json = res.body;
+                    const item = res.body.payload.item;
+                    expect(json).to.have.property('success');
+                    expect(json).to.have.property('message');
+                    expect(json.message).to.contain('note added');
+                    expect(json).to.have.property('payload');
+                    expect(json.success).to.be.true;
+                    expect(item.notes).to.be.an('array');
+                    expect(item.notes).to.have.length(2);
+                    expect(item.notes[1].body).to.contain('another note for the item');
+                });
+        });
+    });
 });
 
 const expectItemShape = item => {
