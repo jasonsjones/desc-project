@@ -20,6 +20,7 @@ The following endpoints are available for the `items` resource:
 -   `GET /api/items/:id`
 -   `PUT /api/items/:id`
 -   `DELETE /api/items/:id`
+-   `POST /api/items/:id/notes`
 
 ### Create a new item
 
@@ -256,7 +257,7 @@ the JSON response will have the following shape:
 PUT /api/items/:id
 ```
 
-include a post body of the form that is consistent with the category of item that is to be updated.  For example, to update the actual `Household` item to 'cutlery' (assuming it was created as a `Household` item):
+include a post body of the form that is consistent with the category of item that is to be updated. For example, to update the actual `Household` item to 'cutlery' (assuming it was created as a `Household` item):
 
 ```json
 {
@@ -323,6 +324,71 @@ the JSON response will have the following shape and include the item that was ju
             "notes": [],
             "itemCategory": "Household",
             "name": "cutlery"
+        }
+    }
+}
+```
+
+### Add a note to an item
+
+```
+POST /api/items/:id/notes
+```
+
+include a post body of the form
+
+```json
+{
+    "submittedBy": "someuserId",
+    "body": "new note added to the item"
+}
+```
+
+the JSON response will have the following shape:
+
+```json
+{
+    "success": "true/false",
+    "message": "descriptive message of the status",
+    "payload": {
+        "item": {
+            "_id": "idOfTheItem",
+            "clientId": "12345678",
+            "submittedBy": {
+                "_id": "idOfTheUser",
+                "name": {
+                    "first": "firstName",
+                    "last": "lastName"
+                },
+                "email": "user@example.com"
+            },
+            "numberOfItems": 2,
+            "urgency": "survival",
+            "status": "active",
+            "notes": [
+                {
+                    "_id": "idOfTheNote",
+                    "submittedBy": {
+                        "name": {
+                            "first": "firstName",
+                            "last": "lastName"
+                        }
+                    },
+                    "body": "the text of the note"
+                },
+                {
+                    "_id": "idOfTheNewNote",
+                    "submittedBy": {
+                        "name": {
+                            "first": "firstName",
+                            "last": "lastName"
+                        }
+                    },
+                    "body": "new note added to the item"
+                }
+            ],
+            "itemCategory": "Household",
+            "name": "bedding"
         }
     }
 }

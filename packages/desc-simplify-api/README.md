@@ -93,6 +93,7 @@ The following endpoints are available for the `items` resource:
 -   `GET /api/items/:id`
 -   `PUT /api/items/:id`
 -   `DELETE /api/items/:id`
+-   `POST /api/items/:id/notes`
 
 Detailed usage of the `items` resource can be found in the [docs](docs/items.md)
 
