@@ -14,3 +14,16 @@ export const dropCollection = (connection, collectionName, cb) => {
         }
     });
 };
+
+export const deleteCollection = async (connection, model, collectionName) => {
+    let count = await model
+        .find()
+        .countDocuments()
+        .exec();
+
+    if (count > 0) {
+        return await connection.dropCollection(collectionName);
+    } else {
+        return await Promise.resolve();
+    }
+};
