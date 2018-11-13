@@ -5,7 +5,10 @@ import config from '../config/config';
 import app from '../config/app';
 import { createUser } from '../user/user-controller';
 import { createItem } from './item-controller';
-import { dbConnection, dropCollection } from '../utils/db-test-utils';
+import User from '../user/user-model';
+import Item from './baseitem-model';
+import Note from '../note/note-model';
+import { dbConnection, deleteCollection } from '../utils/db-test-utils';
 
 const ollie = {
     name: {
@@ -74,16 +77,17 @@ const getItemData = userId => {
 
 describe('Item acceptance tests', () => {
     let barryId;
-    before(done => dropCollection(dbConnection, 'users', done));
-    before(() => createBarry().then(user => (barryId = user._id)));
-
-    afterEach(done => {
-        dropCollection(dbConnection, 'items', () => {
-            dropCollection(dbConnection, 'notes', done);
-        });
+    before(async () => {
+        await deleteCollection(dbConnection, User, 'users');
+        return createBarry().then(user => (barryId = user._id));
     });
 
-    after(done => dropCollection(dbConnection, 'users', done));
+    afterEach(async () => {
+        await deleteCollection(dbConnection, Item, 'items');
+        await deleteCollection(dbConnection, Note, 'notes');
+    });
+
+    after(async () => await deleteCollection(dbConnection, User, 'users'));
 
     context('POST /api/items', () => {
         it('returns status code 200 and json payload when creating a new item without a note', () => {

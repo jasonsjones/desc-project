@@ -3,8 +3,9 @@ import request from 'supertest';
 
 import config from '../config/config';
 import app from '../config/app';
+import User from '../user/user-model';
 import { createUser } from '../user/user-controller';
-import { dbConnection, dropCollection } from '../utils/db-test-utils';
+import { dbConnection, deleteCollection } from '../utils/db-test-utils';
 
 const ollie = {
     name: {
@@ -17,11 +18,10 @@ const ollie = {
 };
 
 describe('Auth acceptance tests', () => {
-    before(done => dropCollection(dbConnection, 'users', done));
+    before(async () => await deleteCollection(dbConnection, User, 'users'));
+    afterEach(async () => await deleteCollection(dbConnection, User, 'users'));
 
     describe('POST /api/auth/login', () => {
-        afterEach(done => dropCollection(dbConnection, 'users', done));
-
         it('returns status code of 200 and json with user and token on success', () => {
             return createUser(ollie)
                 .then(() =>
@@ -61,8 +61,6 @@ describe('Auth acceptance tests', () => {
     });
 
     describe('GET /api/auth/logout', () => {
-        afterEach(done => dropCollection(dbConnection, 'users', done));
-
         it('returns status code 200 and json payload', () => {
             return createUser(ollie)
                 .then(() =>

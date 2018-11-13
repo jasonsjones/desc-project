@@ -2,7 +2,7 @@ import { expect } from 'chai';
 
 import User from './user-model';
 import * as Controller from './user-controller';
-import { dbConnection, dropCollection } from '../utils/db-test-utils';
+import { dbConnection, deleteCollection } from '../utils/db-test-utils';
 
 const ollie = {
     name: {
@@ -25,11 +25,10 @@ const dig = {
 };
 
 describe('User Controller integration tests', () => {
-    before(done => dropCollection(dbConnection, 'users', done));
+    before(async () => await deleteCollection(dbConnection, User, 'users'));
+    afterEach(async () => await deleteCollection(dbConnection, User, 'users'));
 
     describe('createUser()', () => {
-        afterEach(done => dropCollection(dbConnection, 'users', done));
-
         it('creates a new user with the given data', () => {
             return Controller.createUser(ollie).then(newUser => {
                 expect(newUser).to.exist;
@@ -110,8 +109,6 @@ describe('User Controller integration tests', () => {
     });
 
     describe('getUsers()', () => {
-        afterEach(done => dropCollection(dbConnection, 'users', done));
-
         it('returns an array with all the users', () => {
             return Controller.createUser(ollie)
                 .then(() => Controller.createUser(dig))
@@ -124,7 +121,6 @@ describe('User Controller integration tests', () => {
     });
 
     describe('getUser(id)', () => {
-        afterEach(done => dropCollection(dbConnection, 'users', done));
         it('returns the user with the given id', () => {
             return Controller.createUser(ollie)
                 .then(ollie => Controller.getUser(ollie._id))
@@ -141,7 +137,6 @@ describe('User Controller integration tests', () => {
     });
 
     describe('updateUser(id, userData)', () => {
-        afterEach(done => dropCollection(dbConnection, 'users', done));
         it('updates the data of the user with the given id', () => {
             const email = 'diggle@qc.com';
             return Controller.createUser(dig)
@@ -160,7 +155,6 @@ describe('User Controller integration tests', () => {
     });
 
     describe('deleteUser(id)', () => {
-        afterEach(done => dropCollection(dbConnection, 'users', done));
         it('deletes the user with the given id', () => {
             return Controller.createUser(ollie)
                 .then(ollie => Controller.deleteUser(ollie._id))

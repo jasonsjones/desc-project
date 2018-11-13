@@ -3,8 +3,9 @@ import request from 'supertest';
 
 import config from '../config/config';
 import app from '../config/app';
+import User from './user-model';
 import { createUser } from './user-controller';
-import { dbConnection, dropCollection } from '../utils/db-test-utils';
+import { dbConnection, deleteCollection } from '../utils/db-test-utils';
 
 const ollie = {
     name: {
@@ -35,10 +36,10 @@ const createBarry = () => {
 };
 
 describe('User acceptance tests', () => {
-    context('POST /api/users', () => {
-        before(done => dropCollection(dbConnection, 'users', done));
-        afterEach(done => dropCollection(dbConnection, 'users', done));
+    before(async () => await deleteCollection(dbConnection, User, 'users'));
+    afterEach(async () => await deleteCollection(dbConnection, User, 'users'));
 
+    context('POST /api/users', () => {
         it('returns status code 200 and json payload when creating a new user', () => {
             return request(app)
                 .post('/api/users/')
@@ -72,8 +73,6 @@ describe('User acceptance tests', () => {
     context('GET /api/users', () => {
         before(() => createOllie().then(() => createBarry()));
 
-        afterEach(done => dropCollection(dbConnection, 'users', done));
-
         it('returns status code 200 and json payload with all the users', () => {
             return request(app)
                 .get('/api/users/')
@@ -91,8 +90,6 @@ describe('User acceptance tests', () => {
     });
 
     context('GET /api/users/:id', () => {
-        afterEach(done => dropCollection(dbConnection, 'users', done));
-
         it('returns the user with the given id', () => {
             return createBarry()
                 .then(barry => request(app).get(`/api/users/${barry._id}`))
@@ -112,8 +109,6 @@ describe('User acceptance tests', () => {
     });
 
     context('PUT /api/users/:id', () => {
-        afterEach(done => dropCollection(dbConnection, 'users', done));
-
         it('updates the user with the provided data', () => {
             const updatedUserData = { email: 'flash@starlabs.com' };
             return createBarry().then(user =>
@@ -139,8 +134,6 @@ describe('User acceptance tests', () => {
     });
 
     context('DELETE /api/users/:id', () => {
-        afterEach(done => dropCollection(dbConnection, 'users', done));
-
         it('deletes the user with the given id', () => {
             return createBarry().then(user =>
                 request(app)
