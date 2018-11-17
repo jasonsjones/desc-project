@@ -39,12 +39,7 @@ include a post body of the form
     "numberOfItems": 2,
     "urgency": "survival",
     "status": "active",
-    "notes": [
-        {
-            "submittedBy": "someuserId",
-            "body": "the text of the note"
-        }
-    ],
+    "note": "the text of the initial note (which is optional).",
     "itemCategory": "Household",
     "name": "bedding"
 }
