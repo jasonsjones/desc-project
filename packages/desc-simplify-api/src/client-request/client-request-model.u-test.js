@@ -9,7 +9,7 @@ describe('Client request model', () => {
         it('is valid when all required fields are provided', done => {
             const request = new ClientRequest({
                 clientId: '12345678',
-                requestedBy: '5bb69cb1322fdf5690edfc0b',
+                submittedBy: '5bb69cb1322fdf5690edfc0b',
                 items: ['5bca0257b2f5ce2c899c08d3', '5bca0732ef3f813295e10966']
             });
 
@@ -21,7 +21,7 @@ describe('Client request model', () => {
 
         it('is invalid if the clientId field is empty', done => {
             const request = new ClientRequest({
-                requestedBy: '5bb69cb1322fdf5690edfc0b',
+                submittedBy: '5bb69cb1322fdf5690edfc0b',
                 items: ['5bca0257b2f5ce2c899c08d3', '5bca0732ef3f813295e10966']
             });
 
@@ -32,14 +32,14 @@ describe('Client request model', () => {
             });
         });
 
-        it('is invalid if the requestedBy field is empty', done => {
+        it('is invalid if the submittedBy field is empty', done => {
             const request = new ClientRequest({
                 clientId: '12345678',
                 items: ['5bca0257b2f5ce2c899c08d3', '5bca0732ef3f813295e10966']
             });
 
             request.validate(err => {
-                expect(err.errors['requestedBy']).to.exist;
+                expect(err.errors['submittedBy']).to.exist;
                 expect(err.name).to.equal('ValidationError');
                 done();
             });
