@@ -69,6 +69,7 @@ describe.only('Client Request integration tests', () => {
                 expect(request.items).to.have.length(1);
             });
         });
+
         it('creates a client request when passed an array of items', () => {
             const item1 = {
                 clientId: '12345678',
@@ -99,6 +100,41 @@ describe.only('Client Request integration tests', () => {
                 expect(request).to.have.property('submittedBy');
                 expect(request).to.have.property('items');
                 expect(request.items).to.have.length(2);
+            });
+        });
+    });
+
+    describe('getClientRequests()', () => {
+        it('returns all the client requests', async () => {
+            const item1 = {
+                clientId: '12345678',
+                submittedBy: requestorId,
+                itemCategory: 'Household',
+                numberOfItems: 4,
+                name: 'plates',
+                note: 'Need some plates for a nice holiday dinner'
+            };
+            const item2 = {
+                clientId: '12345678',
+                submittedBy: requestorId,
+                itemCategory: 'Clothing',
+                numberOfItems: 1,
+                name: 'coat',
+                size: 'L (42-44)',
+                gender: 'M',
+                note: 'Need a warm coat for the fall season'
+            };
+            const clientReqData = {
+                clientId: '12345678',
+                submittedBy: requestorId,
+                items: [item1, item2]
+            };
+
+            await Controller.createClientRequest(clientReqData);
+
+            return Controller.getClientRequests().then(requests => {
+                expect(requests).to.be.an('array');
+                expect(requests).to.have.length(1);
             });
         });
     });

@@ -30,3 +30,7 @@ export const createClientRequest = requestData => {
         });
     }
 };
+
+export const getClientRequests = () => {
+    return ClientRequest.find({}).exec();
+};
