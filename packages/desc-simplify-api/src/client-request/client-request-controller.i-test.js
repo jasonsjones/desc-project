@@ -11,6 +11,7 @@ import { dbConnection, deleteCollection } from '../utils/db-test-utils';
 
 describe.only('Client Request integration tests', () => {
     let requestorId = null;
+    let item1, item2;
     before(async () => {
         const requestor = await createUser({
             name: {
@@ -21,7 +22,28 @@ describe.only('Client Request integration tests', () => {
             password: 'thegreenarrow',
             roles: ['admin', 'approver']
         });
+
         requestorId = requestor._id;
+
+        item1 = {
+            clientId: '12345678',
+            submittedBy: requestorId,
+            itemCategory: 'Household',
+            numberOfItems: 4,
+            name: 'plates',
+            note: 'Need some plates for a nice holiday dinner'
+        };
+
+        item2 = {
+            clientId: '12345678',
+            submittedBy: requestorId,
+            itemCategory: 'Clothing',
+            numberOfItems: 1,
+            name: 'coat',
+            size: 'L (42-44)',
+            gender: 'M',
+            note: 'Need a warm coat for the fall season'
+        };
     });
 
     afterEach(async () => {
@@ -48,19 +70,12 @@ describe.only('Client Request integration tests', () => {
         });
 
         it('creates a client request when passed a single item', () => {
-            const item1 = {
-                clientId: '12345678',
-                submittedBy: requestorId,
-                itemCategory: 'Household',
-                numberOfItems: 4,
-                name: 'plates',
-                note: 'Need some plates for a nice holiday dinner'
-            };
             const clientReqData = {
                 clientId: '12345678',
                 submittedBy: requestorId,
                 items: item1
             };
+
             return Controller.createClientRequest(clientReqData).then(request => {
                 expect(request).to.be.exist;
                 expect(request).to.have.property('clientId');
@@ -71,29 +86,12 @@ describe.only('Client Request integration tests', () => {
         });
 
         it('creates a client request when passed an array of items', () => {
-            const item1 = {
-                clientId: '12345678',
-                submittedBy: requestorId,
-                itemCategory: 'Household',
-                numberOfItems: 4,
-                name: 'plates',
-                note: 'Need some plates for a nice holiday dinner'
-            };
-            const item2 = {
-                clientId: '12345678',
-                submittedBy: requestorId,
-                itemCategory: 'Clothing',
-                numberOfItems: 1,
-                name: 'coat',
-                size: 'L (42-44)',
-                gender: 'M',
-                note: 'Need a warm coat for the fall season'
-            };
             const clientReqData = {
                 clientId: '12345678',
                 submittedBy: requestorId,
                 items: [item1, item2]
             };
+
             return Controller.createClientRequest(clientReqData).then(request => {
                 expect(request).to.be.exist;
                 expect(request).to.have.property('clientId');
@@ -106,35 +104,23 @@ describe.only('Client Request integration tests', () => {
 
     describe('getClientRequests()', () => {
         it('returns all the client requests', async () => {
-            const item1 = {
+            const client1ReqData = {
                 clientId: '12345678',
                 submittedBy: requestorId,
-                itemCategory: 'Household',
-                numberOfItems: 4,
-                name: 'plates',
-                note: 'Need some plates for a nice holiday dinner'
+                items: [item1]
             };
-            const item2 = {
-                clientId: '12345678',
+            const client2ReqData = {
+                clientId: '87654321',
                 submittedBy: requestorId,
-                itemCategory: 'Clothing',
-                numberOfItems: 1,
-                name: 'coat',
-                size: 'L (42-44)',
-                gender: 'M',
-                note: 'Need a warm coat for the fall season'
-            };
-            const clientReqData = {
-                clientId: '12345678',
-                submittedBy: requestorId,
-                items: [item1, item2]
+                items: [item2]
             };
 
-            await Controller.createClientRequest(clientReqData);
+            await Controller.createClientRequest(client1ReqData);
+            await Controller.createClientRequest(client2ReqData);
 
             return Controller.getClientRequests().then(requests => {
                 expect(requests).to.be.an('array');
-                expect(requests).to.have.length(1);
+                expect(requests).to.have.length(2);
             });
         });
     });
