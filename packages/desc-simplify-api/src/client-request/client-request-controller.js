@@ -19,6 +19,7 @@ export const createClientRequest = requestData => {
         requestData.items.forEach(item => {
             createItemArray.push(createItem(item));
         });
+
         return Promise.all(createItemArray).then(values => {
             clientRequest.items = values.map(item => item._id);
             return clientRequest.save();
@@ -33,4 +34,11 @@ export const createClientRequest = requestData => {
 
 export const getClientRequests = () => {
     return ClientRequest.find({}).exec();
+};
+
+export const getClientRequest = id => {
+    if (!id) {
+        return Promise.reject(new Error('id paramater is required'));
+    }
+    return ClientRequest.findById(id).exec();
 };

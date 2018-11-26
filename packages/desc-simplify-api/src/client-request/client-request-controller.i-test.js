@@ -9,7 +9,7 @@ import Item from '../item/baseitem-model';
 import Note from '../note/note-model';
 import { dbConnection, deleteCollection } from '../utils/db-test-utils';
 
-describe.only('Client Request integration tests', () => {
+describe('Client Request integration tests', () => {
     let requestorId = null;
     let item1, item2;
     before(async () => {
@@ -121,6 +121,27 @@ describe.only('Client Request integration tests', () => {
             return Controller.getClientRequests().then(requests => {
                 expect(requests).to.be.an('array');
                 expect(requests).to.have.length(2);
+            });
+        });
+    });
+
+    describe('getClientRequest()', () => {
+        it('returns a client request with the given id', async () => {
+            const clientReqData = {
+                clientId: '12345678',
+                submittedBy: requestorId,
+                items: [item1]
+            };
+
+            const request = await Controller.createClientRequest(clientReqData);
+            const requestId = request._id;
+
+            return Controller.getClientRequest(requestId).then(request => {
+                expect(request).to.be.exist;
+                expect(request).to.have.property('clientId');
+                expect(request).to.have.property('submittedBy');
+                expect(request).to.have.property('items');
+                expect(request.items).to.be.an('array');
             });
         });
     });
