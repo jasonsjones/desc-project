@@ -67,9 +67,8 @@ export const getItems = () => {
 
 export const getItem = id => {
     if (!id) {
-        return Promise.reject(new Error('id paramater is required'));
+        return Promise.reject(new Error('item id is required'));
     }
-
     return Item.findById(id)
         .populate({ path: 'submittedBy', select: 'name email' })
         .populate(optionsToPopulateNote)
@@ -78,7 +77,7 @@ export const getItem = id => {
 
 export const updateItem = (id, itemData = {}) => {
     if (!id) {
-        return Promise.reject(new Error('id paramater is required'));
+        return Promise.reject(new Error('item id is required'));
     }
     return Item.findById(id)
         .exec()
@@ -95,7 +94,7 @@ export const updateItem = (id, itemData = {}) => {
 
 export const deleteItem = id => {
     if (!id) {
-        return Promise.reject(new Error('id paramater is required'));
+        return Promise.reject(new Error('item id is required'));
     }
     return Item.findById(id)
         .exec()
@@ -105,6 +104,12 @@ export const deleteItem = id => {
 };
 
 export const addNote = (itemId, noteData) => {
+    if (!itemId) {
+        return Promise.reject(new Error('item id is required'));
+    }
+    if (!noteData) {
+        return Promise.reject(new Error('note data is required'));
+    }
     return Item.findById(itemId)
         .exec()
         .then(item => {
