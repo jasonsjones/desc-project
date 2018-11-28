@@ -9,6 +9,7 @@ import User from '../user/user-model';
 import Item from './baseitem-model';
 import Note from '../note/note-model';
 import { dbConnection, deleteCollection } from '../utils/db-test-utils';
+import { getMockItemData } from './item-test-utils';
 
 const ollie = {
     name: {
@@ -38,43 +39,6 @@ const createBarry = () => {
     return createUser(barry);
 };
 
-const getItemData = userId => {
-    return {
-        clothingItemWithNote: {
-            clientId: '12345678',
-            submittedBy: userId,
-            itemCategory: 'Clothing',
-            numberOfItems: 1,
-            name: 'coat',
-            size: 'L (42-44)',
-            gender: 'M',
-            note: 'Need a warm coat for the fall season'
-        },
-        householdItemWithNote: {
-            clientId: '12345678',
-            submittedBy: userId,
-            itemCategory: 'Household',
-            numberOfItems: 4,
-            name: 'plates',
-            note: 'Need some plates for a nice holiday dinner'
-        },
-        householdItemWithoutNote: {
-            clientId: '12345678',
-            submittedBy: userId,
-            itemCategory: 'Household',
-            numberOfItems: 2,
-            name: 'bedding'
-        },
-        personalHygieneItemWithoutNote: {
-            clientId: '12345678',
-            submittedBy: userId,
-            itemCategory: 'PersonalHygiene',
-            numberOfItems: 1,
-            name: 'toothbrush'
-        }
-    };
-};
-
 describe('Item acceptance tests', () => {
     let barryId;
     before(async () => {
@@ -91,7 +55,7 @@ describe('Item acceptance tests', () => {
 
     context('POST /api/items', () => {
         it('returns status code 200 and json payload when creating a new item without a note', () => {
-            const itemData = getItemData(barryId).householdItemWithoutNote;
+            const itemData = getMockItemData(barryId).householdItemWithoutNote;
 
             return request(app)
                 .post('/api/items/')
@@ -112,7 +76,7 @@ describe('Item acceptance tests', () => {
         });
 
         it('returns status code 200 and json payload when creating a new item with a note', () => {
-            const itemData = getItemData(barryId).clothingItemWithNote;
+            const itemData = getMockItemData(barryId).clothingItemWithNote;
 
             return request(app)
                 .post('/api/items/')
@@ -133,7 +97,7 @@ describe('Item acceptance tests', () => {
         });
 
         it('returns status code 200 and json payload with error if a required field is not provided', () => {
-            const itemData = getItemData(barryId).clothingItemWithNote;
+            const itemData = getMockItemData(barryId).clothingItemWithNote;
             delete itemData.name;
 
             return request(app)
@@ -152,8 +116,8 @@ describe('Item acceptance tests', () => {
 
     context('GET /api/items', () => {
         it('returns status code 200 and json payload with all the items', () => {
-            const item1Data = getItemData(barryId).clothingItemWithNote;
-            const item2Data = getItemData(barryId).householdItemWithNote;
+            const item1Data = getMockItemData(barryId).clothingItemWithNote;
+            const item2Data = getMockItemData(barryId).householdItemWithNote;
 
             return createItem(item1Data)
                 .then(() => createItem(item2Data))
@@ -182,7 +146,7 @@ describe('Item acceptance tests', () => {
     context('GET /api/items/:id', () => {
         it('returns the item with the given id', () => {
             let itemId;
-            const itemData = getItemData(barryId).clothingItemWithNote;
+            const itemData = getMockItemData(barryId).clothingItemWithNote;
 
             return createItem(itemData)
                 .then(item => (itemId = item._id))
@@ -207,7 +171,7 @@ describe('Item acceptance tests', () => {
         it('updates the size of a clothing item', () => {
             let itemId;
             let updatedSize = 'XL (46)';
-            const itemData = getItemData(barryId).clothingItemWithNote;
+            const itemData = getMockItemData(barryId).clothingItemWithNote;
 
             return createItem(itemData)
                 .then(item => (itemId = item._id))
@@ -233,7 +197,7 @@ describe('Item acceptance tests', () => {
         it('updates the name of a household item', () => {
             let itemId;
             let updatedName = 'cutlery';
-            const itemData = getItemData(barryId).householdItemWithoutNote;
+            const itemData = getMockItemData(barryId).householdItemWithoutNote;
 
             return createItem(itemData)
                 .then(item => (itemId = item._id))
@@ -259,7 +223,7 @@ describe('Item acceptance tests', () => {
         it('updates the urgency of a personal hygiene item', () => {
             let itemId;
             let updatedUrgency = 'survival';
-            const itemData = getItemData(barryId).personalHygieneItemWithoutNote;
+            const itemData = getMockItemData(barryId).personalHygieneItemWithoutNote;
 
             return createItem(itemData)
                 .then(item => (itemId = item._id))
@@ -286,7 +250,7 @@ describe('Item acceptance tests', () => {
     context('DELETE /api/items/:id', () => {
         it('deletes the item with the given id', () => {
             let itemId;
-            const itemData = getItemData(barryId).clothingItemWithNote;
+            const itemData = getMockItemData(barryId).clothingItemWithNote;
 
             return createItem(itemData)
                 .then(item => (itemId = item._id))
@@ -311,7 +275,7 @@ describe('Item acceptance tests', () => {
     context('POST /api/items/:id/notes', () => {
         it('updates an item with a new note', () => {
             let itemId;
-            const itemData = getItemData(barryId).clothingItemWithNote;
+            const itemData = getMockItemData(barryId).clothingItemWithNote;
             return createItem(itemData)
                 .then(item => (itemId = item._id))
                 .then(() =>
