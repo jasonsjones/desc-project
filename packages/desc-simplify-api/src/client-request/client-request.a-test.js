@@ -71,6 +71,7 @@ describe('Client Request acceptance tests', () => {
                     expect(json).to.have.property('success');
                     expect(json).to.have.property('message');
                     expect(json).to.have.property('payload');
+                    expect(json.success).to.be.true;
 
                     const clientRequest = res.body.payload.clientRequest;
                     expect(clientRequest).to.exist;
@@ -80,8 +81,57 @@ describe('Client Request acceptance tests', () => {
                 });
         });
 
-        it('creates a new client request when provided an single requested item');
-        it('creates a new empty client request when no items are provided');
+        it('creates a new client request when provided an single requested item', () => {
+            const item = getMockItemData(barryId).householdItemWithoutNote;
+            const clientRequestData = {
+                clientId: '12345678',
+                submittedBy: barryId,
+                items: item
+            };
+
+            return request(app)
+                .post('/api/clientrequests/')
+                .send(clientRequestData)
+                .expect(200)
+                .then(res => {
+                    const json = res.body;
+                    expect(json).to.have.property('success');
+                    expect(json).to.have.property('message');
+                    expect(json).to.have.property('payload');
+                    expect(json.success).to.be.true;
+
+                    const clientRequest = res.body.payload.clientRequest;
+                    expect(clientRequest).to.exist;
+                    expect(clientRequest).to.have.property('items');
+                    expect(clientRequest.items).to.be.an('array');
+                    expect(clientRequest.items).to.have.length(1);
+                });
+        });
+
+        it('creates a new empty client request when no items are provided', () => {
+            const clientRequestData = {
+                clientId: '12345678',
+                submittedBy: barryId
+            };
+
+            return request(app)
+                .post('/api/clientrequests/')
+                .send(clientRequestData)
+                .expect(200)
+                .then(res => {
+                    const json = res.body;
+                    expect(json).to.have.property('success');
+                    expect(json).to.have.property('message');
+                    expect(json).to.have.property('payload');
+                    expect(json.success).to.be.true;
+
+                    const clientRequest = res.body.payload.clientRequest;
+                    expect(clientRequest).to.exist;
+                    expect(clientRequest).to.have.property('items');
+                    expect(clientRequest.items).to.be.an('array');
+                    expect(clientRequest.items).to.have.length(0);
+                });
+        });
     });
 
     context('GET /api/clientrequests', () => {});
