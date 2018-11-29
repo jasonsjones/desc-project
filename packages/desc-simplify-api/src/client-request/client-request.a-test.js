@@ -172,4 +172,38 @@ describe('Client Request acceptance tests', () => {
                 });
         });
     });
+
+    context('GET /api/clientrequests/:id', () => {
+        let clientRequestId;
+        before(() => {
+            const item1 = getMockItemData(barryId).householdItemWithoutNote;
+            const item2 = getMockItemData(barryId).clothingItemWithNote;
+            const clientRequestData = {
+                clientId: '12345678',
+                submittedBy: barryId,
+                items: [item1, item2]
+            };
+
+            return createClientRequest(clientRequestData).then(
+                request => (clientRequestId = request._id)
+            );
+        });
+
+        it('returns the client request with the given id', () => {
+            return request(app)
+                .get(`/api/clientrequests/${clientRequestId}`)
+                .expect(200)
+                .then(res => {
+                    const json = res.body;
+                    expect(json).to.have.property('success');
+                    expect(json).to.have.property('message');
+                    expect(json).to.have.property('payload');
+                    expect(json.success).to.be.true;
+
+                    const clientRequest = res.body.payload.clientRequest;
+                    expect(clientRequest).to.exist;
+                    expect(clientRequest).to.be.an('object');
+                });
+        });
+    });
 });

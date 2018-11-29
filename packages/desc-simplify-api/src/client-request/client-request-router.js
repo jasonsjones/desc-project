@@ -42,5 +42,16 @@ export default () => {
                 .catch(handleError(res));
         });
 
+    clientRequestRouter.route('/:id([0-9a-zA-Z]{24})').get((req, res) => {
+        ClientRequestController.getClientRequest(req.params.id)
+            .then(clientRequest =>
+                res.json({
+                    success: true,
+                    message: 'client request fetched',
+                    payload: { clientRequest }
+                })
+            )
+            .catch(handleError(res));
+    });
     return clientRequestRouter;
 };
