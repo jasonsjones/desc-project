@@ -4,7 +4,9 @@ import request from 'supertest';
 import config from '../config/config';
 import app from '../config/app';
 import { createUser } from '../user/user-controller';
+import { createClientRequest } from './client-request-controller';
 import User from '../user/user-model';
+import ClientRequest from './client-request-model';
 import Item from '../item/baseitem-model';
 import Note from '../note/note-model';
 import { dbConnection, deleteCollection } from '../utils/db-test-utils';
@@ -48,6 +50,7 @@ describe('Client Request acceptance tests', () => {
     afterEach(async () => {
         await deleteCollection(dbConnection, Item, 'items');
         await deleteCollection(dbConnection, Note, 'notes');
+        await deleteCollection(dbConnection, ClientRequest, 'clientrequests');
     });
 
     after(async () => await deleteCollection(dbConnection, User, 'users'));
@@ -134,6 +137,39 @@ describe('Client Request acceptance tests', () => {
         });
     });
 
-    context('GET /api/clientrequests', () => {});
-    context('GET /api/clientrequests/:id', () => {});
+    context('GET /api/clientrequests', () => {
+        it('returns a json payload with all the client requests', async () => {
+            const item1 = getMockItemData(barryId).householdItemWithoutNote;
+            const item2 = getMockItemData(barryId).clothingItemWithNote;
+            const clientRequestData1 = {
+                clientId: '12345678',
+                submittedBy: barryId,
+                items: [item1, item2]
+            };
+            const clientRequestData2 = {
+                clientId: '87654321',
+                submittedBy: barryId,
+                items: [item1, item2]
+            };
+
+            await createClientRequest(clientRequestData1);
+            await createClientRequest(clientRequestData2);
+
+            return request(app)
+                .get('/api/clientrequests/')
+                .expect(200)
+                .then(res => {
+                    const json = res.body;
+                    expect(json).to.have.property('success');
+                    expect(json).to.have.property('message');
+                    expect(json).to.have.property('payload');
+                    expect(json.success).to.be.true;
+
+                    const clientRequests = res.body.payload.clientRequests;
+                    expect(clientRequests).to.exist;
+                    expect(clientRequests).to.be.an('array');
+                    expect(clientRequests).to.have.length(2);
+                });
+        });
+    });
 });
