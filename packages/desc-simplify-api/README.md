@@ -84,6 +84,16 @@ The following endpoints are available for the `authentication` resource
 
 Detailed usage of the `authentication` resource can be found in the [docs](docs/auth.md)
 
+### Client Requests
+
+The following endpoints are available for the `clientrequests` resource:
+
+-   `POST /api/clientrequests`
+-   `GET /api/clientrequests`
+-   `GET /api/clientrequests/:id`
+
+Detailed usage of the `clientrequests` resource can be found in the [docs](docs/client-requests.md)
+
 ### Items
 
 The following endpoints are available for the `items` resource:
