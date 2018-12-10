@@ -24,6 +24,7 @@ const corsOptions = {
 const sessionOptions = {
     genid: () => generateRandomToken(),
     store: new FileStore(Object.assign({}, { retries: 2 }, getSessionFilePath())),
+    name: config.session_name,
     cookie: {
         secure: false
     },

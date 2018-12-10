@@ -2,16 +2,22 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+const {
+    NODE_ENV: env = 'development',
+    PORT: port = 3000,
+    JWT_SECRET: token_secret = 'defaulttokensecret12345',
+    SESSION_SECRET: session_secret = 'defaultsessionsecret54321',
+    SESSION_NAME: session_name = 'connect.sid',
+    DB_URL_DEV = 'mongo://localhost:27017/desc-api-dev',
+    DB_URL_TEST = 'mongo://localhost:27017/desc-api-test'
+} = process.env;
+
 const getDbName = url => {
     const dbParts = url.split('/');
     return dbParts[dbParts.length - 1];
 };
 
-const env = process.env.NODE_ENV || 'development';
-const port = process.env.PORT || 3000;
-const token_secret = process.env.JWT_SECRET;
-const session_secret = process.env.SESSION_SECRET;
-const dbUrl = env === 'testing' ? process.env.DB_URL_TEST : process.env.DB_URL_DEV;
+const dbUrl = env === 'testing' ? DB_URL_TEST : DB_URL_DEV;
 const dbName = getDbName(dbUrl);
 
 const config = {
@@ -21,6 +27,7 @@ const config = {
     port,
     token_secret,
     session_secret,
+    session_name,
     dbUrl,
     dbName
 };
