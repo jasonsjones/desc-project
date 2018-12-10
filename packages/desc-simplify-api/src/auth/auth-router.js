@@ -1,4 +1,5 @@
 import express from 'express';
+import config from '../config/config';
 import * as AuthUtils from './auth-utils';
 
 export default passport => {
@@ -20,6 +21,7 @@ export default passport => {
     authRouter.get('/logout', (req, res) => {
         req.session.destroy(() => {
             req.logout();
+            res.clearCookie(config.session_name);
             res.json({
                 success: true,
                 message: 'user logged out',
