@@ -1,9 +1,4 @@
 {
-    "presets": [["env", { "targets": { "node": "8" } }], "react", "stage-0"],
-    "plugins": [
-        "transform-class-properties",
-        "transform-decorators",
-        "transform-react-constant-elements",
-        "transform-react-inline-elements"
-    ]
+    "presets": [["@babel/preset-env", { "targets": { "node": "8" } }]],
+    "plugins": []
 }
