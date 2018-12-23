@@ -11,6 +11,11 @@ const optionsToPopulateNote = {
     populate: { path: 'submittedBy', select: 'name' }
 };
 
+const optionsToPopulateSubmittedBy = {
+    path: 'submittedBy',
+    select: 'name email'
+};
+
 export const createItem = itemData => {
     if (!itemData) {
         return Promise.reject(new Error('item data is required'));
@@ -46,21 +51,19 @@ export const createItem = itemData => {
             .then(item =>
                 item
                     .populate(optionsToPopulateNote)
-                    .populate({ path: 'submittedBy', select: 'name email' })
+                    .populate(optionsToPopulateSubmittedBy)
                     .execPopulate()
             );
     } else {
         return newItem
             .save()
-            .then(item =>
-                item.populate({ path: 'submittedBy', select: 'name email' }).execPopulate()
-            );
+            .then(item => item.populate(optionsToPopulateSubmittedBy).execPopulate());
     }
 };
 
 export const getItems = () => {
     return Item.find({})
-        .populate({ path: 'submittedBy', select: 'name email' })
+        .populate(optionsToPopulateSubmittedBy)
         .populate(optionsToPopulateNote)
         .exec();
 };
@@ -70,7 +73,7 @@ export const getItem = id => {
         return Promise.reject(new Error('item id is required'));
     }
     return Item.findById(id)
-        .populate({ path: 'submittedBy', select: 'name email' })
+        .populate(optionsToPopulateSubmittedBy)
         .populate(optionsToPopulateNote)
         .exec();
 };
@@ -86,7 +89,7 @@ export const updateItem = (id, itemData = {}) => {
             return item.save().then(item =>
                 item
                     .populate(optionsToPopulateNote)
-                    .populate({ path: 'submittedBy', select: 'name email' })
+                    .populate(optionsToPopulateSubmittedBy)
                     .execPopulate()
             );
         });
@@ -122,7 +125,7 @@ export const addNote = (itemId, noteData) => {
                 .then(item =>
                     item
                         .populate(optionsToPopulateNote)
-                        .populate({ path: 'submittedBy', select: 'name email' })
+                        .populate(optionsToPopulateSubmittedBy)
                         .execPopulate()
                 );
         });
