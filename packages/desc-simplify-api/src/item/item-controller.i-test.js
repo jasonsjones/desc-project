@@ -3,9 +3,7 @@ import { expect } from 'chai';
 import * as Controller from './item-controller';
 import { createUser } from '../user/user-controller';
 import { createItem } from '../item/item-controller';
-import User from '../user/user-model';
-import Item from '../item/baseitem-model';
-import Note from '../note/note-model';
+import { User, Item, Note } from '../models';
 import { dbConnection, deleteCollection } from '../utils/db-test-utils';
 import { getMockItemData } from './item-test-utils';
 

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import User from './user-model';
+import { User } from '../models';
 import * as Controller from './user-controller';
 import { dbConnection, deleteCollection } from '../utils/db-test-utils';
 

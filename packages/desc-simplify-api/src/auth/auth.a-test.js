@@ -3,7 +3,7 @@ import request from 'supertest';
 
 import config from '../config/config';
 import app from '../config/app';
-import User from '../user/user-model';
+import { User } from '../models';
 import { createUser } from '../user/user-controller';
 import { userOllie } from '../utils/user-test-utils';
 import { dbConnection, deleteCollection } from '../utils/db-test-utils';

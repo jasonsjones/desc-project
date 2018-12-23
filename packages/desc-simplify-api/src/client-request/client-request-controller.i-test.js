@@ -4,9 +4,7 @@ import * as Controller from './client-request-controller';
 import ClientRequest from './client-request-model';
 import { createUser } from '../user/user-controller';
 import { createItem } from '../item/item-controller';
-import User from '../user/user-model';
-import Item from '../item/baseitem-model';
-import Note from '../note/note-model';
+import { User, Item, Note } from '../models';
 import { dbConnection, deleteCollection } from '../utils/db-test-utils';
 
 describe('Client Request integration tests', () => {
