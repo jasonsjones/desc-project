@@ -12,6 +12,7 @@ const options = {
 const itemSchema = new Schema(
     {
         clientId: { type: String, required: true },
+        clientRequest: { type: Schema.Types.ObjectId, ref: 'ClientRequest', required: true },
         submittedBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
         numberOfItems: { type: Number, default: 1 },
         urgency: {

@@ -17,6 +17,7 @@ export const createClientRequest = requestData => {
     if (Array.isArray(requestData.items)) {
         let createItemArray = [];
         requestData.items.forEach(item => {
+            item.clientRequest = clientRequest._id;
             createItemArray.push(createItem(item));
         });
 
@@ -25,6 +26,7 @@ export const createClientRequest = requestData => {
             return clientRequest.save();
         });
     } else {
+        requestData.items.clientRequest = clientRequest._id;
         return createItem(requestData.items).then(item => {
             clientRequest.items = [item._id];
             return clientRequest.save();
