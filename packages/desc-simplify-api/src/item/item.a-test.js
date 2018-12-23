@@ -8,7 +8,7 @@ import { createItem } from './item-controller';
 import { User, Item, Note } from '../models';
 import { userOllie, userBarry } from '../utils/user-test-utils';
 import { dbConnection, deleteCollection } from '../utils/db-test-utils';
-import { getMockItemData } from './item-test-utils';
+import { getMockItemData } from '../utils/item-test-utils';
 
 const createOllie = () => {
     return createUser(userOllie);

@@ -2,6 +2,7 @@ export const getMockItemData = userId => {
     return {
         clothingItemWithNote: {
             clientId: '12345678',
+            clientRequest: '5c0179dd9c55a711053087cb',
             submittedBy: userId,
             itemCategory: 'Clothing',
             numberOfItems: 1,
@@ -12,6 +13,7 @@ export const getMockItemData = userId => {
         },
         householdItemWithNote: {
             clientId: '12345678',
+            clientRequest: '5c0179dd9c55a711053087cb',
             submittedBy: userId,
             itemCategory: 'Household',
             numberOfItems: 4,
@@ -20,6 +22,7 @@ export const getMockItemData = userId => {
         },
         householdItemWithoutNote: {
             clientId: '12345678',
+            clientRequest: '5c0179dd9c55a711053087cb',
             submittedBy: userId,
             itemCategory: 'Household',
             numberOfItems: 2,
@@ -27,6 +30,7 @@ export const getMockItemData = userId => {
         },
         personalHygieneItemWithoutNote: {
             clientId: '12345678',
+            clientRequest: '5c0179dd9c55a711053087cb',
             submittedBy: userId,
             itemCategory: 'PersonalHygiene',
             numberOfItems: 1,

@@ -4,34 +4,13 @@ import * as Controller from './item-controller';
 import { createUser } from '../user/user-controller';
 import { createItem } from '../item/item-controller';
 import { User, Item, Note } from '../models';
+import { userOllie, userBarry } from '../utils/user-test-utils';
 import { dbConnection, deleteCollection } from '../utils/db-test-utils';
-import { getMockItemData } from './item-test-utils';
+import { getMockItemData } from '../utils/item-test-utils';
 
-const ollie = {
-    name: {
-        first: 'Oliver',
-        last: 'Queen'
-    },
-    email: 'oliver@qc.com',
-    program: 'employment',
-    password: 'thegreenarrow',
-    roles: ['admin', 'approver']
-};
+const createOllie = () => createUser(userOllie);
 
-const barry = {
-    name: {
-        first: 'Barry',
-        last: 'Allen'
-    },
-    email: 'barry@starlabs.com',
-    program: 'health',
-    password: 'theflash',
-    roles: ['requestor']
-};
-
-const createOllie = () => createUser(ollie);
-
-const createBarry = () => createUser(barry);
+const createBarry = () => createUser(userBarry);
 
 describe('Item integration tests', () => {
     let barryId;
