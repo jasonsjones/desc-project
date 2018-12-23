@@ -15,6 +15,7 @@ const ollie = {
         last: 'Queen'
     },
     email: 'oliver@qc.com',
+    program: 'employment',
     password: 'thegreenarrow',
     roles: ['admin', 'approver']
 };
@@ -25,6 +26,7 @@ const barry = {
         last: 'Allen'
     },
     email: 'barry@starlabs.com',
+    program: 'health',
     password: 'theflash',
     roles: ['requestor']
 };

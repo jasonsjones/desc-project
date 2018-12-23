@@ -10,6 +10,7 @@ const ollie = {
         last: 'Queen'
     },
     email: 'oliver@qc.com',
+    program: 'employment',
     password: 'thegreenarrow',
     roles: ['admin', 'approver']
 };
@@ -20,6 +21,7 @@ const dig = {
         last: 'Diggle'
     },
     email: 'dig@qc.com',
+    program: 'integrated',
     password: 'spartan',
     roles: ['approver']
 };
@@ -29,14 +31,21 @@ describe('User Controller integration tests', () => {
     afterEach(async () => await deleteCollection(dbConnection, User, 'users'));
 
     describe('createUser()', () => {
+        let ollieData;
+        beforeEach(() => {
+            ollieData = Object.assign({}, ollie, { name: { first: 'Oliver', last: 'Queen' } });
+        });
+        afterEach(async () => await deleteCollection(dbConnection, User, 'users'));
+
         it('creates a new user with the given data', () => {
-            return Controller.createUser(ollie).then(newUser => {
+            return Controller.createUser(ollieData).then(newUser => {
                 expect(newUser).to.exist;
                 expect(newUser).to.have.property('_id');
                 expect(newUser).to.have.property('name');
                 expect(newUser.name).to.have.property('first');
                 expect(newUser.name).to.have.property('last');
                 expect(newUser).to.have.property('email');
+                expect(newUser).to.have.property('program');
                 expect(newUser).to.have.property('roles');
                 expect(newUser).to.have.property('isEmailVerified');
                 expect(newUser).to.have.property('emailVerificationToken');
@@ -44,15 +53,8 @@ describe('User Controller integration tests', () => {
         });
 
         it('rejects with validation error if first name field is not provided', () => {
-            const oliver = {
-                name: {
-                    last: 'Queen'
-                },
-                email: 'oliver@qc.com',
-                password: 'thegreenarrow',
-                roles: ['admin', 'approver']
-            };
-            return Controller.createUser(oliver).catch(error => {
+            delete ollieData.name.first;
+            return Controller.createUser(ollieData).catch(error => {
                 expect(error).to.exist;
                 expect(error.message).to.contain('User validation failed');
                 expect(error.message).to.contain('Path `name.first` is required');
@@ -60,15 +62,8 @@ describe('User Controller integration tests', () => {
         });
 
         it('rejects with validation error if last name field is not provided', () => {
-            const oliver = {
-                name: {
-                    first: 'Oliver'
-                },
-                email: 'oliver@qc.com',
-                password: 'thegreenarrow',
-                roles: ['admin', 'approver']
-            };
-            return Controller.createUser(oliver).catch(error => {
+            delete ollieData.name.last;
+            return Controller.createUser(ollieData).catch(error => {
                 expect(error).to.exist;
                 expect(error.message).to.contain('User validation failed');
                 expect(error.message).to.contain('Path `name.last` is required');
@@ -76,31 +71,26 @@ describe('User Controller integration tests', () => {
         });
 
         it('rejects with validation error if email field is not provided', () => {
-            const oliver = {
-                name: {
-                    first: 'Oliver',
-                    last: 'Queen'
-                },
-                password: 'thegreenarrow',
-                roles: ['admin', 'approver']
-            };
-            return Controller.createUser(oliver).catch(error => {
+            delete ollieData.email;
+            return Controller.createUser(ollieData).catch(error => {
                 expect(error).to.exist;
                 expect(error.message).to.contain('User validation failed');
                 expect(error.message).to.contain('Path `email` is required');
             });
         });
 
+        it('rejects with validation error if program field is not provided', () => {
+            delete ollieData.program;
+            return Controller.createUser(ollieData).catch(error => {
+                expect(error).to.exist;
+                expect(error.message).to.contain('User validation failed');
+                expect(error.message).to.contain('Path `program` is required');
+            });
+        });
+
         it('rejects with validation error if password field is not provided', () => {
-            const oliver = {
-                name: {
-                    first: 'Oliver',
-                    last: 'Queen'
-                },
-                email: 'oliver@qc.com',
-                roles: ['admin', 'approver']
-            };
-            return Controller.createUser(oliver).catch(error => {
+            delete ollieData.password;
+            return Controller.createUser(ollieData).catch(error => {
                 expect(error).to.exist;
                 expect(error.message).to.contain('User validation failed');
                 expect(error.message).to.contain('Path `password` is required');
@@ -131,6 +121,7 @@ describe('User Controller integration tests', () => {
                     expect(user.name).to.have.property('first');
                     expect(user.name).to.have.property('last');
                     expect(user).to.have.property('email');
+                    expect(user).to.have.property('program');
                     expect(user).to.have.property('roles');
                 });
         });

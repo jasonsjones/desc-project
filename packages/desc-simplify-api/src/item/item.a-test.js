@@ -8,35 +8,16 @@ import { createItem } from './item-controller';
 import User from '../user/user-model';
 import Item from './baseitem-model';
 import Note from '../note/note-model';
+import { userOllie, userBarry } from '../utils/user-test-utils';
 import { dbConnection, deleteCollection } from '../utils/db-test-utils';
 import { getMockItemData } from './item-test-utils';
 
-const ollie = {
-    name: {
-        first: 'Oliver',
-        last: 'Queen'
-    },
-    email: 'oliver@qc.com',
-    password: 'thegreenarrow',
-    roles: ['admin', 'approver']
-};
-
-const barry = {
-    name: {
-        first: 'Barry',
-        last: 'Allen'
-    },
-    email: 'barry@starlabs.com',
-    password: 'theflash',
-    roles: ['requestor']
-};
-
 const createOllie = () => {
-    return createUser(ollie);
+    return createUser(userOllie);
 };
 
 const createBarry = () => {
-    return createUser(barry);
+    return createUser(userBarry);
 };
 
 describe('Item acceptance tests', () => {

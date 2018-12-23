@@ -13,6 +13,7 @@ const ollie = {
         last: 'Queen'
     },
     email: 'oliver@qc.com',
+    program: 'employment',
     password: 'thegreenarrow',
     roles: ['admin', 'approver']
 };
@@ -23,6 +24,7 @@ const barry = {
         last: 'Allen'
     },
     email: 'barry@starlabs.com',
+    program: 'health',
     password: 'theflash',
     roles: ['requestor']
 };
@@ -126,6 +128,7 @@ describe('User acceptance tests', () => {
                         expect(json.payload.user).to.be.an('object');
                         expect(json.payload.user).to.have.property('name');
                         expect(json.payload.user).to.have.property('email');
+                        expect(json.payload.user).to.have.property('program');
                         expect(json.payload.user).to.have.property('roles');
                         expect(json.payload.user.email).to.equal(updatedUserData.email);
                     })
@@ -149,6 +152,7 @@ describe('User acceptance tests', () => {
                         expect(json.payload.user).to.be.an('object');
                         expect(json.payload.user).to.have.property('name');
                         expect(json.payload.user).to.have.property('email');
+                        expect(json.payload.user).to.have.property('program');
                         expect(json.payload.user).to.have.property('roles');
                         expect(json.payload.user.email).to.equal(barry.email);
                     })

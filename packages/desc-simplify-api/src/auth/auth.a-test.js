@@ -5,17 +5,8 @@ import config from '../config/config';
 import app from '../config/app';
 import User from '../user/user-model';
 import { createUser } from '../user/user-controller';
+import { userOllie } from '../utils/user-test-utils';
 import { dbConnection, deleteCollection } from '../utils/db-test-utils';
-
-const ollie = {
-    name: {
-        first: 'Oliver',
-        last: 'Queen'
-    },
-    email: 'oliver@qc.com',
-    password: 'thegreenarrow',
-    roles: ['admin', 'approver']
-};
 
 describe('Auth acceptance tests', () => {
     before(async () => await deleteCollection(dbConnection, User, 'users'));
@@ -23,11 +14,11 @@ describe('Auth acceptance tests', () => {
 
     describe('POST /api/auth/login', () => {
         it('returns status code of 200 and json with user and token on success', () => {
-            return createUser(ollie)
+            return createUser(userOllie)
                 .then(() =>
                     request(app)
                         .post('/api/auth/login')
-                        .send({ email: ollie.email, password: ollie.password })
+                        .send({ email: userOllie.email, password: userOllie.password })
                         .expect(200)
                 )
                 .then(res => {
@@ -42,19 +33,19 @@ describe('Auth acceptance tests', () => {
         });
 
         it('returns status code of 401 if password is incorrect', () => {
-            return createUser(ollie).then(() =>
+            return createUser(userOllie).then(() =>
                 request(app)
                     .post('/api/auth/login')
-                    .send({ email: ollie.email, password: 'wrongPassword' })
+                    .send({ email: userOllie.email, password: 'wrongPassword' })
                     .expect(401)
             );
         });
 
         it('returns status code of 401 if user (email) is not found', () => {
-            return createUser(ollie).then(() =>
+            return createUser(userOllie).then(() =>
                 request(app)
                     .post('/api/auth/login')
-                    .send({ email: 'ollie@qc.com', password: ollie.password })
+                    .send({ email: 'ollie@qc.com', password: userOllie.password })
                     .expect(401)
             );
         });
@@ -62,7 +53,7 @@ describe('Auth acceptance tests', () => {
 
     describe('GET /api/auth/logout', () => {
         it('returns status code 200 and json payload', () => {
-            return createUser(ollie)
+            return createUser(userOllie)
                 .then(() =>
                     request(app)
                         .get('/api/auth/logout')

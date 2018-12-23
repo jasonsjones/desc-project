@@ -19,6 +19,7 @@ describe('Client Request integration tests', () => {
                 last: 'Queen'
             },
             email: 'oliver@qc.com',
+            program: 'employment',
             password: 'thegreenarrow',
             roles: ['admin', 'approver']
         });

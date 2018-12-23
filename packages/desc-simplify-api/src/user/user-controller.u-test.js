@@ -15,6 +15,7 @@ const mockUser = {
     roles: ['admin', 'approver'],
     _id: '5b75f1d0c6b29e1274758754',
     email: 'oliver@qc.com',
+    program: 'employment',
     password: '$2a$12$wtaoUXImI2GR1i6TY/7nPew2C8FzffowFndWgvQRcdIqtKFrGxmwi',
     createdAt: '2018-08-16T21:51:12.813Z',
     updatedAt: '2018-08-16T21:51:12.813Z',
@@ -43,6 +44,7 @@ describe('User Controller', () => {
                     last: 'Queen'
                 },
                 email: 'oliver@qc.com',
+                program: 'employment',
                 password: 'thegreenarrow',
                 roles: ['admin', 'approver']
             };

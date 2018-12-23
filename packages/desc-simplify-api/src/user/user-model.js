@@ -4,6 +4,14 @@ import * as middleware from './user-model-middleware';
 const Schema = mongoose.Schema;
 
 const ALLOWED_ROLES = ['admin', 'approver', 'requestor', 'volunteer', 'unknown'];
+const PROGRAMS = {
+    housing: 'Housing First',
+    integrated: 'Integrated Services',
+    survival: 'Survival Services',
+    health: 'Health Services',
+    employment: 'Employment Services',
+    research_innovation: 'Research & Innovation'
+};
 
 const userSchema = new Schema(
     {
@@ -12,6 +20,7 @@ const userSchema = new Schema(
             last: { type: String, required: true }
         },
         email: { type: String, required: true, unique: true },
+        program: { type: String, required: true, enum: Object.keys(PROGRAMS) },
         password: { type: String, required: true },
         passwordLastUpdatedAt: { type: Date },
         passwordResetToken: { type: String },
@@ -57,6 +66,7 @@ userSchema.methods.toClientJSON = function() {
             last: this.name.last
         },
         email: this.email,
+        program: this.program,
         roles: this.roles
     };
 
