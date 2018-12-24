@@ -1,17 +1,14 @@
 import mongoose from 'mongoose';
 import { expect } from 'chai';
 import PersonalHygieneItem from './personalhygiene-model';
+import { soapItemData } from '../../utils/item-test-utils';
 
 mongoose.Promise = global.Promise;
 
 describe('Personal hygiene item model', () => {
     describe('field validations', () => {
         it('is valid when all required fields are provided', done => {
-            const item = new PersonalHygieneItem({
-                clientId: '12345678',
-                submittedBy: '5bb69cb1322fdf5690edfc0b',
-                name: 'soap'
-            });
+            const item = new PersonalHygieneItem(soapItemData);
 
             item.validate(err => {
                 expect(err).to.not.exist;
@@ -20,10 +17,9 @@ describe('Personal hygiene item model', () => {
         });
 
         it('is invalid if the clientId field is empty', done => {
-            const item = new PersonalHygieneItem({
-                submittedBy: '5bb69cb1322fdf5690edfc0b',
-                name: 'soap'
-            });
+            const data = Object.assign({}, soapItemData);
+            delete data.clientId;
+            const item = new PersonalHygieneItem(data);
 
             item.validate(err => {
                 expect(err.errors['clientId']).to.exist;
@@ -32,11 +28,22 @@ describe('Personal hygiene item model', () => {
             });
         });
 
-        it('is invalid if the submittedBy field is empty', done => {
-            const item = new PersonalHygieneItem({
-                clientId: '12345678',
-                name: 'soap'
+        it('is invalid if the clientRequest field is empty', done => {
+            const data = Object.assign({}, soapItemData);
+            delete data.clientRequest;
+            const item = new PersonalHygieneItem(data);
+
+            item.validate(err => {
+                expect(err.errors['clientRequest']).to.exist;
+                expect(err.name).to.equal('ValidationError');
+                done();
             });
+        });
+
+        it('is invalid if the submittedBy field is empty', done => {
+            const data = Object.assign({}, soapItemData);
+            delete data.submittedBy;
+            const item = new PersonalHygieneItem(data);
 
             item.validate(err => {
                 expect(err.errors['submittedBy']).to.exist;
@@ -46,10 +53,9 @@ describe('Personal hygiene item model', () => {
         });
 
         it('is invalid if the name field is empty', done => {
-            const item = new PersonalHygieneItem({
-                clientId: '12345678',
-                submittedBy: '5bb69cb1322fdf5690edfc0b'
-            });
+            const data = Object.assign({}, soapItemData);
+            delete data.name;
+            const item = new PersonalHygieneItem(data);
 
             item.validate(err => {
                 expect(err.errors['name']).to.exist;
@@ -59,11 +65,8 @@ describe('Personal hygiene item model', () => {
         });
 
         it('is invalid if the name field is not an allowed value', done => {
-            const item = new PersonalHygieneItem({
-                clientId: '12345678',
-                submittedBy: '5bb69cb1322fdf5690edfc0b',
-                name: 'hair gel'
-            });
+            const data = Object.assign({}, soapItemData, { name: 'hair gel' });
+            const item = new PersonalHygieneItem(data);
 
             item.validate(err => {
                 expect(err.errors['name']).to.exist;
@@ -76,12 +79,7 @@ describe('Personal hygiene item model', () => {
 
     describe('itemCategory', () => {
         it('is set to PersonalHygiene', () => {
-            const item = new PersonalHygieneItem({
-                clientId: '12345678',
-                submittedBy: '5bb69cb1322fdf5690edfc0b',
-                name: 'shampoo'
-            });
-
+            const item = new PersonalHygieneItem(soapItemData);
             expect(item.itemCategory).to.equal('PersonalHygiene');
         });
     });

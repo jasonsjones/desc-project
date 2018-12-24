@@ -1,17 +1,14 @@
 import mongoose from 'mongoose';
 import { expect } from 'chai';
 import EngagementItem from './engagement-model';
+import { gameItemData } from '../../utils/item-test-utils';
 
 mongoose.Promise = global.Promise;
 
 describe('Engagement item model', () => {
     describe('field validations', () => {
         it('is valid when all required fields are provided', done => {
-            const item = new EngagementItem({
-                clientId: '12345678',
-                submittedBy: '5bb69cb1322fdf5690edfc0b',
-                name: 'games'
-            });
+            const item = new EngagementItem(gameItemData);
 
             item.validate(err => {
                 expect(err).to.not.exist;
@@ -20,10 +17,9 @@ describe('Engagement item model', () => {
         });
 
         it('is invalid if the clientId field is empty', done => {
-            const item = new EngagementItem({
-                submittedBy: '5bb69cb1322fdf5690edfc0b',
-                name: 'games'
-            });
+            const data = Object.assign({}, gameItemData);
+            delete data.clientId;
+            const item = new EngagementItem(data);
 
             item.validate(err => {
                 expect(err.errors['clientId']).to.exist;
@@ -32,11 +28,22 @@ describe('Engagement item model', () => {
             });
         });
 
-        it('is invalid if the submittedBy field is empty', done => {
-            const item = new EngagementItem({
-                clientId: '12345678',
-                name: 'games'
+        it('is invalid if the clientRequest field is empty', done => {
+            const data = Object.assign({}, gameItemData);
+            delete data.clientRequest;
+            const item = new EngagementItem(data);
+
+            item.validate(err => {
+                expect(err.errors['clientRequest']).to.exist;
+                expect(err.name).to.equal('ValidationError');
+                done();
             });
+        });
+
+        it('is invalid if the submittedBy field is empty', done => {
+            const data = Object.assign({}, gameItemData);
+            delete data.submittedBy;
+            const item = new EngagementItem(data);
 
             item.validate(err => {
                 expect(err.errors['submittedBy']).to.exist;
@@ -46,10 +53,9 @@ describe('Engagement item model', () => {
         });
 
         it('is invalid if the name field is empty', done => {
-            const item = new EngagementItem({
-                clientId: '12345678',
-                submittedBy: '5bb69cb1322fdf5690edfc0b'
-            });
+            const data = Object.assign({}, gameItemData);
+            delete data.name;
+            const item = new EngagementItem(data);
 
             item.validate(err => {
                 expect(err.errors['name']).to.exist;
@@ -59,11 +65,8 @@ describe('Engagement item model', () => {
         });
 
         it('is invalid if the name field is not an allowed value', done => {
-            const item = new EngagementItem({
-                clientId: '12345678',
-                submittedBy: '5bb69cb1322fdf5690edfc0b',
-                name: 'PS4'
-            });
+            const data = Object.assign({}, gameItemData, { name: 'PS4' });
+            const item = new EngagementItem(data);
 
             item.validate(err => {
                 expect(err.errors['name']).to.exist;
@@ -76,12 +79,7 @@ describe('Engagement item model', () => {
 
     describe('itemCategory', () => {
         it('is set to Engagement', () => {
-            const item = new EngagementItem({
-                clientId: '12345678',
-                submittedBy: '5bb69cb1322fdf5690edfc0b',
-                name: 'games'
-            });
-
+            const item = new EngagementItem(gameItemData);
             expect(item.itemCategory).to.equal('Engagement');
         });
     });
