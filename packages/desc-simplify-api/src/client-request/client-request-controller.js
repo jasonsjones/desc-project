@@ -1,6 +1,24 @@
 import ClientRequest from './client-request-model';
 import { createItem } from '../item/item-controller';
 
+const optionsToPopulateItem = {
+    path: 'items',
+    populate: [
+        {
+            path: 'notes',
+            select: 'body',
+            populate: {
+                path: 'submittedBy',
+                select: 'name'
+            }
+        },
+        {
+            path: 'submittedBy',
+            select: 'name email'
+        }
+    ]
+};
+
 export const createClientRequest = requestData => {
     if (!requestData) {
         return Promise.reject(new Error('client request data is required'));
@@ -23,24 +41,32 @@ export const createClientRequest = requestData => {
 
         return Promise.all(createItemArray).then(values => {
             clientRequest.items = values.map(item => item._id);
-            return clientRequest.save();
+            return clientRequest
+                .save()
+                .then(request => request.populate(optionsToPopulateItem).execPopulate());
         });
     } else {
         requestData.items.clientRequest = clientRequest._id;
         return createItem(requestData.items).then(item => {
             clientRequest.items = [item._id];
-            return clientRequest.save();
+            return clientRequest
+                .save()
+                .then(request => request.populate(optionsToPopulateItem).execPopulate());
         });
     }
 };
 
 export const getClientRequests = () => {
-    return ClientRequest.find({}).exec();
+    return ClientRequest.find({})
+        .populate(optionsToPopulateItem)
+        .exec();
 };
 
 export const getClientRequest = id => {
     if (!id) {
         return Promise.reject(new Error('id paramater is required'));
     }
-    return ClientRequest.findById(id).exec();
+    return ClientRequest.findById(id)
+        .populate(optionsToPopulateItem)
+        .exec();
 };

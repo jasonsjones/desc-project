@@ -22,6 +22,7 @@ const mockItem1 = {
     __v: 0,
     _id: '5bf757c709ad206db5bb5263',
     clientId: '12345678',
+    clientRequest: '5bf757c709ad206db5bb5262',
     submittedBy: requestorId,
     itemCategory: 'Household',
     numberOfItems: 4,
@@ -33,6 +34,7 @@ const mockItem2 = {
     __v: 0,
     _id: '5bf757c709ad206db5bb5265',
     clientId: '12345678',
+    clientRequest: '5bf757c709ad206db5bb5262',
     submittedBy: requestorId,
     itemCategory: 'Clothing',
     numberOfItems: 1,
@@ -57,6 +59,7 @@ describe('Client Request Controller', () => {
         it('calls createItem for each item provided in "items"', () => {
             const item1 = {
                 clientId: '12345678',
+                clientRequest: '5bf757c709ad206db5bb5262',
                 submittedBy: requestorId,
                 itemCategory: 'Household',
                 numberOfItems: 4,
@@ -66,6 +69,7 @@ describe('Client Request Controller', () => {
 
             const item2 = {
                 clientId: '12345678',
+                clientRequest: '5bf757c709ad206db5bb5262',
                 submittedBy: requestorId,
                 itemCategory: 'Clothing',
                 numberOfItems: 1,
@@ -80,16 +84,30 @@ describe('Client Request Controller', () => {
                 submittedBy: requestorId,
                 items: [item1, item2]
             };
-            const saveStub = sinon.stub(ClientRequest.prototype, 'save');
+            const saveStub = sinon
+                .stub(ClientRequest.prototype, 'save')
+                .resolves(new ClientRequest(mockClientRequest));
+
+            const populateStub = sinon
+                .stub(ClientRequest.prototype, 'populate')
+                .returns(new ClientRequest(mockClientRequest));
+
+            const execPopulateStub = sinon
+                .stub(ClientRequest.prototype, 'execPopulate')
+                .resolves(mockClientRequest);
+
             const createItemStub = sinon.stub(ItemController, 'createItem');
-            saveStub.resolves(mockClientRequest);
+
             createItemStub.onFirstCall().resolves(mockItem1);
             createItemStub.onSecondCall().resolves(mockItem2);
+
             const promise = Controller.createClientRequest(clientReqData);
             expect(promise).to.be.a('promise');
             return promise.then(request => {
                 expect(createItemStub.calledTwice).to.be.true;
                 saveStub.restore();
+                populateStub.restore();
+                execPopulateStub.restore();
                 createItemStub.restore();
             });
         });
