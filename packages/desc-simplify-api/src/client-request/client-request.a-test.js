@@ -148,7 +148,7 @@ describe('Client Request acceptance tests', () => {
                     expect(clientRequests).to.be.an('array');
                     expect(clientRequests).to.have.length(2);
                 });
-        });
+        }).timeout(4000);
     });
 
     context('GET /api/clientrequests/:id', () => {
