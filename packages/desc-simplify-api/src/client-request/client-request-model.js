@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { Item } from '../models';
 
 const Schema = mongoose.Schema;
 
@@ -10,6 +11,13 @@ const clientRequestSchema = new Schema(
     },
     { timestamps: true }
 );
+
+clientRequestSchema.post('remove', (request, next) => {
+    cascadeDeleteItems(request).then(() => next());
+});
+
+const cascadeDeleteItems = deletedRequest =>
+    Item.deleteMany({ clientRequest: deletedRequest._id }).exec();
 
 const ClientRequest = mongoose.model('ClientRequest', clientRequestSchema);
 
