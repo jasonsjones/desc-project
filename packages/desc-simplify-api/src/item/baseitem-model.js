@@ -37,10 +37,10 @@ itemSchema.post('remove', (deletedItem, next) => {
     ]).then(() => next());
 });
 
-const cascadeDeleteNotes = deletedItem => Note.deleteMany({ itemId: deletedItem._id }).exex();
+const cascadeDeleteNotes = deletedItem => Note.deleteMany({ itemId: deletedItem._id }).exec();
 
 const removeDeletedItemFromClientRequest = deletedItem =>
-    ClientRequest.findById(deletedItem.clientId)
+    ClientRequest.findById(deletedItem.clientRequest)
         .exec()
         .then(request => {
             if (request) {
