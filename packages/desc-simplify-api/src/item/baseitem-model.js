@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import Note from '../note/note-model';
+import { Note, ClientRequest } from '../models';
 
 const Schema = mongoose.Schema;
 
@@ -30,11 +30,26 @@ const itemSchema = new Schema(
     options
 );
 
-itemSchema.post('remove', (item, next) => {
-    Note.deleteMany({ itemId: item._id })
-        .exec()
-        .then(() => next());
+itemSchema.post('remove', (deletedItem, next) => {
+    Promise.all([
+        cascadeDeleteNotes(deletedItem),
+        removeDeletedItemFromClientRequest(deletedItem)
+    ]).then(() => next());
 });
+
+const cascadeDeleteNotes = deletedItem => Note.deleteMany({ itemId: deletedItem._id }).exex();
+
+const removeDeletedItemFromClientRequest = deletedItem =>
+    ClientRequest.findById(deletedItem.clientId)
+        .exec()
+        .then(request => {
+            if (request) {
+                request.items = request.items.filter(itemId => !itemId.equals(deletedItem._id));
+                return request.save();
+            } else {
+                return Promise.resolve();
+            }
+        });
 
 const Item = mongoose.model('Item', itemSchema);
 
