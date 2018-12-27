@@ -4,6 +4,7 @@ export const getMockItemData = userId => {
             clientId: '12345678',
             clientRequest: '5c0179dd9c55a711053087cb',
             submittedBy: userId,
+            location: 'Rainier House',
             itemCategory: 'Clothing',
             numberOfItems: 1,
             name: 'coat',
@@ -15,6 +16,7 @@ export const getMockItemData = userId => {
             clientId: '12345678',
             clientRequest: '5c0179dd9c55a711053087cb',
             submittedBy: userId,
+            location: 'Rainier House',
             itemCategory: 'Household',
             numberOfItems: 4,
             name: 'plates',
@@ -24,6 +26,7 @@ export const getMockItemData = userId => {
             clientId: '12345678',
             clientRequest: '5c0179dd9c55a711053087cb',
             submittedBy: userId,
+            location: 'Rainier House',
             itemCategory: 'Household',
             numberOfItems: 2,
             name: 'bedding'
@@ -32,6 +35,7 @@ export const getMockItemData = userId => {
             clientId: '12345678',
             clientRequest: '5c0179dd9c55a711053087cb',
             submittedBy: userId,
+            location: 'Rainier House',
             itemCategory: 'PersonalHygiene',
             numberOfItems: 1,
             name: 'toothbrush'
@@ -42,7 +46,8 @@ export const getMockItemData = userId => {
 const requiredItemProperties = {
     clientId: '12345678',
     clientRequest: '5c205c9a63c8b44e41bbaa4a',
-    submittedBy: '5bb69cb1322fdf5690edfc0b'
+    submittedBy: '5bb69cb1322fdf5690edfc0b',
+    location: 'Rainier House'
 };
 
 export const shirtItemData = Object.assign({}, requiredItemProperties, {

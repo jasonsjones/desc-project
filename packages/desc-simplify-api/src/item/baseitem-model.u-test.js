@@ -12,7 +12,8 @@ describe('Base item model', () => {
             {
                 clientId: '12345678',
                 clientRequest: '5c0179dd9c55a711053087cb',
-                submittedBy: '5bb69cb1322fdf5690edfc0b'
+                submittedBy: '5bb69cb1322fdf5690edfc0b',
+                location: 'Rainier House'
             }
         );
     });
@@ -27,36 +28,15 @@ describe('Base item model', () => {
             });
         });
 
-        it('is invalid if the clientId field is empty', done => {
-            delete itemData.clientId;
-            const item = new Item(itemData);
-
-            item.validate(err => {
-                expect(err.errors['clientId']).to.exist;
-                expect(err.name).to.equal('ValidationError');
-                done();
-            });
-        });
-
-        it('is invalid if the submittedBy field is empty', done => {
-            delete itemData.submittedBy;
-            const item = new Item(itemData);
-
-            item.validate(err => {
-                expect(err.errors['submittedBy']).to.exist;
-                expect(err.name).to.equal('ValidationError');
-                done();
-            });
-        });
-
-        it('is invalid if the clientRequest field is empty', done => {
-            delete itemData.clientRequest;
-            const item = new Item(itemData);
-
-            item.validate(err => {
-                expect(err.errors['clientRequest']).to.exist;
-                expect(err.name).to.equal('ValidationError');
-                done();
+        ['clientId', 'submittedBy', 'clientRequest', 'location'].forEach(field => {
+            it(`is invalid if the ${field} field is empty`, done => {
+                delete itemData[field];
+                const item = new Item(itemData);
+                item.validate(err => {
+                    expect(err.errors[field]).to.exist;
+                    expect(err.name).to.equal('ValidationError');
+                    done();
+                });
             });
         });
 

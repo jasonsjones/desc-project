@@ -28,6 +28,7 @@ describe('Client Request integration tests', () => {
             clientId: '12345678',
             submittedBy: requestorId,
             itemCategory: 'Household',
+            location: 'Rainier House',
             numberOfItems: 4,
             name: 'plates',
             note: 'Need some plates for a nice holiday dinner'
@@ -37,6 +38,7 @@ describe('Client Request integration tests', () => {
             clientId: '12345678',
             submittedBy: requestorId,
             itemCategory: 'Clothing',
+            location: 'Rainier House',
             numberOfItems: 1,
             name: 'coat',
             size: 'L (42-44)',
@@ -121,7 +123,7 @@ describe('Client Request integration tests', () => {
                 expect(requests).to.be.an('array');
                 expect(requests).to.have.length(2);
             });
-        });
+        }).timeout(4000);
     });
 
     describe('getClientRequest()', () => {
