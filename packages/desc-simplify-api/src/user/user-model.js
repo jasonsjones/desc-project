@@ -16,11 +16,17 @@ const PROGRAMS = {
 const userSchema = new Schema(
     {
         name: {
-            first: { type: String, required: true },
-            last: { type: String, required: true }
+            first: { type: String, trim: true, required: true },
+            last: { type: String, trim: true, required: true }
         },
-        email: { type: String, required: true, unique: true },
-        program: { type: String, required: true, enum: Object.keys(PROGRAMS) },
+        email: { type: String, trim: true, required: true, unique: true },
+        program: {
+            type: String,
+            trim: true,
+            lowercase: true,
+            required: true,
+            enum: Object.keys(PROGRAMS)
+        },
         password: { type: String, required: true },
         passwordLastUpdatedAt: { type: Date },
         passwordResetToken: { type: String },
@@ -28,7 +34,11 @@ const userSchema = new Schema(
         lastLoginAt: { type: Date, default: Date.now() },
         emailVerificationToken: { type: String },
         isEmailVerified: { type: Boolean, default: false },
-        roles: { type: [String], enum: ALLOWED_ROLES, default: ['requestor'] }
+        roles: {
+            type: [String],
+            enum: ALLOWED_ROLES,
+            default: ['requestor']
+        }
     },
     { timestamps: true }
 );

@@ -54,7 +54,7 @@ const options = {
 const clothingItemSchema = new Schema(
     {
         gender: { type: String, enum: ['M', 'F'], required: true },
-        name: { type: String, enum: CLOTHING_ITEMS, required: true },
+        name: { type: String, lowercase: true, trim: true, enum: CLOTHING_ITEMS, required: true },
         size: {
             type: String,
             // size not required for hats or scarfs
@@ -62,7 +62,13 @@ const clothingItemSchema = new Schema(
                 return !(this.name == 'hat' || this.name == 'scarf');
             }
         },
-        style: { type: String, enum: ['casual', 'dress'], default: 'casual' }
+        style: {
+            type: String,
+            trim: true,
+            lowercase: true,
+            enum: ['casual', 'dress'],
+            default: 'casual'
+        }
     },
     options
 );

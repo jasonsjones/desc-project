@@ -24,7 +24,7 @@ const options = {
 
 const personaHygieneSchema = new Schema(
     {
-        name: { type: String, enum: HYGIENE_ITEMS, required: true }
+        name: { type: String, trim: true, lowercase: true, enum: HYGIENE_ITEMS, required: true }
     },
     options
 );

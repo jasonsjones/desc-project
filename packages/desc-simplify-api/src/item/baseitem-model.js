@@ -27,18 +27,22 @@ const options = {
 
 const itemSchema = new Schema(
     {
-        clientId: { type: String, required: true },
+        clientId: { type: String, trim: true, required: true },
         clientRequest: { type: Schema.Types.ObjectId, ref: 'ClientRequest', required: true },
         submittedBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-        location: { type: String, enum: LOCATIONS, required: true },
+        location: { type: String, trim: true, enum: LOCATIONS, required: true },
         numberOfItems: { type: Number, default: 1 },
         urgency: {
             type: String,
+            trim: true,
+            lowercase: true,
             enum: ['survival', 'life-changing', 'important'],
             default: 'important'
         },
         status: {
             type: String,
+            trim: true,
+            lowercase: true,
             enum: ['active', 'approved', 'wishlist', 'archive', 'denied'],
             default: 'active'
         },

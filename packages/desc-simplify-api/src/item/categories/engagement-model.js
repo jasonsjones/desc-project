@@ -13,7 +13,7 @@ const options = {
 
 const engagementItemSchema = new Schema(
     {
-        name: { type: String, enum: ENGAGEMENT_ITEMS, required: true }
+        name: { type: String, trim: true, lowercase: true, enum: ENGAGEMENT_ITEMS, required: true }
     },
     options
 );

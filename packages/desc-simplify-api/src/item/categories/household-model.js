@@ -21,7 +21,7 @@ const options = {
 
 const householdItemSchema = new Schema(
     {
-        name: { type: String, enum: HOUSEHOLD_ITEMS, required: true }
+        name: { type: String, trim: true, lowercase: true, enum: HOUSEHOLD_ITEMS, required: true }
     },
     options
 );

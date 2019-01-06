@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 
 const clientRequestSchema = new Schema(
     {
-        clientId: { type: String, required: true },
+        clientId: { type: String, trim: true, required: true },
         submittedBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
         items: [{ type: Schema.Types.ObjectId, ref: 'Item' }]
     },
