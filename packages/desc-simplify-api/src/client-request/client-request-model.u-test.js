@@ -44,5 +44,15 @@ describe('Client request model', () => {
                 done();
             });
         });
+
+        it('trims the whitespace around the clientId', () => {
+            const request = new ClientRequest({
+                clientId: '  12345678     ',
+                submittedBy: '5bb69cb1322fdf5690edfc0b',
+                items: ['5bca0257b2f5ce2c899c08d3', '5bca0732ef3f813295e10966']
+            });
+
+            expect(request.clientId).to.equal('12345678');
+        });
     });
 });

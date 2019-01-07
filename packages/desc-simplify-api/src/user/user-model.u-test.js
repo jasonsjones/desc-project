@@ -86,6 +86,30 @@ describe('User model', () => {
                 done();
             });
         });
+
+        it('trims whitespace around the first name', () => {
+            userData.name.first = '  Oliver  ';
+            let user = new User(userData);
+            expect(user.name.first).to.equal('Oliver');
+        });
+
+        it('trims whitespace around the last name', () => {
+            userData.name.last = '  Queen      ';
+            let user = new User(userData);
+            expect(user.name.last).to.equal('Queen');
+        });
+
+        it('trims whitespace around the email address', () => {
+            userData.email = '  oliver@qc.com      ';
+            let user = new User(userData);
+            expect(user.email).to.equal('oliver@qc.com');
+        });
+
+        it('trims whitespace around the program name', () => {
+            userData.program = '     housing      ';
+            let user = new User(userData);
+            expect(user.program).to.equal('housing');
+        });
     });
 
     describe('verifyPassword()', () => {
