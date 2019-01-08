@@ -5,19 +5,19 @@ import { Note, ClientRequest } from '../models';
 const Schema = mongoose.Schema;
 
 const LOCATIONS = [
-    'Aurora House',
-    'N 96th Street',
-    'Interbay Place',
-    'Kerner-Scott House',
-    'Canaday House',
-    'Eastlake Building',
-    'Lyon Building',
-    'Morrison Building',
-    'Evans House',
-    'Union Hotel',
-    'Estelle',
-    'Rainier House',
-    'Cottage Grove Commons'
+    'aurora house',
+    'n 96th street',
+    'interbay place',
+    'kerner-scott house',
+    'canaday house',
+    'eastlake building',
+    'lyon building',
+    'morrison building',
+    'evans house',
+    'union hotel',
+    'estelle',
+    'rainier house',
+    'cottage grove commons'
 ];
 
 const options = {
@@ -30,7 +30,7 @@ const itemSchema = new Schema(
         clientId: { type: String, trim: true, required: true },
         clientRequest: { type: Schema.Types.ObjectId, ref: 'ClientRequest', required: true },
         submittedBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-        location: { type: String, trim: true, enum: LOCATIONS, required: true },
+        location: { type: String, trim: true, lowercase: true, enum: LOCATIONS, required: true },
         numberOfItems: { type: Number, default: 1 },
         urgency: {
             type: String,

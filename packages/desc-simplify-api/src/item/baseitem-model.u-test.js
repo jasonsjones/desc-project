@@ -91,6 +91,11 @@ describe('Base item model', () => {
             const item = new Item(itemData);
             expect(item.status).to.equal('approved');
         });
+
+        it('transforms the location field to lowercase', () => {
+            const item = new Item(itemData);
+            expect(item.location).to.equal('rainier house');
+        });
     });
 
     describe('defaults', () => {
