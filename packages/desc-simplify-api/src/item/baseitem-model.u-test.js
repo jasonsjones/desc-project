@@ -61,6 +61,36 @@ describe('Base item model', () => {
                 done();
             });
         });
+
+        it('trims the whitespace around the clientId field', () => {
+            itemData.clientId = '  12345678     ';
+            const item = new Item(itemData);
+            expect(item.clientId).to.equal('12345678');
+        });
+
+        it('trims the whitespace around the urgency field', () => {
+            itemData.urgency = '  important     ';
+            const item = new Item(itemData);
+            expect(item.urgency).to.equal('important');
+        });
+
+        it('trims the whitespace around the status field', () => {
+            itemData.status = '  approved     ';
+            const item = new Item(itemData);
+            expect(item.status).to.equal('approved');
+        });
+
+        it('transforms the urgency field to lowercase', () => {
+            itemData.urgency = 'Important';
+            const item = new Item(itemData);
+            expect(item.urgency).to.equal('important');
+        });
+
+        it('transforms the status field to lowercase', () => {
+            itemData.status = 'APPROVED';
+            const item = new Item(itemData);
+            expect(item.status).to.equal('approved');
+        });
     });
 
     describe('defaults', () => {

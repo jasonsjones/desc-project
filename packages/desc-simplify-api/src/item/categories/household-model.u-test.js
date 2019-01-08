@@ -75,6 +75,18 @@ describe('Household item model', () => {
                 done();
             });
         });
+
+        it('trims the whitespace around the name field', () => {
+            const data = Object.assign({}, beddingItemData, { name: '  plates    ' });
+            const item = new HouseholdItem(data);
+            expect(item.name).to.equal('plates');
+        });
+
+        it('transforms the name field to lowercase', () => {
+            const data = Object.assign({}, beddingItemData, { name: '  PlateS ' });
+            const item = new HouseholdItem(data);
+            expect(item.name).to.equal('plates');
+        });
     });
 
     describe('itemCategory', () => {

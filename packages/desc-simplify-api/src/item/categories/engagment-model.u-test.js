@@ -75,6 +75,18 @@ describe('Engagement item model', () => {
                 done();
             });
         });
+
+        it('trims the whitespace around the name field', () => {
+            const data = Object.assign({}, gameItemData, { name: '  games    ' });
+            const item = new EngagementItem(data);
+            expect(item.name).to.equal('games');
+        });
+
+        it('transforms the name field to lowercase', () => {
+            const data = Object.assign({}, gameItemData, { name: '  GAMES' });
+            const item = new EngagementItem(data);
+            expect(item.name).to.equal('games');
+        });
     });
 
     describe('itemCategory', () => {

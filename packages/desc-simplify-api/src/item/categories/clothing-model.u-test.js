@@ -162,6 +162,30 @@ describe('Clothing item model', () => {
                 done();
             });
         });
+
+        it('trims the whitespace around the name field', () => {
+            const data = Object.assign({}, shirtItemData, { name: '   shirt   ' });
+            const item = new ClothingItem(data);
+            expect(item.name).to.equal('shirt');
+        });
+
+        it('transforms the name field to lowercase', () => {
+            const data = Object.assign({}, shirtItemData, { name: 'SHIRT   ' });
+            const item = new ClothingItem(data);
+            expect(item.name).to.equal('shirt');
+        });
+
+        it('trims the whitespace around the style field', () => {
+            const data = Object.assign({}, shirtItemData, { style: '   casual   ' });
+            const item = new ClothingItem(shirtItemData);
+            expect(item.style).to.equal('casual');
+        });
+
+        it('transforms the style field to lowercase', () => {
+            const data = Object.assign({}, shirtItemData, { style: 'Casual' });
+            const item = new ClothingItem(shirtItemData);
+            expect(item.style).to.equal('casual');
+        });
     });
 
     describe('itemCategory', () => {

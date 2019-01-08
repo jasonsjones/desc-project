@@ -75,6 +75,18 @@ describe('Personal hygiene item model', () => {
                 done();
             });
         });
+
+        it('trims the whitespace around the name field', () => {
+            const data = Object.assign({}, soapItemData, { name: '  soap   ' });
+            const item = new PersonalHygieneItem(data);
+            expect(item.name).to.equal('soap');
+        });
+
+        it('transforms the name field to lowercase', () => {
+            const data = Object.assign({}, soapItemData, { name: ' SoAP  ' });
+            const item = new PersonalHygieneItem(data);
+            expect(item.name).to.equal('soap');
+        });
     });
 
     describe('itemCategory', () => {
