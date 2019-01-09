@@ -25,9 +25,21 @@ include a post body of the form
         "last": "lastName"
     },
     "email": "user@example.com",
-    "password": "password1234"
+    "password": "password1234",
+    "program": "housing"
 }
 ```
+
+The `program` property represents the user's program within DESC and is required to be one of the following values:
+
+1. `housing`
+2. `integrated`
+3. `survival`
+4. `health`
+5. `employment`
+   6 `research_innovation`
+
+_NOTE: these enum values still need to verified_
 
 the JSON response will have the following shape:
 
