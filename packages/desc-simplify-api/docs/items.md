@@ -36,6 +36,7 @@ include a post body of the form
 {
     "clientId": "12345678",
     "submittedBy": "someuserId",
+    "location": "Rainier House",
     "numberOfItems": 2,
     "urgency": "survival",
     "status": "active",
@@ -49,6 +50,21 @@ The **required** properties are:
 
 -   `clientId`
 -   `submittedBy`
+-   `location`
+    -   Available values are: -
+        `Aurora House`,
+        `N 96th Street`,
+        `Interbay Place`,
+        `Kerner-Scott House`,
+        `Canaday House`,
+        `Eastlake Building`,
+        `Lyon Building`,
+        `Morrison Building`,
+        `Evans House`,
+        `Union Hotel`,
+        `Estelle`,
+        `Rainier House`,
+        `Cottage Grove Commons`
 -   `itemCategory`
     -   Available values are `Clothing`, `Household`, `PersonalHygiene`, or `Engagment`
 
@@ -78,6 +94,7 @@ the JSON response will have the following shape:
                 },
                 "email": "user@example.com"
             },
+            "location": "Rainier House",
             "numberOfItems": 2,
             "urgency": "survival",
             "status": "active",
@@ -110,6 +127,7 @@ include a post body of the form
 {
     "clientId": "12345678",
     "submittedBy": "someuserId",
+    "location": "Rainier House",
     "numberOfItems": 1,
     "urgency": "important",
     "status": "active",
@@ -125,6 +143,21 @@ The **required** properties are:
 
 -   `clientId`
 -   `submittedBy`
+-   `location`
+    -   Available values are: -
+        `Aurora House`,
+        `N 96th Street`,
+        `Interbay Place`,
+        `Kerner-Scott House`,
+        `Canaday House`,
+        `Eastlake Building`,
+        `Lyon Building`,
+        `Morrison Building`,
+        `Evans House`,
+        `Union Hotel`,
+        `Estelle`,
+        `Rainier House`,
+        `Cottage Grove Commons`
 -   `itemCategory` (need to specify `Clothing` in this case)
 -   `size`
     -   Available values depend on `gender`
@@ -158,6 +191,7 @@ the JSON response will have the following shape:
                 },
                 "email": "user@example.com"
             },
+            "location": "Rainier House",
             "numberOfItems": 1,
             "urgency": "important",
             "status": "active",
@@ -197,6 +231,7 @@ the JSON response will have the following shape:
                     },
                     "email": "user@example.com"
                 },
+                "location": "Rainier House",
                 "numberOfItems": 2,
                 "urgency": "survival",
                 "status": "active",
@@ -235,6 +270,7 @@ the JSON response will have the following shape:
                 },
                 "email": "user@example.com"
             },
+            "location": "Rainier House",
             "numberOfItems": 2,
             "urgency": "survival",
             "status": "active",
@@ -278,6 +314,7 @@ the JSON response will have the following shape:
                 },
                 "email": "user@example.com"
             },
+            "location": "Rainier House",
             "numberOfItems": 2,
             "urgency": "survival",
             "status": "active",
@@ -313,6 +350,7 @@ the JSON response will have the following shape and include the item that was ju
                 },
                 "email": "user@example.com"
             },
+            "location": "Rainier House",
             "numberOfItems": 2,
             "urgency": "survival",
             "status": "active",
@@ -357,6 +395,7 @@ the JSON response will have the following shape:
                 },
                 "email": "user@example.com"
             },
+            "location": "Rainier House",
             "numberOfItems": 2,
             "urgency": "survival",
             "status": "active",
