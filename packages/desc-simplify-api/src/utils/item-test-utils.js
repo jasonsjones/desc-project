@@ -39,6 +39,16 @@ export const getMockItemData = userId => {
             itemCategory: 'PersonalHygiene',
             numberOfItems: 1,
             name: 'toothbrush'
+        },
+        engagementItemWithNote: {
+            clientId: '12345678',
+            clientRequest: '5c0179dd9c55a711053087cb',
+            submittedBy: userId,
+            location: 'Rainier House',
+            itemCategory: 'Engagement',
+            numberOfItems: 2,
+            name: 'games',
+            note: 'Need a few games for this weeks game night'
         }
     };
 };
