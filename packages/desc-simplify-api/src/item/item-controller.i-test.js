@@ -89,6 +89,7 @@ describe('Item integration tests', () => {
                 .then(items => {
                     expect(items).to.exist;
                     expect(items).to.be.an('array');
+                    expect(items).to.have.length(2);
                 });
         });
     });
@@ -113,7 +114,22 @@ describe('Item integration tests', () => {
     });
 
     context('updateItem(id, newData)', () => {
-        it('updates a single item  with the newData');
+        let itemId;
+        beforeEach(() => {
+            const itemData = getMockItemData(barryId).householdItemWithoutNote;
+            return Controller.createItem(itemData).then(item => (itemId = item._id));
+        });
+
+        it('updates a single item  with the newData', () => {
+            const updatedData = { name: 'pillow' };
+            return Controller.updateItem(itemId, updatedData).then(item => {
+                expect(item).to.exist;
+                expect(item.itemCategory).to.equal('Household');
+                expect(item.name).to.equal('pillow');
+                expect(item).to.have.property('submittedBy');
+                expect(item.submittedBy._id.toString()).to.equal(barryId.toString());
+            });
+        });
     });
 
     context('deleteItem(id)', () => {
@@ -123,5 +139,4 @@ describe('Item integration tests', () => {
     context('addNote(itemId, noteData)', () => {
         it('adds a new note to an item');
     });
-    // TODO: add more integration tests for remaining CRUD operations
 });
