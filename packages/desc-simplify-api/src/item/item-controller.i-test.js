@@ -94,7 +94,22 @@ describe('Item integration tests', () => {
     });
 
     context('getItem(id)', () => {
-        it('fetches a single item');
+        let itemId;
+        beforeEach(() => {
+            const itemData = getMockItemData(barryId).engagementItemWithNote;
+            return Controller.createItem(itemData).then(item => (itemId = item._id));
+        });
+
+        it('fetches a single item', () => {
+            return Controller.getItem(itemId).then(item => {
+                expect(item).to.exist;
+                expect(item.itemCategory).to.equal('Engagement');
+                expect(item).to.have.property('submittedBy');
+                expect(item.submittedBy._id.toString()).to.equal(barryId.toString());
+                expect(item.notes).to.be.an('array');
+                expect(item.notes).to.have.length(1);
+            });
+        });
     });
 
     context('updateItem(id, newData)', () => {
