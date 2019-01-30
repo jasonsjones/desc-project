@@ -76,6 +76,18 @@ describe('Item integration tests', () => {
                 expect(item.notes).to.have.length(1);
             });
         });
+
+        it('creates a ticket item with a note', () => {
+            const itemData = getMockItemData(barryId).ticketItemWithNote;
+            return Controller.createItem(itemData).then(item => {
+                expect(item).to.exist;
+                expect(item.itemCategory).to.equal('Ticket');
+                expect(item).to.have.property('submittedBy');
+                expect(item.submittedBy._id.toString()).to.equal(barryId.toString());
+                expect(item.notes).to.be.an('array');
+                expect(item.notes).to.have.length(1);
+            });
+        });
         // TODO: add more tests for creating other item types
     });
 

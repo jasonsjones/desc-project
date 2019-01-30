@@ -49,6 +49,16 @@ export const getMockItemData = userId => {
             numberOfItems: 2,
             name: 'games',
             note: 'Need a few games for this weeks game night'
+        },
+        ticketItemWithNote: {
+            clientId: '12345678',
+            clientRequest: '5c0179dd9c55a711053087cb',
+            submittedBy: userId,
+            location: 'Rainier House',
+            itemCategory: 'Ticket',
+            numberOfItems: 2,
+            name: 'Seattle Art Musuem',
+            note: 'There is a new artist on display'
         }
     };
 };
@@ -74,3 +84,7 @@ export const hatItemData = Object.assign({}, requiredItemProperties, {
 export const gameItemData = Object.assign({}, requiredItemProperties, { name: 'games' });
 export const beddingItemData = Object.assign({}, requiredItemProperties, { name: 'bedding' });
 export const soapItemData = Object.assign({}, requiredItemProperties, { name: 'soap' });
+export const ticketItemData = Object.assign({}, requiredItemProperties, {
+    name: 'Seattle Art Museum',
+    note: 'There is a new artist on display'
+});

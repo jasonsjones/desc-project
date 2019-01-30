@@ -3,6 +3,7 @@ import HouseholdItem from './categories/household-model';
 import EngagementItem from './categories/engagement-model';
 import ClothingItem from './categories/clothing-model';
 import PersonalHygieneItem from './categories/personalhygiene-model';
+import TicketItem from './categories/ticket-model';
 import Note from '../note/note-model';
 
 const optionsToPopulateNote = {
@@ -34,6 +35,9 @@ export const createItem = itemData => {
             break;
         case 'PersonalHygiene' || 'personalHygiene':
             newItem = new PersonalHygieneItem(itemData);
+            break;
+        case 'Ticket' || 'ticket':
+            newItem = new TicketItem(itemData);
             break;
         default:
             return Promise.reject(new Error('item category is not provided'));
