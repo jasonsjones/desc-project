@@ -4,12 +4,13 @@
 
 `Items` in this context refers to any item requested for one of DESC's clients. The client is anonomyous and referenced only by their client identification (clientId) number.
 
-An `item` is required to be in one of four categories:
+An `item` is required to be in one of five categories:
 
 1.  Clothing
 2.  Household
 3.  Personal Hygiene
 4.  Engagement
+5.  Ticket
 
 Depending on the category of the item, there may be additional required information needed to be provided. For example, a `clothing` item will require a `size`, `gender`, and possibly a `style`, attributes.
 
@@ -28,7 +29,7 @@ The following endpoints are available for the `items` resource:
 POST /api/items
 ```
 
-#### To create a new `Household`, `Personal Hygiene`, or `Engagement` item
+#### To create a new `Household`, `Personal Hygiene`, `Engagement`, or `Ticket` item
 
 include a post body of the form
 
@@ -66,7 +67,7 @@ The **required** properties are:
         `Rainier House`,
         `Cottage Grove Commons`
 -   `itemCategory`
-    -   Available values are `Clothing`, `Household`, `PersonalHygiene`, or `Engagment`
+    -   Available values are `Clothing`, `Household`, `PersonalHygiene`, `Engagement`, or `Ticket`
 
 The **optional** properties are:
 
