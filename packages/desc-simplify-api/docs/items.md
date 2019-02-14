@@ -162,7 +162,7 @@ The **required** properties are:
 -   `itemCategory` (need to specify `Clothing` in this case)
 -   `size`
     -   Available values depend on `gender`
--   `gender`
+-   `gender` (not required for a `hat` or `scarf`, but is recommended)
     -   Available values are `M` or `F`
 
 The **optional** properties are:

@@ -36,6 +36,26 @@ describe('Clothing item model', () => {
             });
         });
 
+        it('is valid if gender is NOT provided for hat', done => {
+            const data = Object.assign({}, hatItemData, { gender: null });
+            const item = new ClothingItem(data);
+
+            item.validate(err => {
+                expect(err).to.not.exist;
+                done();
+            });
+        });
+
+        it('is valid if gender is NOT provided for scarf', done => {
+            const scarfData = Object.assign({}, hatItemData, { name: 'scarf', gender: null });
+            const item = new ClothingItem(scarfData);
+
+            item.validate(err => {
+                expect(err).to.not.exist;
+                done();
+            });
+        });
+
         it('is invalid if the clientId field is empty', done => {
             let data = Object.assign({}, shirtItemData);
             delete data.clientId;
@@ -130,7 +150,7 @@ describe('Clothing item model', () => {
             });
         });
 
-        it('is invalid if gender is not M or F', done => {
+        it('is invalid if gender is not M or F (for other than hat or scarf)', done => {
             const data = Object.assign({}, shirtItemData, { gender: 'X' });
             const item = new ClothingItem(data);
 

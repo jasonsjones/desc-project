@@ -53,7 +53,12 @@ const options = {
 
 const clothingItemSchema = new Schema(
     {
-        gender: { type: String, enum: ['M', 'F'], required: true },
+        gender: {
+            type: String,
+            required: function() {
+                return !(this.name == 'hat' || this.name == 'scarf');
+            }
+        },
         name: { type: String, lowercase: true, trim: true, enum: CLOTHING_ITEMS, required: true },
         size: {
             type: String,
@@ -77,6 +82,13 @@ clothingItemSchema.path('size').validate(function(v) {
     if (!(this.name == 'hat' || this.name == 'scarf')) {
         const sizing = SIZES[this.gender];
         return sizing[this.name].includes(v);
+    }
+    return true;
+});
+
+clothingItemSchema.path('gender').validate(function(v) {
+    if (!(this.name == 'hat' || this.name == 'scarf')) {
+        return ['M', 'F'].includes(v);
     }
     return true;
 });
