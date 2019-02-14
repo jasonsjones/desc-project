@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import pkgJSON from '../../package.json';
 
 dotenv.config();
 
@@ -22,7 +23,7 @@ const dbName = getDbName(dbUrl);
 
 const config = {
     name: 'desc-simplify-api',
-    version: '1.0.0',
+    version: pkgJSON.version,
     env,
     port,
     token_secret,
