@@ -158,7 +158,25 @@ describe('Item integration tests', () => {
     });
 
     context('deleteItem(id)', () => {
-        it('deletes a single item');
+        let itemId;
+        beforeEach(() => {
+            const itemData = getMockItemData(barryId).engagementItemWithNote;
+            return Controller.createItem(itemData).then(item => (itemId = item._id));
+        });
+
+        it('deletes a single item', () => {
+            return Controller.deleteItem(itemId).then(item => {
+                expect(item).to.exist;
+                expect(item.itemCategory).to.equal('Engagement');
+                expect(item).to.have.property('submittedBy');
+                expect(item.submittedBy._id.toString()).to.equal(barryId.toString());
+                expect(item.notes).to.be.an('array');
+                expect(item.notes).to.have.length(1);
+                return Controller.getItem(itemId).then(item => {
+                    expect(item).to.not.exist;
+                });
+            });
+        });
     });
 
     context('addNote(itemId, noteData)', () => {
