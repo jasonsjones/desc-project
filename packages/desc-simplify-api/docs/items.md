@@ -11,6 +11,7 @@ An `item` is required to be in one of five categories:
 3.  Personal Hygiene
 4.  Engagement
 5.  Ticket
+6.  Pet
 
 Depending on the category of the item, there may be additional required information needed to be provided. For example, a `clothing` item will require a `size`, `gender`, and possibly a `style`, attributes.
 
@@ -29,7 +30,7 @@ The following endpoints are available for the `items` resource:
 POST /api/items
 ```
 
-#### To create a new `Household`, `Personal Hygiene`, `Engagement`, or `Ticket` item
+#### To create a new `Household`, `Personal Hygiene`, `Engagement`, `Ticket` or `Pet` item
 
 include a post body of the form
 
@@ -66,8 +67,7 @@ The **required** properties are:
         `Estelle`,
         `Rainier House`,
         `Cottage Grove Commons`
--   `itemCategory`
-    -   Available values are `Clothing`, `Household`, `PersonalHygiene`, `Engagement`, or `Ticket`
+-   `itemCategory` - Available values are `Clothing`, `Household`, `PersonalHygiene`, `Engagement`, `Ticket`, or `Pet`
 
 The **optional** properties are:
 
