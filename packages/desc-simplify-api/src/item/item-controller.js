@@ -4,6 +4,7 @@ import EngagementItem from './categories/engagement-model';
 import ClothingItem from './categories/clothing-model';
 import PersonalHygieneItem from './categories/personalhygiene-model';
 import TicketItem from './categories/ticket-model';
+import PetItem from './categories/pet-model';
 import Note from '../note/note-model';
 
 const optionsToPopulateNote = {
@@ -38,6 +39,9 @@ export const createItem = itemData => {
             break;
         case 'Ticket' || 'ticket':
             newItem = new TicketItem(itemData);
+            break;
+        case 'Pet' || 'pet':
+            newItem = new PetItem(itemData);
             break;
         default:
             return Promise.reject(new Error('item category is not provided'));

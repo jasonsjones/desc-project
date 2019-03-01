@@ -88,6 +88,19 @@ describe('Item integration tests', () => {
                 expect(item.notes).to.have.length(1);
             });
         });
+
+        it('creates a pet item without a note', () => {
+            const itemData = getMockItemData(barryId).petItemWithoutNote;
+            return Controller.createItem(itemData).then(item => {
+                expect(item).to.exist;
+                expect(item.itemCategory).to.equal('Pet');
+                expect(item).to.have.property('submittedBy');
+                expect(item.submittedBy._id.toString()).to.equal(barryId.toString());
+                expect(item.notes).to.be.an('array');
+                expect(item.notes).to.have.length(0);
+            });
+        });
+
         // TODO: add more tests for creating other item types
     });
 
