@@ -59,6 +59,15 @@ export const getMockItemData = userId => {
             numberOfItems: 2,
             name: 'Seattle Art Musuem',
             note: 'There is a new artist on display'
+        },
+        petItemWithoutNote: {
+            clientId: '12345678',
+            clientRequest: '5c0179dd9c55a711053087cb',
+            submittedBy: userId,
+            location: 'Rainier House',
+            itemCategory: 'Pet',
+            numberOfItems: 2,
+            name: 'cat litter'
         }
     };
 };
@@ -88,3 +97,4 @@ export const ticketItemData = Object.assign({}, requiredItemProperties, {
     name: 'Seattle Art Museum',
     note: 'There is a new artist on display'
 });
+export const petItemData = Object.assign({}, requiredItemProperties, { name: 'cat litter' });
