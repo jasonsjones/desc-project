@@ -37,9 +37,10 @@ export default (app, passport) => {
     app.use(express.static('public'));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
-    app.use(passport.initialize());
     app.use(cors(corsOptions));
     app.use(session(sessionOptions));
+    app.use(passport.initialize());
+    app.use(passport.session());
 
     if (config.env === 'development') {
         app.use(morgan('dev'));
