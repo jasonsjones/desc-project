@@ -1,0 +1,10 @@
+.vscode/
+node_modules/
+build/
+tmp/
+temp/
+dist
+.next
+.env
+.DS_Store
+*-debug.log
