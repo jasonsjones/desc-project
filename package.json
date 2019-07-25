@@ -1,11 +1,9 @@
 {
     "private": true,
     "name": "desc",
-    "workspaces": {
-        "packages": [
-            "packages/*"
-        ]
-    },
+    "workspaces": [
+        "packages/api"
+    ],
     "scripts": {
         "dev:api": "lerna run dev --stream --scope @desc/api"
     },
