@@ -6,6 +6,9 @@
             "packages/*"
         ]
     },
+    "scripts": {
+        "dev:api": "lerna run dev --stream --scope @desc/api"
+    },
     "license": "MIT",
     "devDependencies": {
         "lerna": "^3.16.1"

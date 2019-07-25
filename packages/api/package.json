@@ -1,5 +1,5 @@
 {
-    "name": "desc-simplify-api",
+    "name": "@desc/api",
     "version": "1.0.0",
     "description": "RESTful json API for the DESC simplify project",
     "main": "index.js",
@@ -28,10 +28,6 @@
             "git add"
         ]
     },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/jasonsjones/desc-simplify-api.git"
-    },
     "author": "Jason S. Jones",
     "license": "MIT",
     "dependencies": {
@@ -43,7 +39,7 @@
         "body-parser": "^1.18.3",
         "cors": "^2.8.5",
         "debug": "^4.1.1",
-        "dotenv": "^6.2.0",
+        "dotenv": "8.0.0",
         "ejs": "^2.6.1",
         "express": "^4.16.4",
         "express-session": "^1.15.6",
@@ -59,16 +55,16 @@
         "@babel/register": "^7.0.0",
         "babel-eslint": "^10.0.1",
         "chai": "^4.2.0",
-        "eslint": "^5.12.0",
-        "eslint-config-prettier": "^3.5.0",
+        "eslint": "6.1.0",
+        "eslint-config-prettier": "6.0.0",
         "eslint-plugin-prettier": "^3.0.1",
-        "husky": "^1.3.1",
-        "lint-staged": "^8.1.0",
-        "mocha": "^5.2.0",
+        "husky": "3.0.1",
+        "lint-staged": "9.2.0",
+        "mocha": "6.2.0",
         "nodemon": "^1.18.9",
         "prettier": "^1.15.3",
         "sinon": "^7.2.2",
         "sinon-mongoose": "^2.2.1",
-        "supertest": "^3.4.1"
+        "supertest": "4.0.2"
     }
 }
