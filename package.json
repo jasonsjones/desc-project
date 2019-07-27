@@ -5,12 +5,18 @@
         "packages/api"
     ],
     "scripts": {
-        "lint": "lerna run lint --stream --scope @desc/api",
+        "bootstrap": "lerna bootstrap",
         "dev:api": "lerna run dev --stream --scope @desc/api",
+        "lint": "lerna run lint --stream --scope @desc/api",
+        "postinstall": "yarn bootstrap",
         "test:api": "lerna run test:unit --stream --scope @desc/api"
     },
     "license": "MIT",
     "devDependencies": {
         "lerna": "^3.16.1"
+    },
+    "engines": {
+        "node": "10.16.0",
+        "yarn": "1.16.0"
     }
 }

@@ -66,5 +66,9 @@
         "sinon": "^7.2.2",
         "sinon-mongoose": "^2.2.1",
         "supertest": "4.0.2"
+    },
+    "engines": {
+        "node": "10.16.0",
+        "yarn": "1.16.0"
     }
 }
