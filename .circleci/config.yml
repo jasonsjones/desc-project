@@ -2,17 +2,19 @@
 #
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
+# Environment configuration
+
+env_default: &env_default
+    working_directory: ~/desc
+    docker:
+        - image: circleci/node:lts
+
 version: 2
 jobs:
     build:
-        docker:
-            # specify the version you desire here
-            - image: circleci/node:8.11.3-stretch-browsers
-
+        <<: *env_default
         steps:
             - checkout
-
-            # Download and cache dependencies
             - restore_cache:
                   keys:
                       - v1-dependencies-{{ checksum "package.json" }}
@@ -20,19 +22,13 @@ jobs:
                       - v1-dependencies-
 
             - run: yarn install
-
             - save_cache:
                   key: v1-dependencies-{{ checksum "package.json" }}
                   paths:
                       - 'node_modules'
-
-            # run tests!
-            - run: yarn test
-
+            - run: yarn test:api
     deploy:
-        docker:
-            # specify the version you desire here
-            - image: circleci/node:8.11.3-stretch-browsers
+        <<: *env_default
         steps:
             - checkout
             - run:
@@ -49,9 +45,9 @@ workflows:
                           only:
                               - master
                               - develop
-            - deploy:
-                  requires:
-                      - build
-                  filters:
-                      branches:
-                          only: master
+            # - deploy:
+            #       requires:
+            #           - build
+            #       filters:
+            #           branches:
+            #               only: master
