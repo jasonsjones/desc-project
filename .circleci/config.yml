@@ -1,9 +1,4 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
 # Environment configuration
-
 env_default: &env_default
     working_directory: ~/desc
     docker:
@@ -21,7 +16,7 @@ jobs:
                       # fallback to using the latest cache if no exact match is found
                       - v1-dependencies-
 
-            - run: yarn install
+            - run: lerna bootstrap
             - save_cache:
                   key: v1-dependencies-{{ checksum "package.json" }}
                   paths:
@@ -34,7 +29,8 @@ jobs:
             - run:
                   name: Deploy master to Heroku
                   command: |
-                      git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+                      echo "git push http://heroku-desc-api ..."
+                      #   git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
 workflows:
     version: 2
     build-deploy:
@@ -45,9 +41,9 @@ workflows:
                           only:
                               - master
                               - develop
-            # - deploy:
-            #       requires:
-            #           - build
-            #       filters:
-            #           branches:
-            #               only: master
+            - deploy:
+                  requires:
+                      - build
+                  filters:
+                      branches:
+                          only: master
