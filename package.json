@@ -5,7 +5,8 @@
         "packages/api"
     ],
     "scripts": {
-        "dev:api": "lerna run dev --stream --scope @desc/api"
+        "dev:api": "lerna run dev --stream --scope @desc/api",
+        "test:api": "lerna run test:unit --stream --scope @desc/api"
     },
     "license": "MIT",
     "devDependencies": {
