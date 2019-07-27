@@ -15,13 +15,16 @@ jobs:
                       - v1-dependencies-{{ checksum "package.json" }}
                       # fallback to using the latest cache if no exact match is found
                       - v1-dependencies-
-
-            - run: npx lerna bootstrap
+            - run:
+                  name: Install dependencies
+                  command: yarn install
             - save_cache:
                   key: v1-dependencies-{{ checksum "package.json" }}
                   paths:
                       - 'node_modules'
-            - run: yarn test:api
+            - run:
+                  name: Run API unit tests
+                  command: yarn test:api
     deploy:
         <<: *env_default
         steps:
