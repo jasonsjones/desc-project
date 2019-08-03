@@ -9,6 +9,10 @@ class MyApp extends App {
         return (
             <Container>
                 <Head>
+                    <link
+                        href="https://fonts.googleapis.com/icon?family=Material+Icons"
+                        rel="stylesheet"
+                    />
                     <title>DESC Project</title>
                 </Head>
                 <Layout>
