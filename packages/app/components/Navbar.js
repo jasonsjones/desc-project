@@ -5,17 +5,17 @@ const Navbar = () => {
         <nav className="nav-wrapper teal">
             <div className="container">
                 <Link href="/">
-                    <a className="brand-logo">DESC In Kind Portal</a>
+                    <a className="brand-logo">DESC Portal</a>
                 </Link>
                 <ul className="right hide-on-med-and-down">
                     <li>
                         <Link href="/signup">
-                            <a>Sign up</a>
+                            <a>Sign Up</a>
                         </Link>
                     </li>
                     <li>
                         <Link href="/signin">
-                            <a>Sign in</a>
+                            <a>Sign In</a>
                         </Link>
                     </li>
                     <li>

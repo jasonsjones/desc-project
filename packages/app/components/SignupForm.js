@@ -1,4 +1,5 @@
 import Router from 'next/router';
+
 const SignupForm = () => {
     const handleChange = () => {};
     const handleSubmit = e => {
@@ -14,9 +15,9 @@ const SignupForm = () => {
     return (
         <div
             className="card-panel"
-            style={{ padding: '50px', maxWidth: '760px', margin: '0 auto' }}
+            style={{ padding: '20px 30px', maxWidth: '760px', margin: '0 auto' }}
         >
-            <h5 className="center-align">Signup for Account</h5>
+            <h4 className="center-align teal-text text-darken-3">Register for Account</h4>
             <form onSubmit={handleSubmit}>
                 <div className="row">
                     <div className="input-field col s6">
@@ -76,14 +77,18 @@ const SignupForm = () => {
                         <label htmlFor="confirmPassword">Confirm Password</label>
                     </div>
                 </div>
-                <div className="row" style={{ marginBottom: '20px' }}>
+                <div className="row">
                     <div className="col offset-s1 offset-l8">
                         <div className="row">
                             <button
                                 className="btn"
                                 type="button"
                                 onClick={handleCancel}
-                                style={{ marginRight: '20px' }}
+                                style={{
+                                    backgroundColor: 'white',
+                                    color: 'teal',
+                                    marginRight: '20px'
+                                }}
                             >
                                 Cancel
                             </button>
