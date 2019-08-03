@@ -1,0 +1,32 @@
+{
+    "name": "@desc/app",
+    "version": "0.1.0",
+    "description": "Client side app for the DESC project",
+    "keywords": [
+        "React",
+        "Nextjs"
+    ],
+    "author": "Jason S. Jones <jsjones96@gmail.com>",
+    "homepage": "https://github.com/jasonsjones/desc#readme",
+    "license": "MIT",
+    "main": "lib/app.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jasonsjones/desc.git"
+    },
+    "scripts": {
+        "dev": "next -p 4200",
+        "build": "next build",
+        "test": "echo \"Error: run tests from root\" && exit 1"
+    },
+    "bugs": {
+        "url": "https://github.com/jasonsjones/desc/issues"
+    },
+    "dependencies": {
+        "@zeit/next-css": "^1.0.1",
+        "materialize-css": "^1.0.0",
+        "next": "^9.0.3",
+        "react": "^16.8.6",
+        "react-dom": "^16.8.6"
+    }
+}
