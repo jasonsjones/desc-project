@@ -17,6 +17,7 @@
     "scripts": {
         "dev": "next -p 4200",
         "build": "next build",
+        "lint": "eslint . --max-warnings 0",
         "test": "echo \"Error: run tests from root\" && exit 1"
     },
     "bugs": {
