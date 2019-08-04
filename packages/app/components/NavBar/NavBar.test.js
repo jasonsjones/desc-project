@@ -1,6 +1,6 @@
-import React from './node_modules/react';
-import { render, cleanup } from './node_modules/@testing-library/react';
-import Navbar from '.';
+import React from 'react';
+import { render, cleanup } from '@testing-library/react';
+import Navbar from './Navbar';
 
 describe('NavBar', () => {
     afterEach(cleanup);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, cleanup, fireEvent } from '@testing-library/react';
-import SignupForm from '.';
+import SignupForm from './SignupForm';
 
 describe('SignupForm', () => {
     afterEach(cleanup);

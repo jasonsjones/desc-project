@@ -1,4 +1,5 @@
-import Navbar from './Navbar/';
+import React from 'react';
+import Navbar from './Navbar/Navbar';
 
 if (typeof window !== 'undefined') {
     require('materialize-css');

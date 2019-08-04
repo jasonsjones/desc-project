@@ -18,8 +18,7 @@
         "dev": "next -p 4200",
         "build": "next build",
         "lint": "eslint . --max-warnings 0",
-        "prestart": "yarn build",
-        "start": "next start -p 4200",
+        "start": "next start -p ${PORT}",
         "test": "jest --colors"
     },
     "bugs": {
