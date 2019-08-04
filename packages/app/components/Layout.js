@@ -1,4 +1,4 @@
-import Navbar from './Navbar';
+import Navbar from './Navbar/';
 
 if (typeof window !== 'undefined') {
     require('materialize-css');

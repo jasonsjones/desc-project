@@ -18,7 +18,7 @@
         "dev": "next -p 4200",
         "build": "next build",
         "lint": "eslint . --max-warnings 0",
-        "test": "echo \"Error: run tests from root\" && exit 1"
+        "test": "jest --colors"
     },
     "bugs": {
         "url": "https://github.com/jasonsjones/desc/issues"
@@ -29,5 +29,10 @@
         "next": "^9.0.3",
         "react": "^16.8.6",
         "react-dom": "^16.8.6"
+    },
+    "devDependencies": {
+        "@testing-library/jest-dom": "^4.0.0",
+        "@testing-library/react": "^8.0.7",
+        "jest": "^24.8.0"
     }
 }

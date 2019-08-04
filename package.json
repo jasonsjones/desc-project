@@ -12,7 +12,8 @@
         "dev:app": "lerna run dev --stream --scope @desc/app",
         "lint": "lerna run lint --stream --scope @desc/api",
         "postinstall": "yarn bootstrap",
-        "test:api": "lerna run test:unit --stream --scope @desc/api"
+        "test:api": "lerna run test:unit --stream --scope @desc/api",
+        "test:app": "lerna run test --stream --scope @desc/app"
     },
     "license": "MIT",
     "devDependencies": {
