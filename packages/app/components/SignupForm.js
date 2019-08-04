@@ -1,14 +1,55 @@
+import { useEffect, useState } from 'react';
 import Router from 'next/router';
 
 const SignupForm = () => {
-    const handleChange = () => {};
+    const [form, setValues] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+    });
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        if (form.confirmPassword.length > 0 && !passwordsMatch()) {
+            setError('Passwords do NOT match');
+        }
+        if (form.confirmPassword.length > 0 && passwordsMatch()) {
+            setError(null);
+        }
+    }, [form]);
+
+    const handleChange = e => {
+        setValues({
+            ...form,
+            [e.target.id]: e.target.value
+        });
+    };
+
+    const isFormValid = () => {
+        return (
+            form.firstName.length > 0 &&
+            form.lastName.length > 0 &&
+            form.email.length > 0 &&
+            form.password.length > 0 &&
+            passwordsMatch()
+        );
+    };
+
+    const passwordsMatch = () => {
+        return form.password === form.confirmPassword;
+    };
+
     const handleSubmit = e => {
         e.preventDefault();
-        console.log('submitting the form...');
+        if (isFormValid()) {
+            console.log('submitting the form...');
+            console.log(form);
+        }
     };
 
     const handleCancel = () => {
-        // clear form
         Router.push('/');
     };
 
@@ -25,7 +66,7 @@ const SignupForm = () => {
                         <input
                             type="text"
                             id="firstName"
-                            // value={this.state.firstName}
+                            value={form.firstName}
                             onChange={handleChange}
                         />
                         <label htmlFor="firstName">First Name</label>
@@ -34,7 +75,7 @@ const SignupForm = () => {
                         <input
                             type="text"
                             id="lastName"
-                            // value={this.state.lastName}
+                            value={form.lastName}
                             onChange={handleChange}
                         />
                         <label htmlFor="lastName">Last Name</label>
@@ -47,7 +88,7 @@ const SignupForm = () => {
                             className="validate"
                             type="email"
                             id="email"
-                            // value={this.state.email}
+                            value={form.memail}
                             onChange={handleChange}
                         />
                         <label htmlFor="email">Your Email</label>
@@ -59,7 +100,7 @@ const SignupForm = () => {
                         <input
                             type="password"
                             id="password"
-                            // value={this.state.password}
+                            value={form.password}
                             onChange={handleChange}
                         />
                         <label htmlFor="password">Password</label>
@@ -71,10 +112,11 @@ const SignupForm = () => {
                         <input
                             type="password"
                             id="confirmPassword"
-                            // value={this.state.confirmPassword}
+                            value={form.confirmPassword}
                             onChange={handleChange}
                         />
                         <label htmlFor="confirmPassword">Confirm Password</label>
+                        {error && <span className="helper-text red-text">{error}</span>}
                     </div>
                 </div>
                 <div className="row">
