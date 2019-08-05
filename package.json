@@ -10,8 +10,9 @@
         "dev": "lerna run dev --stream",
         "dev:api": "lerna run dev --stream --scope @desc/api",
         "dev:app": "lerna run dev --stream --scope @desc/app",
-        "lint": "lerna run lint --stream --scope @desc/api",
+        "lint": "lerna run lint --stream",
         "postinstall": "yarn bootstrap",
+        "test": "yarn test:api && yarn test:app",
         "test:api": "lerna run test:unit --stream --scope @desc/api",
         "test:app": "lerna run test --stream --scope @desc/app"
     },
