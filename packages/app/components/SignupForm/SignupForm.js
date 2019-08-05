@@ -1,7 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import Router from 'next/router';
+import AuthContext from '../../context/authContext';
 
 const SignupForm = () => {
+    const authCtx = useContext(AuthContext);
+
     const [form, setValues] = useState({
         firstName: '',
         lastName: '',
@@ -46,6 +49,11 @@ const SignupForm = () => {
         if (isFormValid()) {
             console.log('submitting the form...');
             console.log(form);
+            authCtx.login(
+                { name: 'Oliver Queen', email: 'oliver@qc.com' },
+                'somerandomtokenstringhere'
+            );
+            Router.push('/');
         }
     };
 
