@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import AuthContext from '../../context/AuthContext';
+import M from 'materialize-css';
 
 const SignupForm = ({ history }) => {
     const authCtx = useContext(AuthContext);
@@ -8,7 +9,8 @@ const SignupForm = ({ history }) => {
         lastName: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        program: ''
     });
     const [error, setError] = useState(null);
 
@@ -20,6 +22,11 @@ const SignupForm = ({ history }) => {
             setError(null);
         }
     }, [form]);
+
+    useEffect(() => {
+        const elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems);
+    }, []);
 
     const handleChange = e => {
         setValues({
@@ -34,6 +41,7 @@ const SignupForm = ({ history }) => {
             form.lastName.length > 0 &&
             form.email.length > 0 &&
             form.password.length > 0 &&
+            form.program.length > 0 &&
             form.password === form.confirmPassword
         );
     };
@@ -48,7 +56,7 @@ const SignupForm = ({ history }) => {
                 },
                 email: form.email,
                 password: form.password,
-                program: 'housing'
+                program: form.program
             };
             fetch('http://localhost:3000/api/users', {
                 method: 'POST',
@@ -114,6 +122,23 @@ const SignupForm = ({ history }) => {
                             onChange={handleChange}
                         />
                         <label htmlFor="email">Your Email</label>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="input-field col s12">
+                        <i className="small material-icons prefix">domain</i>
+                        <select defaultValue="default" id="program" onChange={handleChange}>
+                            <option value="default" disabled>
+                                Select your program
+                            </option>
+                            <option value="housing">Housing First</option>
+                            <option value="integrated">Integrated Services</option>
+                            <option value="survival">Survival Services</option>
+                            <option value="health">Health Services</option>
+                            <option value="employment">Employment Services</option>
+                            <option value="research_innovation">Research &amp; Innovation</option>
+                        </select>
+                        <label htmlFor="program">Program</label>
                     </div>
                 </div>
                 <div className="row">
