@@ -8,6 +8,7 @@
     "scripts": {
         "bootstrap": "lerna bootstrap",
         "clean": "lerna clean",
+        "dev": "lerna run dev --stream",
         "dev:api": "lerna run dev --stream --scope @desc/api",
         "dev:app": "lerna run start --stream --scope @desc/app",
         "lint": "lerna run lint --stream",
