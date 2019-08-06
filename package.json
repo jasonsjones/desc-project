@@ -2,18 +2,21 @@
     "private": true,
     "name": "desc",
     "workspaces": [
-        "packages/api"
+        "packages/api",
+        "packages/app"
     ],
     "scripts": {
         "bootstrap": "lerna bootstrap",
         "clean": "lerna clean",
         "dev:api": "lerna run dev --stream --scope @desc/api",
+        "dev:app": "lerna run start --stream --scope @desc/app",
         "lint": "lerna run lint --stream",
         "postinstall": "yarn bootstrap",
         "test:api": "lerna run test --stream --scope @desc/api",
         "test:api:unit": "lerna run test:unit --stream --scope @desc/api",
         "test:api:integration": "lerna run test:integration --stream --scope @desc/api",
-        "test:api:acceptance": "lerna run test:acceptance --stream --scope @desc/api"
+        "test:api:acceptance": "lerna run test:acceptance --stream --scope @desc/api",
+        "test:app": "lerna run test --stream --scope @desc/app"
     },
     "license": "MIT",
     "devDependencies": {
