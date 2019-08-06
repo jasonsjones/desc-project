@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import 'materialize-css';
+
+import AuthContext from '../../context/AuthContext';
 
 const Nav = () => {
-    const isAuthed = false;
+    const authCtx = useContext(AuthContext);
+    const isAuthed = authCtx.contextUser && authCtx.token;
+
     return (
         <nav className="nav-wrapper teal">
             <div className="container">
@@ -12,12 +17,16 @@ const Nav = () => {
                 <ul className="right hide-on-med-and-down">
                     {!isAuthed && (
                         <li>
-                            <NavLink to="/signup">Sign Up</NavLink>
+                            <NavLink to="/signup" activeClassName="teal darken-1">
+                                Sign Up
+                            </NavLink>
                         </li>
                     )}
                     {!isAuthed && (
                         <li>
-                            <NavLink to="/signin">Sign In</NavLink>
+                            <NavLink to="/signin" activeClassName="teal darken-1">
+                                Sign In
+                            </NavLink>
                         </li>
                     )}
                     {isAuthed && (

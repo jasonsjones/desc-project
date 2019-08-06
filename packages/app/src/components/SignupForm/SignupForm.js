@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import AuthContext from '../../context/AuthContext';
 
 const SignupForm = ({ history }) => {
+    const authCtx = useContext(AuthContext);
     const [form, setValues] = useState({
         firstName: '',
         lastName: '',
@@ -39,12 +41,10 @@ const SignupForm = ({ history }) => {
     const handleSubmit = e => {
         e.preventDefault();
         if (isFormValid()) {
-            console.log('submitting the form...');
-            console.log(form);
-            // authCtx.login(
-            //     { name: 'Oliver Queen', email: 'oliver@qc.com' },
-            //     'somerandomtokenstringhere'
-            // );
+            authCtx.login(
+                { name: 'Oliver Queen', email: 'oliver@qc.com' },
+                'somerandomtokenstringhere'
+            );
             history.push('/');
         }
     };
@@ -144,4 +144,5 @@ const SignupForm = ({ history }) => {
         </div>
     );
 };
+
 export default SignupForm;
