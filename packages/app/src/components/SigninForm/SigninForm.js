@@ -24,11 +24,28 @@ const SigninForm = ({ history }) => {
     const handleSubmit = e => {
         e.preventDefault();
         if (isFormValid()) {
-            authCtx.login(
-                { name: 'Oliver Queen', email: 'oliver@qc.com' },
-                'somerandomtokenstringhere'
-            );
-            history.push('/');
+            const creds = {
+                email: form.email,
+                password: form.password
+            };
+            fetch('http://localhost:3000/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(creds)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                })
+                .then(data => {
+                    if (data.success) {
+                        const { user, token } = data.payload;
+                        authCtx.login(user, token);
+                        history.push('/');
+                    }
+                })
+                .catch(err => console.log(err));
         }
     };
 

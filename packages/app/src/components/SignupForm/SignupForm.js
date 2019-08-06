@@ -41,11 +41,33 @@ const SignupForm = ({ history }) => {
     const handleSubmit = e => {
         e.preventDefault();
         if (isFormValid()) {
-            authCtx.login(
-                { name: 'Oliver Queen', email: 'oliver@qc.com' },
-                'somerandomtokenstringhere'
-            );
-            history.push('/');
+            const payload = {
+                name: {
+                    first: form.firstName,
+                    last: form.lastName
+                },
+                email: form.email,
+                password: form.password,
+                program: 'housing'
+            };
+            fetch('http://localhost:3000/api/users', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+                .then(res => {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                })
+                .then(data => {
+                    if (data.success) {
+                        const { user, token } = data.payload;
+                        authCtx.login(user, token);
+                        history.push('/');
+                    }
+                })
+                .catch(err => console.error(err));
         }
     };
 

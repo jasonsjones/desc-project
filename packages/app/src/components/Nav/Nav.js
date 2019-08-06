@@ -47,7 +47,11 @@ const Nav = () => {
                             >
                                 account_circle
                             </i>
-                            <span style={{ margin: '0 8px' }}>Oliver Queen</span>
+                            <span style={{ margin: '0 8px' }}>
+                                {`${authCtx.contextUser.name.first} ${
+                                    authCtx.contextUser.name.last
+                                }`}
+                            </span>
                             <i className="small material-icons prefix">expand_more</i>
                         </li>
                     )}
