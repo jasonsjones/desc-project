@@ -8,6 +8,15 @@ const Nav = () => {
     const authCtx = useContext(AuthContext);
     const isAuthed = authCtx.contextUser && authCtx.token;
 
+    const handleLogout = () => {
+        fetch('http://localhost:3000/api/auth/logout', {
+            method: 'GET',
+            credentials: 'include'
+        }).then(() => {
+            authCtx.logout();
+        });
+    };
+
     return (
         <nav className="nav-wrapper teal">
             <div className="container">
@@ -48,11 +57,16 @@ const Nav = () => {
                                 account_circle
                             </i>
                             <span style={{ margin: '0 8px' }}>
-                                {`${authCtx.contextUser.name.first} ${
-                                    authCtx.contextUser.name.last
-                                }`}
+                                {`${authCtx.contextUser.name.first} ${authCtx.contextUser.name.last}`}
                             </span>
                             <i className="small material-icons prefix">expand_more</i>
+                        </li>
+                    )}
+                    {isAuthed && (
+                        <li>
+                            <NavLink to="/" onClick={handleLogout}>
+                                Logout
+                            </NavLink>
                         </li>
                     )}
                 </ul>
