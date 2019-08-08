@@ -6,10 +6,14 @@
     ],
     "scripts": {
         "bootstrap": "lerna bootstrap",
+        "clean": "lerna clean",
         "dev:api": "lerna run dev --stream --scope @desc/api",
-        "lint": "lerna run lint --stream --scope @desc/api",
+        "lint": "lerna run lint --stream",
         "postinstall": "yarn bootstrap",
-        "test:api": "lerna run test:unit --stream --scope @desc/api"
+        "test:api": "lerna run test --stream --scope @desc/api",
+        "test:api:unit": "lerna run test:unit --stream --scope @desc/api",
+        "test:api:integration": "lerna run test:integration --stream --scope @desc/api",
+        "test:api:acceptance": "lerna run test:acceptance --stream --scope @desc/api"
     },
     "license": "MIT",
     "devDependencies": {
