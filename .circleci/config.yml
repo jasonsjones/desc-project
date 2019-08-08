@@ -2,7 +2,7 @@
 env_default: &env_default
     working_directory: ~/desc
     docker:
-        - image: circleci/node:10.16
+        - image: circleci/node:lts
 
 version: 2
 jobs:
@@ -23,7 +23,7 @@ jobs:
                   paths:
                       - 'node_modules'
             - run:
-                  name: Run API unit tests
+                  name: Run API test suite
                   command: yarn test:api
     deploy:
         <<: *env_default
