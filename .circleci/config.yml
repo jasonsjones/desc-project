@@ -2,7 +2,7 @@
 env_default: &env_default
     working_directory: ~/desc
     docker:
-        - image: circleci/node:lts
+        - image: circleci/node:10.16
 
 version: 2
 jobs:
