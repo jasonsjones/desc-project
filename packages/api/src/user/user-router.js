@@ -26,7 +26,7 @@ export default () => {
         .post((req, res, next) => {
             UserController.createUser(req.body)
                 .then(user => {
-                    req.session.user = user;
+                    req.user = user;
                     req.login(user, err => {
                         if (err) {
                             return next(err);
