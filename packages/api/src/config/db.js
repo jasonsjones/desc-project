@@ -5,7 +5,7 @@ const log = debug('db:connection');
 
 export default config => {
     const getDbName = () => {
-        return config.env !== 'testing' ? 'desc-dev' : 'desc-test';
+        return config.env !== 'testing' ? config.db.name.dev : config.db.name.test;
     };
 
     const buildConnectionString = () => {
