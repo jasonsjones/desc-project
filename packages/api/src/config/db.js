@@ -9,7 +9,10 @@ export default config => {
     };
 
     const buildConnectionString = () => {
-        return `${config.db.baseUri}/${getDbName()}?${config.db.options}`;
+        if (config.db.options) {
+            return `${config.db.baseUri}/${getDbName()}?${config.db.options}`;
+        }
+        return `${config.db.baseUri}/${getDbName()}`;
     };
 
     log('setting up mongodb...');
