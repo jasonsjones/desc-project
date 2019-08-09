@@ -35,8 +35,14 @@ const SigninForm = ({ history }) => {
                 body: JSON.stringify(creds)
             })
                 .then(response => {
-                    if (response.ok) {
+                    if (response.status === 200) {
                         return response.json();
+                    }
+                    if (response.status === 401) {
+                        return {
+                            success: false,
+                            message: 'unauthorized'
+                        };
                     }
                 })
                 .then(data => {
@@ -44,6 +50,9 @@ const SigninForm = ({ history }) => {
                         const { user, token } = data.payload;
                         authCtx.login(user, token);
                         history.push('/');
+                    } else {
+                        // handle unauthorized case here.  Dispay a generic error message.
+                        console.log(data);
                     }
                 })
                 .catch(err => console.log(err));
@@ -57,7 +66,7 @@ const SigninForm = ({ history }) => {
     return (
         <div
             className="card-panel"
-            style={{ padding: '20px 30px', maxWidth: '560px', margin: '0 auto' }}
+            style={{ padding: '20px 30px', maxWidth: '560px', margin: '40px auto 0' }}
         >
             <h4 className="center-align teal-text text-darken-3">Sign In to Account</h4>
             <form onSubmit={handleSubmit}>
