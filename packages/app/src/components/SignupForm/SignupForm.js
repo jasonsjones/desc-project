@@ -86,7 +86,7 @@ const SignupForm = ({ history }) => {
     return (
         <div
             className="card-panel"
-            style={{ padding: '20px 30px', maxWidth: '670px', margin: '0 auto' }}
+            style={{ padding: '20px 30px', maxWidth: '670px', margin: '40px auto 0' }}
         >
             <h4 className="center-align teal-text text-darken-3">Register for Account</h4>
             <form onSubmit={handleSubmit}>
