@@ -104,5 +104,26 @@ export default () => {
                 );
         });
 
+    userRouter.route('/me').get(async (req, res) => {
+        let payload = null;
+        if (req.user) {
+            const user = await UserController.getUser(req.user.id);
+            if (user) {
+                const token = AuthUtils.generateToken(user);
+                payload = { user: user.toClientJSON(), token };
+            }
+        } else {
+            payload = {
+                user: null,
+                token: ''
+            };
+        }
+        return res.json({
+            success: true,
+            message: 'auth user endpoint',
+            payload
+        });
+    });
+
     return userRouter;
 };
