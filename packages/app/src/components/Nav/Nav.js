@@ -4,33 +4,19 @@ import SignedOutLinks from './SignedOutLinks';
 import SignedInLinks from './SignedInLinks';
 import UserDropdown from './UserDropdown';
 import AuthContext from '../../context/AuthContext';
+import { logout } from '../../services/auth';
 import './Nav.css';
-
-import AuthContext from '../../context/AuthContext';
 
 const Nav = () => {
     const authCtx = useContext(AuthContext);
     const isAuthed = authCtx.contextUser && authCtx.token;
 
-    const initDropdown = () => {
-        return Promise.resolve().then(() => {
-            const elems = document.querySelectorAll('.dropdown-trigger');
-            M.Dropdown.init(elems, {
-                coverTrigger: false
-            });
-            return true;
-        });
-    };
-
     const handleLogout = () => {
-        fetch('http://localhost:3000/api/auth/logout', {
-            method: 'GET',
-            credentials: 'include'
-        })
-            .then(response => response.json())
-            .then(() => {
+        logout().then(data => {
+            if (data.success) {
                 authCtx.logout();
-            });
+            }
+        });
     };
 
     return (

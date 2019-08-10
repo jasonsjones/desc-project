@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import 'materialize-css';
 import AuthContext from '../../context/AuthContext';
+import { login } from '../../services/auth';
 
 const SigninForm = ({ history }) => {
     const authCtx = useContext(AuthContext);
@@ -28,23 +29,7 @@ const SigninForm = ({ history }) => {
                 email: form.email,
                 password: form.password
             };
-            fetch('http://localhost:3000/api/auth/login', {
-                method: 'POST',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(creds)
-            })
-                .then(response => {
-                    if (response.status === 200) {
-                        return response.json();
-                    }
-                    if (response.status === 401) {
-                        return {
-                            success: false,
-                            message: 'unauthorized'
-                        };
-                    }
-                })
+            login(creds)
                 .then(data => {
                     if (data.success) {
                         const { user, token } = data.payload;
