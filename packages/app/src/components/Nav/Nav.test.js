@@ -59,4 +59,24 @@ describe('NavBar', () => {
         const { queryByText } = renderWithRouterAndContext();
         expect(queryByText('Sign Up')).toBeNull();
     });
+
+    it('renders the users first and last name when logged in', () => {
+        const { getByText } = renderWithRouterAndContext();
+        expect(getByText(`${contextUser.name.first} ${contextUser.name.last}`)).toBeTruthy();
+    });
+
+    it('renders a link to create requests  when logged in', () => {
+        const { getByText } = renderWithRouterAndContext();
+        expect(getByText('Create Request')).toBeTruthy();
+    });
+
+    it('renders a link to view requests  when logged in', () => {
+        const { getByText } = renderWithRouterAndContext();
+        expect(getByText('View Requests')).toBeTruthy();
+    });
+
+    it('renders a dropdown with a logout option when logged in', () => {
+        const { getByText } = renderWithRouterAndContext();
+        expect(getByText('Logout')).toBeTruthy();
+    });
 });

@@ -20,6 +20,25 @@ describe('SignupForm', () => {
         expect(getByLabelText('Your Email')).toBeTruthy();
     });
 
+    it('renders an input to select a program', () => {
+        const { getByLabelText } = render(<SignupForm />);
+        expect(getByLabelText('Program')).toBeTruthy();
+    });
+
+    [
+        'Housing First',
+        'Integrated Services',
+        'Survival Services',
+        'Health Services',
+        'Employment Services',
+        'Research & Innovation'
+    ].forEach(program => {
+        it(`renders an option for ${program} program`, () => {
+            const { getAllByText } = render(<SignupForm />);
+            expect(getAllByText(program)).toBeTruthy();
+        });
+    });
+
     it('renders an input for password', () => {
         const { getByLabelText } = render(<SignupForm />);
         expect(getByLabelText('Password')).toBeTruthy();
