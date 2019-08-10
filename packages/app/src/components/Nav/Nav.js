@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import SignedOutLinks from './SignedOutLinks';
+import SignedInLinks from './SignedInLinks';
 import './Nav.css';
 import M from 'materialize-css';
 
@@ -37,30 +39,8 @@ const Nav = () => {
                     <span className="brand-logo">DESC Portal</span>
                 </Link>
                 <ul className="right hide-on-med-and-down">
-                    {!isAuthed && (
-                        <li>
-                            <NavLink to="/signup" activeClassName="teal darken-1">
-                                Sign Up
-                            </NavLink>
-                        </li>
-                    )}
-                    {!isAuthed && (
-                        <li>
-                            <NavLink to="/signin" activeClassName="teal darken-1">
-                                Sign In
-                            </NavLink>
-                        </li>
-                    )}
-                    {isAuthed && (
-                        <li>
-                            <NavLink to="/create">Create Request</NavLink>
-                        </li>
-                    )}
-                    {isAuthed && (
-                        <li>
-                            <NavLink to="/inbox">View Requests</NavLink>
-                        </li>
-                    )}
+                    {!isAuthed && <SignedOutLinks />}
+                    {isAuthed && <SignedInLinks />}
                     {isAuthed && initDropdown() && (
                         <>
                             <li className="profile-menu">
