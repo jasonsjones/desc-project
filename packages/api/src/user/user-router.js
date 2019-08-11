@@ -35,7 +35,7 @@ export default () => {
                             success: true,
                             message: 'user created',
                             payload: {
-                                user,
+                                user: user.toClientJSON(),
                                 token: AuthUtils.generateToken(user)
                             }
                         });

@@ -12,7 +12,7 @@ export default passport => {
             success: true,
             message: 'user authenticated',
             payload: {
-                user,
+                user: user.toClientJSON(),
                 token
             }
         });
