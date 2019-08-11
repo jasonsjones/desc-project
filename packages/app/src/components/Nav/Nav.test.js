@@ -1,8 +1,11 @@
 import React from 'react';
 import { MemoryRouter as Router } from 'react-router-dom';
-import { render, cleanup } from '@testing-library/react';
+import { render, cleanup, fireEvent } from '@testing-library/react';
 import Nav from './Nav';
 import { AuthProvider } from '../../context/AuthContext';
+import * as Auth from '../../services/auth';
+
+jest.mock('../../services/auth');
 
 const contextUser = {
     name: {
@@ -16,7 +19,7 @@ const token = 'eythisisthetokenoftheauthuser1234';
 
 const renderWithRouterAndContext = () => {
     return render(
-        <AuthProvider value={{ contextUser, token }}>
+        <AuthProvider value={{ contextUser, token, logout: () => {} }}>
             <Router>
                 <Nav />
             </Router>
@@ -78,5 +81,12 @@ describe('NavBar', () => {
     it('renders a dropdown with a logout option when logged in', () => {
         const { getByText } = renderWithRouterAndContext();
         expect(getByText('Logout')).toBeTruthy();
+    });
+
+    it('calls the logout method from the auth service when Logout is clicked', () => {
+        Auth.logout = jest.fn().mockResolvedValue({ success: true, message: 'User logged out' });
+        const { getByText } = renderWithRouterAndContext();
+        fireEvent.click(getByText('Logout'));
+        expect(Auth.logout).toHaveBeenCalled();
     });
 });
