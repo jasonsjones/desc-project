@@ -35,7 +35,7 @@ export const logout = () => {
 };
 
 export const fetchSessionUser = () => {
-    return fetch('http://localhost:3000/api/users/me', {
+    return fetch(`${BASE_URL}/api/users/me`, {
         method: 'GET',
         credentials: 'include'
     }).then(response => response.json());
