@@ -43,7 +43,7 @@ const processToken = (req, res, next) => {
 };
 
 const corsOptions = {
-    origin: 'http://localhost:4200',
+    origin: ['https://desc-app.herokuapp.com', 'http://localhost:4200'],
     credentials: true
 };
 
