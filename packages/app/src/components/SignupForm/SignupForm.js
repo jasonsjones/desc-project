@@ -118,7 +118,7 @@ const SignupForm = ({ history }) => {
                             className="validate"
                             type="email"
                             id="email"
-                            value={form.memail}
+                            value={form.email}
                             onChange={handleChange}
                         />
                         <label htmlFor="email">Your Email</label>
