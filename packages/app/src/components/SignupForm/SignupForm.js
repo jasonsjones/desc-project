@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import AuthContext from '../../context/AuthContext';
 import M from 'materialize-css';
+import { signup } from '../../services/users';
 
 const SignupForm = ({ history }) => {
     const authCtx = useContext(AuthContext);
@@ -58,16 +59,7 @@ const SignupForm = ({ history }) => {
                 password: form.password,
                 program: form.program
             };
-            fetch('http://localhost:3000/api/users', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            })
-                .then(res => {
-                    if (res.ok) {
-                        return res.json();
-                    }
-                })
+            signup(payload)
                 .then(data => {
                     if (data.success) {
                         const { user, token } = data.payload;

@@ -1,12 +1,4 @@
-const getBaseUrl = () => {
-    if (process.env.NODE_ENV !== 'production') {
-        return 'http://localhost:3000';
-    } else {
-        return 'https://desc-api.herokuapp.com';
-    }
-};
-
-const BASE_URL = `${getBaseUrl()}`;
+import { BASE_URL } from './util';
 
 export const login = creds => {
     return fetch(`${BASE_URL}/api/auth/login`, {
