@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import AuthContext from '../../context/AuthContext';
 import M from 'materialize-css';
+import TextField from '../Common/TextField';
 import { signup } from '../../services/users';
 
 const SignupForm = ({ history }) => {
@@ -83,37 +84,37 @@ const SignupForm = ({ history }) => {
             <h4 className="center-align teal-text text-darken-3">Register for Account</h4>
             <form onSubmit={handleSubmit}>
                 <div className="row">
-                    <div className="input-field col s6">
-                        <i className="small material-icons prefix">account_circle</i>
-                        <input
+                    <div className="col s6">
+                        <TextField
+                            label="First Name"
+                            icon="account_circle"
                             type="text"
-                            id="firstName"
+                            name="firstName"
                             value={form.firstName}
-                            onChange={handleChange}
+                            handleChange={handleChange}
                         />
-                        <label htmlFor="firstName">First Name</label>
                     </div>
-                    <div className="input-field col s6">
-                        <input
+                    <div className="col s6">
+                        <TextField
+                            label="Last Name"
                             type="text"
-                            id="lastName"
+                            name="lastName"
                             value={form.lastName}
-                            onChange={handleChange}
+                            handleChange={handleChange}
                         />
-                        <label htmlFor="lastName">Last Name</label>
                     </div>
                 </div>
                 <div className="row">
-                    <div className="input-field col s12">
-                        <i className="small material-icons prefix">email</i>
-                        <input
-                            className="validate"
-                            type="email"
-                            id="email"
+                    <div className="col s12">
+                        <TextField
+                            label="Your Email"
+                            icon="email"
+                            type="text"
+                            name="email"
                             value={form.email}
-                            onChange={handleChange}
+                            handleChange={handleChange}
+                            validate
                         />
-                        <label htmlFor="email">Your Email</label>
                     </div>
                 </div>
                 <div className="row">
@@ -134,28 +135,28 @@ const SignupForm = ({ history }) => {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="input-field col s12">
-                        <i className="small material-icons prefix">lock</i>
-                        <input
+                    <div className="col s12">
+                        <TextField
+                            label="Password"
+                            icon="lock"
                             type="password"
-                            id="password"
+                            name="password"
                             value={form.password}
-                            onChange={handleChange}
+                            handleChange={handleChange}
                         />
-                        <label htmlFor="password">Password</label>
                     </div>
                 </div>
                 <div className="row">
-                    <div className="input-field col s12">
-                        <i className="small material-icons prefix">lock</i>
-                        <input
+                    <div className="col s12">
+                        <TextField
+                            label="Confirm Password"
+                            icon="lock"
                             type="password"
-                            id="confirmPassword"
+                            name="confirmPassword"
                             value={form.confirmPassword}
-                            onChange={handleChange}
+                            error={error}
+                            handleChange={handleChange}
                         />
-                        <label htmlFor="confirmPassword">Confirm Password</label>
-                        {error && <span className="helper-text red-text">{error}</span>}
                     </div>
                 </div>
                 <div className="row">

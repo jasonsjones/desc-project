@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import 'materialize-css';
 import AuthContext from '../../context/AuthContext';
+import TextField from '../Common/TextField';
 import { login } from '../../services/auth';
 
 const SigninForm = ({ history }) => {
@@ -56,28 +57,28 @@ const SigninForm = ({ history }) => {
             <h4 className="center-align teal-text text-darken-3">Sign In to Account</h4>
             <form onSubmit={handleSubmit}>
                 <div className="row">
-                    <div className="input-field col s12">
-                        <i className="small material-icons prefix">email</i>
-                        <input
-                            className="validate"
-                            type="email"
-                            id="email"
-                            value={form.memail}
-                            onChange={handleChange}
+                    <div className="col s12">
+                        <TextField
+                            label="Your Email"
+                            icon="email"
+                            type="text"
+                            name="email"
+                            value={form.email}
+                            handleChange={handleChange}
+                            validate
                         />
-                        <label htmlFor="email">Your Email</label>
                     </div>
                 </div>
                 <div className="row">
-                    <div className="input-field col s12">
-                        <i className="small material-icons prefix">lock</i>
-                        <input
+                    <div className="col s12">
+                        <TextField
+                            label="Password"
+                            icon="lock"
                             type="password"
-                            id="password"
+                            name="password"
                             value={form.password}
-                            onChange={handleChange}
+                            handleChange={handleChange}
                         />
-                        <label htmlFor="password">Password</label>
                     </div>
                 </div>
                 <div className="row">
