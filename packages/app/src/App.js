@@ -10,12 +10,14 @@ import Signin from './containers/Signin';
 import RequestTabs from './components/RequestInbox/RequestTabs';
 import RequestCreationPage from './components/RequestCreation/RequestCreationPage';
 import Home from './components/Home';
+import PrivateRoute from './components/PrivateRoute';
 import { reducer } from './reducers/reducer';
 
 import './App.css';
 import 'materialize-css/dist/css/materialize.css';
 
 const store = createStore(reducer, applyMiddleware(thunk, logger));
+
 function App() {
     return (
         <Provider store={store}>
@@ -25,8 +27,8 @@ function App() {
                         <Route exact path="/" component={Home} />
                         <Route exact path="/signup" component={Signup} />
                         <Route exact path="/signin" component={Signin} />
-                        <Route exact path="/inbox" component={RequestTabs} />
-                        <Route exact path="/create" component={RequestCreationPage} />
+                        <PrivateRoute exact path="/inbox" component={RequestTabs} />
+                        <PrivateRoute exact path="/create" component={RequestCreationPage} />
                     </Switch>
                 </Layout>
             </BrowserRouter>
