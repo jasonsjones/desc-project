@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import request from 'supertest';
 
-import config from '../config/config';
 import app from '../config/app';
 import { User } from '../models';
 import { createUser } from '../user/user-controller';
@@ -9,7 +8,6 @@ import { userOllie } from '../utils/user-test-utils';
 import { dbConnection, deleteCollection } from '../utils/db-test-utils';
 
 describe('Auth acceptance tests', () => {
-    before(async () => await deleteCollection(dbConnection, User, 'users'));
     afterEach(async () => await deleteCollection(dbConnection, User, 'users'));
 
     describe('POST /api/auth/login', () => {
@@ -67,4 +65,4 @@ describe('Auth acceptance tests', () => {
                 });
         });
     });
-});
+}).timeout(8000);
