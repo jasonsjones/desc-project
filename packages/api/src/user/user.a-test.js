@@ -8,10 +8,14 @@ import { dbConnection, deleteCollection } from '../utils/db-test-utils';
 import { userOllie, userBarry, createUserAndGetToken } from '../utils/user-test-utils';
 
 describe('User acceptance tests', () => {
-    afterEach(async () => await deleteCollection(dbConnection, User, 'users'));
+    let token;
+    afterEach(async () => {
+        token = null;
+        await deleteCollection(dbConnection, User, 'users');
+    });
 
     context('POST /api/users', () => {
-        it('returns status code 200 and json payload when creating a new user', () => {
+        it('returns json payload when creating a new user', () => {
             return request(app)
                 .post('/api/users/')
                 .send(userOllie)
@@ -25,9 +29,9 @@ describe('User acceptance tests', () => {
                     expect(json.payload).to.have.property('token');
                     expect(json.success).to.be.true;
                 });
-        });
+        }).timeout(5000);
 
-        it('returns status code 200 and json payload with error if required fields are not provided ', () => {
+        it('returns json payload with error if required fields are not provided ', () => {
             return request(app)
                 .post('/api/users/')
                 .send({})
@@ -38,20 +42,19 @@ describe('User acceptance tests', () => {
                     expect(json).to.have.property('message');
                     expect(json.success).to.be.false;
                 });
-        });
+        }).timeout(5000);
     });
 
     context('GET /api/users', () => {
-        let token;
         before(() => {
-            return createUser(userOllie)
-                .then(() => createUserAndGetToken(userBarry))
+            return createUser(userBarry)
+                .then(() => createUserAndGetToken(userOllie))
                 .then(data => {
                     token = data.token;
                 });
         });
 
-        it('returns status code 200 and json payload with all the users', () => {
+        it('returns json payload with all the users', () => {
             return request
                 .agent(app)
                 .get('/api/users/')
@@ -67,12 +70,23 @@ describe('User acceptance tests', () => {
                     expect(json.payload.users).to.have.length(2);
                 });
         });
-    }).timeout(10000);
+    });
 
     context('GET /api/users/:id', () => {
+        let user;
+        before(() => {
+            return createUserAndGetToken(userBarry).then(data => {
+                user = data.user;
+                token = data.token;
+            });
+        });
+
         it('returns the user with the given id', () => {
-            return createUser(userBarry)
-                .then(barry => request(app).get(`/api/users/${barry._id}`))
+            return request
+                .agent(app)
+                .get(`/api/users/${user._id}`)
+                .set('Cookie', [`access-token=${token}`])
+                .expect(200)
                 .then(res => {
                     const json = res.body;
                     expect(json).to.have.property('success');
@@ -89,52 +103,68 @@ describe('User acceptance tests', () => {
     });
 
     context('PUT /api/users/:id', () => {
+        let user;
+        before(() => {
+            return createUserAndGetToken(userBarry).then(data => {
+                user = data.user;
+                token = data.token;
+            });
+        });
+
         it('updates the user with the provided data', () => {
             const updatedUserData = { email: 'flash@starlabs.com' };
-            return createUser(userBarry).then(user =>
-                request(app)
-                    .put(`/api/users/${user._id}`)
-                    .send(updatedUserData)
-                    .expect(200)
-                    .then(res => {
-                        const json = res.body;
-                        expect(json).to.have.property('success');
-                        expect(json).to.have.property('message');
-                        expect(json).to.have.property('payload');
-                        expect(json.success).to.be.true;
-                        expect(json.payload).to.have.property('user');
-                        expect(json.payload.user).to.be.an('object');
-                        expect(json.payload.user).to.have.property('name');
-                        expect(json.payload.user).to.have.property('email');
-                        expect(json.payload.user).to.have.property('program');
-                        expect(json.payload.user).to.have.property('roles');
-                        expect(json.payload.user.email).to.equal(updatedUserData.email);
-                    })
-            );
+            return request
+                .agent(app)
+                .put(`/api/users/${user._id}`)
+                .set('Cookie', [`access-token=${token}`])
+                .send(updatedUserData)
+                .expect(200)
+                .then(res => {
+                    const json = res.body;
+                    expect(json).to.have.property('success');
+                    expect(json).to.have.property('message');
+                    expect(json).to.have.property('payload');
+                    expect(json.success).to.be.true;
+                    expect(json.payload).to.have.property('user');
+                    expect(json.payload.user).to.be.an('object');
+                    expect(json.payload.user).to.have.property('name');
+                    expect(json.payload.user).to.have.property('email');
+                    expect(json.payload.user).to.have.property('program');
+                    expect(json.payload.user).to.have.property('roles');
+                    expect(json.payload.user.email).to.equal(updatedUserData.email);
+                });
         });
     });
 
     context('DELETE /api/users/:id', () => {
+        let user;
+        before(() => {
+            return createUserAndGetToken(userBarry).then(data => {
+                user = data.user;
+                token = data.token;
+            });
+        });
+
         it('deletes the user with the given id', () => {
-            return createUser(userBarry).then(user =>
-                request(app)
-                    .delete(`/api/users/${user._id}`)
-                    .expect(200)
-                    .then(res => {
-                        const json = res.body;
-                        expect(json).to.have.property('success');
-                        expect(json).to.have.property('message');
-                        expect(json).to.have.property('payload');
-                        expect(json.success).to.be.true;
-                        expect(json.payload).to.have.property('user');
-                        expect(json.payload.user).to.be.an('object');
-                        expect(json.payload.user).to.have.property('name');
-                        expect(json.payload.user).to.have.property('email');
-                        expect(json.payload.user).to.have.property('program');
-                        expect(json.payload.user).to.have.property('roles');
-                        expect(json.payload.user.email).to.equal(userBarry.email);
-                    })
-            );
+            return request
+                .agent(app)
+                .delete(`/api/users/${user._id}`)
+                .set('Cookie', [`access-token=${token}`])
+                .expect(200)
+                .then(res => {
+                    const json = res.body;
+                    expect(json).to.have.property('success');
+                    expect(json).to.have.property('message');
+                    expect(json).to.have.property('payload');
+                    expect(json.success).to.be.true;
+                    expect(json.payload).to.have.property('user');
+                    expect(json.payload.user).to.be.an('object');
+                    expect(json.payload.user).to.have.property('name');
+                    expect(json.payload.user).to.have.property('email');
+                    expect(json.payload.user).to.have.property('program');
+                    expect(json.payload.user).to.have.property('roles');
+                    expect(json.payload.user.email).to.equal(userBarry.email);
+                });
         });
     });
 });

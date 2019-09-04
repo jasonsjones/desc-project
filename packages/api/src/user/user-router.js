@@ -2,9 +2,27 @@ import express from 'express';
 import * as UserController from './user-controller';
 import * as AuthUtils from '../auth/auth-utils';
 
-const authRequired = (req, _, next) => {
+const adminRoute = async (req, _, next) => {
     if (req.user) {
-        next();
+        const authUser = await UserController.getUser(req.user.id);
+        if (authUser.isAdmin()) {
+            next();
+        } else {
+            next(new Error('Error: Insufficient access level'));
+        }
+    } else {
+        next(new Error('Error: protected route, user needs to be authenticated.'));
+    }
+};
+
+const sameUserOrAdminRoute = async (req, _, next) => {
+    if (req.user) {
+        const authUser = await UserController.getUser(req.user.id);
+        if (authUser.isAdmin() || req.user.id === req.params.id) {
+            next();
+        } else {
+            next(new Error('Error: Insufficient access level'));
+        }
     } else {
         next(new Error('Error: protected route, user needs to be authenticated.'));
     }
@@ -14,7 +32,7 @@ export default () => {
     let userRouter = express.Router();
     userRouter
         .route('/')
-        .get(authRequired, (req, res) => {
+        .get(adminRoute, (req, res) => {
             UserController.getUsers()
                 .then(users => {
                     res.json({
@@ -60,7 +78,7 @@ export default () => {
 
     userRouter
         .route('/:id([0-9a-zA-Z]{24})')
-        .get((req, res) => {
+        .get(sameUserOrAdminRoute, (req, res) => {
             UserController.getUser(req.params.id)
                 .then(user =>
                     res.json({
@@ -77,7 +95,7 @@ export default () => {
                     })
                 );
         })
-        .put((req, res) => {
+        .put(sameUserOrAdminRoute, (req, res) => {
             UserController.updateUser(req.params.id, req.body)
                 .then(user =>
                     res.json({
@@ -94,7 +112,7 @@ export default () => {
                     })
                 );
         })
-        .delete((req, res) => {
+        .delete(sameUserOrAdminRoute, (req, res) => {
             UserController.deleteUser(req.params.id)
                 .then(user =>
                     res.json({
