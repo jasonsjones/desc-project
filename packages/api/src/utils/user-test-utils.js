@@ -1,3 +1,6 @@
+import { createUser } from '../user/user-controller';
+import { generateToken } from '../auth/auth-utils';
+
 export const userOllie = {
     name: {
         first: 'Oliver',
@@ -18,4 +21,13 @@ export const userBarry = {
     program: 'health',
     password: 'theflash',
     roles: ['requestor']
+};
+
+export const createUserAndGetToken = userData => {
+    return createUser(userData).then(user => {
+        return {
+            user,
+            token: generateToken(user)
+        };
+    });
 };

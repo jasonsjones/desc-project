@@ -2,11 +2,19 @@ import express from 'express';
 import * as UserController from './user-controller';
 import * as AuthUtils from '../auth/auth-utils';
 
+const authRequired = (req, _, next) => {
+    if (req.user) {
+        next();
+    } else {
+        next(new Error('Error: protected route, user needs to be authenticated.'));
+    }
+};
+
 export default () => {
     let userRouter = express.Router();
     userRouter
         .route('/')
-        .get((req, res) => {
+        .get(authRequired, (req, res) => {
             UserController.getUsers()
                 .then(users => {
                     res.json({
@@ -23,7 +31,7 @@ export default () => {
                     })
                 );
         })
-        .post((req, res, next) => {
+        .post((req, res) => {
             UserController.createUser(req.body)
                 .then(user => {
                     req.user = user;
