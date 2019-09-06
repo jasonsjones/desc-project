@@ -18,3 +18,4 @@ yarn-error.log
 .bash_history
 .nyc_output
 .node-spawn*/
+.vscode/
