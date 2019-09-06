@@ -1,5 +1,6 @@
 import express from 'express';
 import * as ItemController from './item-controller';
+import { getUser } from '../user/user-controller';
 
 const handleError = response => {
     return err =>
@@ -10,12 +11,34 @@ const handleError = response => {
         });
 };
 
+const isAuth = async (req, _, next) => {
+    if (req.user) {
+        next();
+    } else {
+        next(new Error('Error: protected route, user needs to be authenticated.'));
+    }
+};
+
+const isOwnerOrAdmin = async (req, _, next) => {
+    if (req.user) {
+        const authUser = await getUser(req.user.id);
+        const item = await ItemController.getItem(req.params.id);
+        if (authUser.isAdmin() || req.user.id === item.submittedBy._id.toString()) {
+            next();
+        } else {
+            next(new Error('Error: Insufficient access level'));
+        }
+    } else {
+        next(new Error('Error: protected route, user needs to be authenticated.'));
+    }
+};
+
 export default () => {
     let itemRouter = express.Router();
 
     itemRouter
         .route('/')
-        .get((req, res) => {
+        .get(isAuth, (_, res) => {
             ItemController.getItems()
                 .then(items =>
                     res.json({
@@ -28,7 +51,7 @@ export default () => {
                 )
                 .catch(handleError(res));
         })
-        .post((req, res, next) => {
+        .post(isAuth, (req, res) => {
             ItemController.createItem(req.body)
                 .then(item =>
                     res.json({
@@ -44,7 +67,7 @@ export default () => {
 
     itemRouter
         .route('/:id([0-9a-zA-Z]{24})')
-        .get((req, res) => {
+        .get(isAuth, (req, res) => {
             ItemController.getItem(req.params.id)
                 .then(item =>
                     res.json({
@@ -55,7 +78,7 @@ export default () => {
                 )
                 .catch(handleError(res));
         })
-        .put((req, res) => {
+        .put(isOwnerOrAdmin, (req, res) => {
             ItemController.updateItem(req.params.id, req.body)
                 .then(item =>
                     res.json({
@@ -66,7 +89,7 @@ export default () => {
                 )
                 .catch(handleError(res));
         })
-        .delete((req, res) => {
+        .delete(isOwnerOrAdmin, (req, res) => {
             ItemController.deleteItem(req.params.id)
                 .then(item =>
                     res.json({
@@ -78,7 +101,7 @@ export default () => {
                 .catch(handleError(res));
         });
 
-    itemRouter.route('/:id([0-9a-zA-Z]{24})/notes').post((req, res) => {
+    itemRouter.route('/:id([0-9a-zA-Z]{24})/notes').post(isAuth, (req, res) => {
         ItemController.addNote(req.params.id, req.body)
             .then(item =>
                 res.json({
@@ -89,5 +112,6 @@ export default () => {
             )
             .catch(handleError(res));
     });
+
     return itemRouter;
 };

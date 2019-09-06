@@ -1,28 +1,22 @@
 import { expect } from 'chai';
 import request from 'supertest';
 
-import config from '../config/config';
 import app from '../config/app';
-import { createUser } from '../user/user-controller';
 import { createItem } from './item-controller';
 import { User, Item, Note } from '../models';
-import { userOllie, userBarry } from '../utils/user-test-utils';
+import { userBarry, createUserAndGetToken } from '../utils/user-test-utils';
 import { dbConnection, deleteCollection } from '../utils/db-test-utils';
 import { getMockItemData } from '../utils/item-test-utils';
 
-const createOllie = () => {
-    return createUser(userOllie);
-};
-
-const createBarry = () => {
-    return createUser(userBarry);
-};
-
 describe('Item acceptance tests', () => {
     let barryId;
+    let token;
     before(async () => {
         await deleteCollection(dbConnection, User, 'users');
-        return createBarry().then(user => (barryId = user._id));
+        return createUserAndGetToken(userBarry).then(data => {
+            barryId = data.user._id;
+            token = data.token;
+        });
     });
 
     afterEach(async () => {
@@ -33,11 +27,13 @@ describe('Item acceptance tests', () => {
     after(async () => await deleteCollection(dbConnection, User, 'users'));
 
     context('POST /api/items', () => {
-        it('returns status code 200 and json payload when creating a new item without a note', () => {
+        it('returns json payload when creating a new item without a note', () => {
             const itemData = getMockItemData(barryId).householdItemWithoutNote;
 
-            return request(app)
+            return request
+                .agent(app)
                 .post('/api/items/')
+                .set('Cookie', [`access-token=${token}`])
                 .send(itemData)
                 .expect(200)
                 .then(res => {
@@ -54,11 +50,13 @@ describe('Item acceptance tests', () => {
                 });
         });
 
-        it('returns status code 200 and json payload when creating a new item with a note', () => {
+        it('returns json payload when creating a new item with a note', () => {
             const itemData = getMockItemData(barryId).clothingItemWithNote;
 
-            return request(app)
+            return request
+                .agent(app)
                 .post('/api/items/')
+                .set('Cookie', [`access-token=${token}`])
                 .send(itemData)
                 .expect(200)
                 .then(res => {
@@ -75,12 +73,14 @@ describe('Item acceptance tests', () => {
                 });
         });
 
-        it('returns status code 200 and json payload with error if a required field is not provided', () => {
+        it('returns json payload with error if a required field is not provided', () => {
             const itemData = getMockItemData(barryId).clothingItemWithNote;
             delete itemData.name;
 
-            return request(app)
+            return request
+                .agent(app)
                 .post('/api/items/')
+                .set('Cookie', [`access-token=${token}`])
                 .send(itemData)
                 .expect(200)
                 .then(res => {
@@ -94,15 +94,17 @@ describe('Item acceptance tests', () => {
     });
 
     context('GET /api/items', () => {
-        it('returns status code 200 and json payload with all the items', () => {
+        it('returns json payload with all the items', () => {
             const item1Data = getMockItemData(barryId).clothingItemWithNote;
             const item2Data = getMockItemData(barryId).householdItemWithNote;
 
             return createItem(item1Data)
                 .then(() => createItem(item2Data))
                 .then(() =>
-                    request(app)
+                    request
+                        .agent(app)
                         .get('/api/items')
+                        .set('Cookie', [`access-token=${token}`])
                         .expect(200)
                 )
                 .then(res => {
@@ -130,8 +132,10 @@ describe('Item acceptance tests', () => {
             return createItem(itemData)
                 .then(item => (itemId = item._id))
                 .then(() =>
-                    request(app)
+                    request
+                        .agent(app)
                         .get(`/api/items/${itemId}`)
+                        .set('Cookie', [`access-token=${token}`])
                         .expect(200)
                 )
                 .then(res => {
@@ -155,8 +159,10 @@ describe('Item acceptance tests', () => {
             return createItem(itemData)
                 .then(item => (itemId = item._id))
                 .then(() =>
-                    request(app)
+                    request
+                        .agent(app)
                         .put(`/api/items/${itemId}`)
+                        .set('Cookie', [`access-token=${token}`])
                         .send({ size: updatedSize })
                         .expect(200)
                 )
@@ -181,8 +187,10 @@ describe('Item acceptance tests', () => {
             return createItem(itemData)
                 .then(item => (itemId = item._id))
                 .then(() =>
-                    request(app)
+                    request
+                        .agent(app)
                         .put(`/api/items/${itemId}`)
+                        .set('Cookie', [`access-token=${token}`])
                         .send({ name: updatedName })
                         .expect(200)
                 )
@@ -207,8 +215,10 @@ describe('Item acceptance tests', () => {
             return createItem(itemData)
                 .then(item => (itemId = item._id))
                 .then(() =>
-                    request(app)
+                    request
+                        .agent(app)
                         .put(`/api/items/${itemId}`)
+                        .set('Cookie', [`access-token=${token}`])
                         .send({ urgency: updatedUrgency })
                         .expect(200)
                 )
@@ -234,8 +244,10 @@ describe('Item acceptance tests', () => {
             return createItem(itemData)
                 .then(item => (itemId = item._id))
                 .then(() =>
-                    request(app)
+                    request
+                        .agent(app)
                         .delete(`/api/items/${itemId}`)
+                        .set('Cookie', [`access-token=${token}`])
                         .expect(200)
                 )
                 .then(res => {
@@ -255,11 +267,14 @@ describe('Item acceptance tests', () => {
         it('updates an item with a new note', () => {
             let itemId;
             const itemData = getMockItemData(barryId).clothingItemWithNote;
+
             return createItem(itemData)
                 .then(item => (itemId = item._id))
                 .then(() =>
-                    request(app)
+                    request
+                        .agent(app)
                         .post(`/api/items/${itemId}/notes`)
+                        .set('Cookie', [`access-token=${token}`])
                         .send({ submittedBy: barryId, body: 'This is another note for the item' })
                         .expect(200)
                 )
