@@ -10,12 +10,20 @@ const handleError = response => {
         });
 };
 
+const isAuth = async (req, _, next) => {
+    if (req.user) {
+        next();
+    } else {
+        next(new Error('Error: protected route, user needs to be authenticated.'));
+    }
+};
+
 export default () => {
     let clientRequestRouter = express.Router();
 
     clientRequestRouter
         .route('/')
-        .post((req, res) => {
+        .post(isAuth, (req, res) => {
             ClientRequestController.createClientRequest(req.body)
                 .then(clientRequest =>
                     res.json({
@@ -28,7 +36,7 @@ export default () => {
                 )
                 .catch(handleError(res));
         })
-        .get((req, res) => {
+        .get(isAuth, (_, res) => {
             ClientRequestController.getClientRequests()
                 .then(clientRequests =>
                     res.json({
@@ -42,7 +50,7 @@ export default () => {
                 .catch(handleError(res));
         });
 
-    clientRequestRouter.route('/:id([0-9a-zA-Z]{24})').get((req, res) => {
+    clientRequestRouter.route('/:id([0-9a-zA-Z]{24})').get(isAuth, (req, res) => {
         ClientRequestController.getClientRequest(req.params.id)
             .then(clientRequest =>
                 res.json({
@@ -53,5 +61,6 @@ export default () => {
             )
             .catch(handleError(res));
     });
+
     return clientRequestRouter;
 };

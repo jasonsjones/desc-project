@@ -1,28 +1,23 @@
 import { expect } from 'chai';
 import request from 'supertest';
 
-import config from '../config/config';
 import app from '../config/app';
 import { createUser } from '../user/user-controller';
 import { createClientRequest } from './client-request-controller';
 import { User, ClientRequest, Item, Note } from '../models';
-import { userOllie, userBarry } from '../utils/user-test-utils';
+import { createUserAndGetToken, userBarry } from '../utils/user-test-utils';
 import { dbConnection, deleteCollection } from '../utils/db-test-utils';
 import { getMockItemData } from '../utils/item-test-utils';
 
-const createOllie = () => {
-    return createUser(userOllie);
-};
-
-const createBarry = () => {
-    return createUser(userBarry);
-};
-
 describe('Client Request acceptance tests', () => {
     let barryId;
+    let token;
     before(async () => {
         await deleteCollection(dbConnection, User, 'users');
-        return createBarry().then(user => (barryId = user._id));
+        return createUserAndGetToken(userBarry).then(data => {
+            barryId = data.user._id;
+            token = data.token;
+        });
     });
 
     afterEach(async () => {
@@ -43,8 +38,10 @@ describe('Client Request acceptance tests', () => {
                 items: [item1, item2]
             };
 
-            return request(app)
+            return request
+                .agent(app)
                 .post('/api/clientrequests/')
+                .set('Cookie', [`access-token=${token}`])
                 .send(clientRequestData)
                 .expect(200)
                 .then(res => {
@@ -70,8 +67,10 @@ describe('Client Request acceptance tests', () => {
                 items: item
             };
 
-            return request(app)
+            return request
+                .agent(app)
                 .post('/api/clientrequests/')
+                .set('Cookie', [`access-token=${token}`])
                 .send(clientRequestData)
                 .expect(200)
                 .then(res => {
@@ -95,8 +94,10 @@ describe('Client Request acceptance tests', () => {
                 submittedBy: barryId
             };
 
-            return request(app)
+            return request
+                .agent(app)
                 .post('/api/clientrequests/')
+                .set('Cookie', [`access-token=${token}`])
                 .send(clientRequestData)
                 .expect(200)
                 .then(res => {
@@ -133,8 +134,10 @@ describe('Client Request acceptance tests', () => {
             await createClientRequest(clientRequestData1);
             await createClientRequest(clientRequestData2);
 
-            return request(app)
+            return request
+                .agent(app)
                 .get('/api/clientrequests/')
+                .set('Cookie', [`access-token=${token}`])
                 .expect(200)
                 .then(res => {
                     const json = res.body;
@@ -168,8 +171,10 @@ describe('Client Request acceptance tests', () => {
         });
 
         it('returns the client request with the given id', () => {
-            return request(app)
+            return request
+                .agent(app)
                 .get(`/api/clientrequests/${clientRequestId}`)
+                .set('Cookie', [`access-token=${token}`])
                 .expect(200)
                 .then(res => {
                     const json = res.body;
