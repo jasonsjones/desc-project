@@ -2,7 +2,7 @@ import express from 'express';
 import * as UserController from './user-controller';
 import * as AuthUtils from '../auth/auth-utils';
 
-const adminRoute = async (req, _, next) => {
+const isAdmin = async (req, _, next) => {
     if (req.user) {
         const authUser = await UserController.getUser(req.user.id);
         if (authUser.isAdmin()) {
@@ -15,7 +15,7 @@ const adminRoute = async (req, _, next) => {
     }
 };
 
-const sameUserOrAdminRoute = async (req, _, next) => {
+const isOwnerOrAdmin = async (req, _, next) => {
     if (req.user) {
         const authUser = await UserController.getUser(req.user.id);
         if (authUser.isAdmin() || req.user.id === req.params.id) {
@@ -32,7 +32,7 @@ export default () => {
     let userRouter = express.Router();
     userRouter
         .route('/')
-        .get(adminRoute, (req, res) => {
+        .get(isAdmin, (req, res) => {
             UserController.getUsers()
                 .then(users => {
                     res.json({
@@ -78,7 +78,7 @@ export default () => {
 
     userRouter
         .route('/:id([0-9a-zA-Z]{24})')
-        .get(sameUserOrAdminRoute, (req, res) => {
+        .get(isOwnerOrAdmin, (req, res) => {
             UserController.getUser(req.params.id)
                 .then(user =>
                     res.json({
@@ -95,7 +95,7 @@ export default () => {
                     })
                 );
         })
-        .put(sameUserOrAdminRoute, (req, res) => {
+        .put(isOwnerOrAdmin, (req, res) => {
             UserController.updateUser(req.params.id, req.body)
                 .then(user =>
                     res.json({
@@ -112,7 +112,7 @@ export default () => {
                     })
                 );
         })
-        .delete(sameUserOrAdminRoute, (req, res) => {
+        .delete(isOwnerOrAdmin, (req, res) => {
             UserController.deleteUser(req.params.id)
                 .then(user =>
                     res.json({
