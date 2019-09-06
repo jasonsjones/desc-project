@@ -8,17 +8,15 @@ import { userOllie } from '../utils/user-test-utils';
 import { dbConnection, deleteCollection } from '../utils/db-test-utils';
 
 describe('Auth acceptance tests', () => {
+    beforeEach(() => createUser(userOllie));
     afterEach(async () => await deleteCollection(dbConnection, User, 'users'));
 
     describe('POST /api/auth/login', () => {
-        it('returns status code of 200 and json with user and token on success', () => {
-            return createUser(userOllie)
-                .then(() =>
-                    request(app)
-                        .post('/api/auth/login')
-                        .send({ email: userOllie.email, password: userOllie.password })
-                        .expect(200)
-                )
+        it('returns json with user and token on success', () => {
+            return request(app)
+                .post('/api/auth/login')
+                .send({ email: userOllie.email, password: userOllie.password })
+                .expect(200)
                 .then(res => {
                     const json = res.body;
                     expect(json).to.have.property('success');
@@ -31,32 +29,25 @@ describe('Auth acceptance tests', () => {
         });
 
         it('returns status code of 401 if password is incorrect', () => {
-            return createUser(userOllie).then(() =>
-                request(app)
-                    .post('/api/auth/login')
-                    .send({ email: userOllie.email, password: 'wrongPassword' })
-                    .expect(401)
-            );
+            return request(app)
+                .post('/api/auth/login')
+                .send({ email: userOllie.email, password: 'wrongPassword' })
+                .expect(401);
         });
 
         it('returns status code of 401 if user (email) is not found', () => {
-            return createUser(userOllie).then(() =>
-                request(app)
-                    .post('/api/auth/login')
-                    .send({ email: 'ollie@qc.com', password: userOllie.password })
-                    .expect(401)
-            );
+            return request(app)
+                .post('/api/auth/login')
+                .send({ email: 'ollie@qc.com', password: userOllie.password })
+                .expect(401);
         });
     });
 
     describe('GET /api/auth/logout', () => {
-        it('returns status code 200 and json payload', () => {
-            return createUser(userOllie)
-                .then(() =>
-                    request(app)
-                        .get('/api/auth/logout')
-                        .expect(200)
-                )
+        it('returns json payload on success', () => {
+            return request(app)
+                .get('/api/auth/logout')
+                .expect(200)
                 .then(res => {
                     const json = res.body;
                     expect(json).to.have.property('success');
@@ -65,4 +56,4 @@ describe('Auth acceptance tests', () => {
                 });
         });
     });
-}).timeout(8000);
+});
