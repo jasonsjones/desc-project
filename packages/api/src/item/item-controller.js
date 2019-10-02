@@ -69,8 +69,8 @@ export const createItem = itemData => {
     }
 };
 
-export const getItems = () => {
-    return Item.find({})
+export const getItems = (query = {}) => {
+    return Item.find(query)
         .populate(optionsToPopulateSubmittedBy)
         .populate(optionsToPopulateNote)
         .exec();
