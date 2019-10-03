@@ -34,7 +34,6 @@ class RequestNotes extends React.Component {
     }
 
     handleSubmitNote(event) {
-        console.log(this.state.currentNote);
         var id = this.props.item._id;
 
         var noteData = {
@@ -45,37 +44,13 @@ class RequestNotes extends React.Component {
                 body: this.state.currentNote
             }
         };
-        const baseUrl = 'http://localhost:3000';
-        fetch(`${baseUrl}/api/items/${noteData.itemId}/notes`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(noteData.requestBody)
-        })
-            .then(function(response) {
-                console.log(response);
-                if (response.ok && response.status === 200) {
-                    return response.json();
-                } else {
-                    return Promise.reject({ message: 'err' });
-                }
-            })
-            .then(function(data) {
-                if (data.success) {
-                    M.toast({ html: 'Note posted' });
-                } else {
-                    M.toast({ html: 'Error sending note' });
-                }
-                console.log(data);
-            })
-            .catch(function(err) {
-                console.log(err);
-            });
+
+        this.props.postNoteToItem(noteData);
 
         // Once note is posted, reset text input
         this.setState({ currentNote: '' });
-        // how to add to list of notes upon posting??
-        this.state.item.notes.append(noteData);
-        // location.reload();
+
+        // TODO: add to list of notes without requiring refresh
     }
 
     render() {
@@ -90,7 +65,6 @@ class RequestNotes extends React.Component {
                     value={this.state.currentNote}
                     onChange={this.handleCurrentNoteChange}
                 />
-                {/* <input type="submit" value="Submit note" /> */}
                 <button
                     className="btn waves-effect waves-light"
                     type="submit"

@@ -2,7 +2,7 @@ import React from 'react';
 
 const AuthContext = React.createContext({
     contextUser: null,
-    token: '',
+    token: '', //jwt
     login: () => {},
     logout: () => {}
 });
