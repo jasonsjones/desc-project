@@ -19,6 +19,11 @@ class RequestCreationPage extends React.Component {
         this.submitRequest = this.submitRequest.bind(this);
     }
 
+    componentDidMount() {
+        const elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems);
+    }
+
     handleChange = evt => {
         const { id, value } = evt.target;
         this.setState({
@@ -79,14 +84,23 @@ class RequestCreationPage extends React.Component {
             <div className="container card-panel">
                 <h5>New Request</h5>
 
-                <p>Client Id</p>
-                <input
-                    type="text"
-                    id="clientId"
-                    value={this.state.clientId}
-                    onChange={this.handleChange}
-                />
+                <div className="row">
+                    <p>Client Id</p>
+                    <input
+                        type="text"
+                        id="clientId"
+                        value={this.state.clientId}
+                        onChange={this.handleChange}
+                    />
 
+                    <p>Client Program</p>
+                    <input
+                        type="text"
+                        id="program"
+                        value={this.state.program}
+                        onChange={this.handleChange}
+                    />
+                </div>
                 <ItemRequest onItemAdded={this.handleItemAdded} />
 
                 <RequestedItems items={this.state.itemsInRequest} />
