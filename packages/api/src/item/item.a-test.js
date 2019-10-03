@@ -122,6 +122,36 @@ describe('Item acceptance tests', () => {
                     expectItemShape(items[1]);
                 });
         });
+
+        ['itemCategory=household', 'itemCategory=clothing', 'name=plates'].forEach(query => {
+            it(`returns json payload with only the ${query} items`, () => {
+                const item1Data = getMockItemData(barryId).clothingItemWithNote;
+                const item2Data = getMockItemData(barryId).householdItemWithNote;
+
+                return createItem(item1Data)
+                    .then(() => createItem(item2Data))
+                    .then(() =>
+                        request
+                            .agent(app)
+                            .get(`/api/items?${query}`)
+                            .set('Cookie', [`access-token=${token}`])
+                            .expect(200)
+                    )
+                    .then(res => {
+                        const json = res.body;
+                        expect(json).to.have.property('success');
+                        expect(json).to.have.property('message');
+                        expect(json).to.have.property('payload');
+                        expect(json.success).to.be.true;
+                        expect(json.payload).to.have.property('items');
+
+                        const items = res.body.payload.items;
+                        expect(items).to.be.an('Array');
+                        expect(items).to.have.length(1);
+                        expectItemShape(items[0]);
+                    });
+            });
+        });
     });
 
     context('GET /api/items/:id', () => {
