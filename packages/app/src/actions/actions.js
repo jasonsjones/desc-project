@@ -8,7 +8,8 @@ export const userLogin = creds => {
         fetch(`${baseUrl}/api/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(creds)
+            body: JSON.stringify(creds),
+            credentials: 'include'
         })
             .then(response => {
                 if (response.ok && response.status === 200) {
@@ -88,7 +89,11 @@ export const fetchData = () => {
 export const fetchItems = () => {
     return dispatch => {
         dispatch({ type: 'FETCH_ITEM_REQUEST' });
-        fetch(`${baseUrl}/api/items`)
+
+        fetch(`${baseUrl}/api/items`, {
+            method: 'GET',
+            credentials: 'include'
+        })
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -109,7 +114,8 @@ export const updateItemStatus = itemStatusData => {
         fetch(`${baseUrl}/api/items/${itemStatusData.itemId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(itemStatusData.requestBody)
+            body: JSON.stringify(itemStatusData.requestBody),
+            credentials: 'include'
         })
             .then(function(response) {
                 console.log(response);
@@ -138,7 +144,8 @@ export const postNoteToItem = noteData => {
         fetch(`${baseUrl}/api/items/${noteData.itemId}/notes`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(noteData.requestBody)
+            body: JSON.stringify(noteData.requestBody),
+            credentials: 'include'
         })
             .then(function(response) {
                 console.log(response);
