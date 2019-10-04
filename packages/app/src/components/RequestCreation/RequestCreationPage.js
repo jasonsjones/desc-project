@@ -85,21 +85,24 @@ class RequestCreationPage extends React.Component {
                 <h5>New Request</h5>
 
                 <div className="row">
-                    <p>Client Id</p>
-                    <input
-                        type="text"
-                        id="clientId"
-                        value={this.state.clientId}
-                        onChange={this.handleChange}
-                    />
-
-                    <p>Client Program</p>
-                    <input
-                        type="text"
-                        id="program"
-                        value={this.state.program}
-                        onChange={this.handleChange}
-                    />
+                    <div className="col s6">
+                        <p>Client Id</p>
+                        <input
+                            type="text"
+                            id="clientId"
+                            value={this.state.clientId}
+                            onChange={this.handleChange}
+                        />
+                    </div>
+                    <div className="col s6">
+                        <p>Client Location</p>
+                        <input
+                            type="text"
+                            id="location"
+                            value={this.state.location}
+                            onChange={this.handleChange}
+                        />
+                    </div>
                 </div>
                 <ItemRequest onItemAdded={this.handleItemAdded} />
 
