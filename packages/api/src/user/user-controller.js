@@ -10,8 +10,8 @@ export const createUser = userData => {
     return newUser.save();
 };
 
-export const getUsers = () => {
-    return User.find({}).exec();
+export const getUsers = (query = {}) => {
+    return User.find(query).exec();
 };
 
 export const getUser = id => {

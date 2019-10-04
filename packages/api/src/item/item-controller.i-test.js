@@ -117,6 +117,32 @@ describe('Item integration tests', () => {
                     expect(items).to.have.length(2);
                 });
         });
+
+        it('returns all household items', () => {
+            const item1Data = getMockItemData(barryId).engagementItemWithNote;
+            const item2Data = getMockItemData(barryId).householdItemWithoutNote;
+            return Controller.createItem(item1Data)
+                .then(() => Controller.createItem(item2Data))
+                .then(() => Controller.getItems({ itemCategory: 'Household' }))
+                .then(items => {
+                    expect(items).to.exist;
+                    expect(items).to.be.an('array');
+                    expect(items).to.have.length(1);
+                });
+        });
+
+        it('returns all games', () => {
+            const item1Data = getMockItemData(barryId).engagementItemWithNote;
+            const item2Data = getMockItemData(barryId).householdItemWithoutNote;
+            return Controller.createItem(item1Data)
+                .then(() => Controller.createItem(item2Data))
+                .then(() => Controller.getItems({ name: 'games' }))
+                .then(items => {
+                    expect(items).to.exist;
+                    expect(items).to.be.an('array');
+                    expect(items).to.have.length(1);
+                });
+        });
     });
 
     context('getItem(id)', () => {

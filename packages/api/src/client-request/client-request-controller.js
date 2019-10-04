@@ -56,8 +56,8 @@ export const createClientRequest = requestData => {
     }
 };
 
-export const getClientRequests = () => {
-    return ClientRequest.find({})
+export const getClientRequests = (query = {}) => {
+    return ClientRequest.find(query)
         .populate(optionsToPopulateItem)
         .exec();
 };

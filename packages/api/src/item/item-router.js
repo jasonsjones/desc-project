@@ -11,6 +11,17 @@ const handleError = response => {
         });
 };
 
+const processQueryParams = (req, _, next) => {
+    Object.keys(req.query).forEach(queryParam => {
+        if (queryParam === 'itemCategory') {
+            req.query.itemCategory = req.query.itemCategory
+                .toLowerCase()
+                .replace(/^\w/, c => c.toUpperCase());
+        }
+    });
+    next();
+};
+
 const isAuth = async (req, _, next) => {
     if (req.user) {
         next();
@@ -38,8 +49,8 @@ export default () => {
 
     itemRouter
         .route('/')
-        .get(isAuth, (_, res) => {
-            ItemController.getItems()
+        .get(isAuth, processQueryParams, (req, res) => {
+            ItemController.getItems(req.query)
                 .then(items =>
                     res.json({
                         success: true,

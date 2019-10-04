@@ -108,6 +108,16 @@ describe('User Controller integration tests', () => {
                     expect(users).to.have.length(2);
                 });
         });
+
+        it('returns all users from the employment program', () => {
+            return Controller.createUser(ollie)
+                .then(() => Controller.createUser(dig))
+                .then(() => Controller.getUsers({ program: 'employment' }))
+                .then(users => {
+                    expect(users).to.be.an('array');
+                    expect(users).to.have.length(1);
+                });
+        });
     });
 
     describe('getUser(id)', () => {
