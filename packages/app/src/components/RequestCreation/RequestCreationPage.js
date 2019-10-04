@@ -45,7 +45,6 @@ class RequestCreationPage extends React.Component {
             clientId: this.state.clientId,
             submittedBy: '5bc50dabf5aa6ae120b49005', // use this id until user context is implemented
             numberOfItems: oneItem.count,
-            urgency: 'survival',
             status: 'active',
             note: oneItem.notes,
             itemCategory: oneItem.category,

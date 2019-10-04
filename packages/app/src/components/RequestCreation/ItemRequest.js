@@ -11,7 +11,6 @@ class ItemRequest extends React.Component {
             itemType: '',
             gender: '',
             count: 1,
-            urgency: 'standard',
             notes: ''
         };
 
@@ -98,19 +97,6 @@ class ItemRequest extends React.Component {
         );
     }
 
-    urgencySelection() {
-        return (
-            <Select
-                title={'Urgency'}
-                name={'urgency'}
-                options={['standard', 'high-priority']}
-                value={this.state.urgency}
-                placeholder={'Select urgency'}
-                handleChange={this.handleInput}
-            />
-        );
-    }
-
     notesInput() {
         return (
             <input
@@ -136,7 +122,6 @@ class ItemRequest extends React.Component {
                     <p>Count requested</p>
                     {this.itemCountSelection()}
 
-                    {this.urgencySelection()}
                     {this.notesInput()}
                 </div>
                 <div className="card-action">
