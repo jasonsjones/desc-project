@@ -13,7 +13,7 @@ class RequestedItemsList extends React.Component {
         return (
             <div>
                 <ul className="collapsible expandable with-header">
-                    <li class="collection-header">
+                    <li className="collection-header">
                         <div className="row">
                             <div className="col offset-s1 ">Requestor</div>
                             <div className="col offset-s1 ">Item</div>

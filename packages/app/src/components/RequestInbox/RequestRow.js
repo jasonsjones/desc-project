@@ -21,9 +21,8 @@ class RequestRow extends React.Component {
                         {this.state.row.submittedBy.name.first}{' '}
                         {this.state.row.submittedBy.name.last}
                     </div>
-                    <div className="col s1 m4">
-                        {this.state.row.name} - {this.state.row.numberOfItems}
-                    </div>
+                    <div className="col s1 m4">{this.state.row.name}</div>
+                    <div className="col s1 m4">{this.state.row.numberOfItems}</div>
                     <div className="col s1 m4 right-align">
                         {this.getDate(this.state.row.createdAt)}
                     </div>
