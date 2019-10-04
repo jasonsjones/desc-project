@@ -1,0 +1,4 @@
+/* materialize.css add display: none to selects, this is a temp solution */
+select {
+    display: block;
+}

@@ -1,4 +1,4 @@
-import M from 'materialize-css';
+// import M from 'materialize-css';
 
 const baseUrl = 'http://localhost:3000';
 
@@ -127,7 +127,7 @@ export const updateItemStatus = itemStatusData => {
             })
             .then(function(data) {
                 if (data.success) {
-                    M.toast({ html: 'Item status updated' });
+                    //   M.toast({ html: "Item status updated" });
                 } else {
                 }
                 console.log(data);
@@ -157,7 +157,7 @@ export const postNoteToItem = noteData => {
             })
             .then(function(data) {
                 if (data.success) {
-                    M.toast({ html: 'Note posted' });
+                    //   M.toast({ html: "Note posted" });
                 } else {
                 }
                 console.log(data);

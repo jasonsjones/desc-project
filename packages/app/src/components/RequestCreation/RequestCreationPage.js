@@ -1,5 +1,5 @@
 import React from 'react';
-import M from 'materialize-css';
+// import M from 'materialize-css';
 import ItemRequest from './ItemRequest';
 import RequestedItems from './RequestedItems';
 
@@ -19,10 +19,10 @@ class RequestCreationPage extends React.Component {
         this.submitRequest = this.submitRequest.bind(this);
     }
 
-    componentDidMount() {
-        const elems = document.querySelectorAll('select');
-        M.FormSelect.init(elems);
-    }
+    // componentDidMount() {
+    //     const elems = document.querySelectorAll('select');
+    //     M.FormSelect.init(elems);
+    // }
 
     handleChange = evt => {
         const { id, value } = evt.target;
@@ -66,15 +66,15 @@ class RequestCreationPage extends React.Component {
             })
             .then(function(data) {
                 if (data.success) {
-                    M.toast({ html: 'Your request has been created' });
+                    // M.toast({ html: 'Your request has been created' });
                     // navigate to home
                 } else {
-                    M.toast({ html: 'Error' });
+                    // M.toast({ html: 'Error' });
                 }
                 console.log(data);
             })
             .catch(function(err) {
-                M.toast({ html: 'Error' });
+                // M.toast({ html: 'Error' });
                 console.log(err);
             });
     }
