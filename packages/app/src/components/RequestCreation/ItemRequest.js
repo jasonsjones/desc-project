@@ -26,6 +26,15 @@ class ItemRequest extends React.Component {
 
     handleAddItem(event) {
         this.props.onItemAdded(this.state);
+        // Reset state
+        this.setState({
+            category: '',
+            itemType: '',
+            gender: '',
+            size: '',
+            count: 1,
+            notes: ''
+        });
     }
 
     getCategories() {
