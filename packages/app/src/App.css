@@ -2,3 +2,6 @@
 select {
     display: block;
 }
+.desc-logo {
+    margin-right: 2rem;
+}

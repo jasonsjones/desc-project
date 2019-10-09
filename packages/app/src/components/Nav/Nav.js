@@ -22,10 +22,17 @@ const Nav = () => {
     return (
         <nav className="nav-wrapper teal">
             <div className="container">
+                <span className="desc-logo">
+                    <img
+                        src="https://www.desc.org/wp-content/themes/desc/img/logo-desc.png"
+                        height="60"
+                        width="60"
+                    />
+                </span>
                 <Link to="/">
                     <span className="brand-logo">DESC Portal</span>
                 </Link>
-                <ul className="right hide-on-med-and-down">
+                <ul className="right ">
                     {!isAuthed && <SignedOutLinks />}
                     {isAuthed && (
                         <>
