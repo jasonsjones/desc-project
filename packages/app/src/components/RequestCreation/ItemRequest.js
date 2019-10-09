@@ -10,6 +10,7 @@ class ItemRequest extends React.Component {
             category: '',
             itemType: '',
             gender: '',
+            size: '',
             count: 1,
             notes: ''
         };
@@ -36,8 +37,7 @@ class ItemRequest extends React.Component {
     }
 
     getGenders() {
-        // todo: move to utility
-        return ['male', 'female'];
+        return this.itemOptionsUtility.getGenders();
     }
 
     genderSelection() {
@@ -53,6 +53,45 @@ class ItemRequest extends React.Component {
                     options={this.getGenders()}
                     value={this.state.gender}
                     placeholder={'Select Gender'}
+                    handleChange={this.handleInput}
+                />
+            );
+        }
+    }
+
+    genericSizeSelection() {
+        let itemGenericSizes = this.itemOptionsUtility.getItemSizesGeneric(
+            this.state.category,
+            this.state.itemType
+        );
+        if (itemGenericSizes) {
+            return (
+                <Select
+                    title={'Item Size'}
+                    name={'size'}
+                    options={itemGenericSizes}
+                    value={this.state.size}
+                    placeholder={'Select Size'}
+                    handleChange={this.handleInput}
+                />
+            );
+        }
+    }
+
+    genderedSizeSelection() {
+        let itemGenderSizes = this.itemOptionsUtility.getItemGenderSizes(
+            this.state.category,
+            this.state.itemType,
+            this.state.gender
+        );
+        if (itemGenderSizes) {
+            return (
+                <Select
+                    title={'Item Size'}
+                    name={'size'}
+                    options={itemGenderSizes}
+                    value={this.state.size}
+                    placeholder={'Select Size'}
                     handleChange={this.handleInput}
                 />
             );
@@ -118,6 +157,7 @@ class ItemRequest extends React.Component {
 
                     {/* optional */}
                     {this.genderSelection()}
+                    {this.genericSizeSelection() || this.genderedSizeSelection()}
 
                     <p>Count requested</p>
                     {this.itemCountSelection()}
