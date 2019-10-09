@@ -11,7 +11,8 @@ class RequestedItems extends React.Component {
             let hi = this.props.items.map(item => (
                 // TODO: make separate component for each row
                 <p>
-                    {item.count} {item.itemType} {item.count > 1 ? '(s)' : ''}
+                    {item.count} {item.gender} {item.size} {item.itemType}{' '}
+                    {item.count > 1 ? '(s)' : ''}
                     {item.notes.length > 0 ? ' - Note: ' + item.notes : ''}
                 </p>
             ));
