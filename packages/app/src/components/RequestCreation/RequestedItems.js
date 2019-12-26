@@ -8,16 +8,16 @@ class RequestedItems extends React.Component {
 
     getRequestedItems() {
         if (this.props.items.length > 0) {
-            let hi = this.props.items.map(item => (
+            let requestedItems = this.props.items.map((item, i) => (
                 // TODO: make separate component for each row
-                <p>
+                <p key={i}>
                     {item.count} {item.gender} {item.size} {item.itemType}{' '}
                     {item.count > 1 ? '(s)' : ''}
                     {item.notes.length > 0 ? ' - Note: ' + item.notes : ''}
                 </p>
             ));
 
-            return hi;
+            return requestedItems;
         } else {
             return <p>Your cart is empty</p>;
         }
