@@ -43,16 +43,24 @@ class RequestCreationPage extends React.Component {
 
         let body = {
             clientId: this.state.clientId,
-            submittedBy: '5bc50dabf5aa6ae120b49005', // use this id until user context is implemented
-            numberOfItems: oneItem.count,
-            status: 'active',
-            note: oneItem.notes,
-            itemCategory: oneItem.category,
-            name: oneItem.itemType
+            submittedBy: '5bc50dabf5aa6ae120b49005',
+            items: [
+                {
+                    clientId: this.state.clientId,
+                    submittedBy: '5bc50dabf5aa6ae120b49005', // use this id until user context is implemented
+                    status: 'active',
+                    location: 'Rainier House',
+                    note: oneItem.notes,
+                    itemCategory: oneItem.category,
+                    name: oneItem.itemType,
+                    numberOfItems: oneItem.count
+                }
+            ]
         };
-        fetch('http://localhost:3000/api/items', {
+        fetch('http://localhost:3000/api/clientrequests', {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
             body: JSON.stringify(body)
         })
             .then(function(response) {
