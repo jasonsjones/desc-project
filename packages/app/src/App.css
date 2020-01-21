@@ -5,3 +5,8 @@ select {
 .desc-logo {
     margin-right: 2rem;
 }
+
+.desc-title {
+    vertical-align: top;
+    padding: 1rem;
+}
