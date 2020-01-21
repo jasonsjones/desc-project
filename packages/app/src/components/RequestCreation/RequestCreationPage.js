@@ -1,5 +1,5 @@
 import React from 'react';
-// import M from 'materialize-css';
+import M from 'materialize-css';
 import ItemRequest from './ItemRequest';
 import RequestedItems from './RequestedItems';
 
@@ -10,6 +10,7 @@ class RequestCreationPage extends React.Component {
             requestCreator: {},
 
             clientId: '',
+            location: '',
             itemsInRequest: [],
 
             requestStatus: 'NEW'
@@ -19,10 +20,10 @@ class RequestCreationPage extends React.Component {
         this.submitRequest = this.submitRequest.bind(this);
     }
 
-    // componentDidMount() {
-    //     const elems = document.querySelectorAll('select');
-    //     M.FormSelect.init(elems);
-    // }
+    componentDidMount() {
+        const elems = document.querySelectorAll('select');
+        M.FormSelect.init(elems);
+    }
 
     handleChange = evt => {
         const { id, value } = evt.target;

@@ -14,7 +14,7 @@ import PrivateRoute from './components/PrivateRoute';
 import { reducer } from './reducers/reducer';
 
 import './App.css';
-// import 'materialize-css/dist/css/materialize.css';
+import 'materialize-css/dist/css/materialize.css';
 
 const store = createStore(reducer, applyMiddleware(thunk, logger));
 
