@@ -28,6 +28,7 @@ const Nav = () => {
                             src="https://www.desc.org/wp-content/themes/desc/img/logo-desc.png"
                             height="60"
                             width="60"
+                            alt="DESC logo"
                         />
                         <span className="desc-title">DESC Portal</span>
                     </span>
