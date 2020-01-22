@@ -9,7 +9,6 @@ const Select = props => {
                 id={props.name}
                 value={props.value}
                 onChange={props.handleChange}
-                className="browser-default"
             >
                 <option value="" disabled>
                     {props.placeholder}
