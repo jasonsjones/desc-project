@@ -5,10 +5,10 @@ const Select = props => {
         <div className="form-group">
             <label htmlFor={props.name}> {props.title} </label>
             <select
-                className="browser-default"
                 name={props.name}
                 value={props.value}
                 onChange={props.handleChange}
+                className="browser-default"
             >
                 <option value="" disabled>
                     {props.placeholder}
