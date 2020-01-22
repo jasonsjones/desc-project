@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import M from 'materialize-css';
 import * as actions from '../../actions/actions';
 
 class RequestNotes extends React.Component {
@@ -95,7 +94,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(RequestNotes);
+export default connect(mapStateToProps, mapDispatchToProps)(RequestNotes);
