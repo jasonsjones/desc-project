@@ -20,7 +20,8 @@ export default config => {
     mongoose.connect(buildConnectionString(), {
         useCreateIndex: true,
         useFindAndModify: false,
-        useNewUrlParser: true
+        useNewUrlParser: true,
+        useUnifiedTopology: true
     });
     let db = mongoose.connection;
 
