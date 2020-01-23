@@ -2,8 +2,10 @@ import React from 'react';
 import M from 'materialize-css';
 import ItemRequest from './ItemRequest';
 import RequestedItems from './RequestedItems';
+import AuthContext from '../../context/AuthContext';
 
 class RequestCreationPage extends React.Component {
+    static contextType = AuthContext;
     constructor(props) {
         super(props);
         this.state = {
@@ -40,15 +42,16 @@ class RequestCreationPage extends React.Component {
     }
 
     submitRequest() {
+        const submittedBy = this.context.contextUser._id;
         let oneItem = this.state.itemsInRequest[0];
 
         let body = {
             clientId: this.state.clientId,
-            submittedBy: '5bc50dabf5aa6ae120b49005',
+            submittedBy,
             items: [
                 {
                     clientId: this.state.clientId,
-                    submittedBy: '5bc50dabf5aa6ae120b49005', // use this id until user context is implemented
+                    submittedBy,
                     status: 'active',
                     location: 'Rainier House',
                     note: oneItem.notes,

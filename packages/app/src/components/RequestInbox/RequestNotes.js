@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as actions from '../../actions/actions';
+import AuthContext from '../../context/AuthContext';
 
 class RequestNotes extends React.Component {
+    static contextType = AuthContext;
     constructor(props) {
         super(props);
         this.state = {
@@ -38,8 +40,7 @@ class RequestNotes extends React.Component {
         var noteData = {
             itemId: id,
             requestBody: {
-                // TODO get current user id
-                submittedBy: this.props.contextUser || '5bc50dabf5aa6ae120b49005',
+                submittedBy: this.context.contextUser._id,
                 body: this.state.currentNote
             }
         };
@@ -77,15 +78,7 @@ class RequestNotes extends React.Component {
 }
 
 RequestNotes.propTypes = {
-    postNoteToItem: PropTypes.func,
-    contextUser: PropTypes.object
-};
-
-const mapStateToProps = state => {
-    return {
-        isAuth: state.isAuth,
-        contextUser: state.contextUser
-    };
+    postNoteToItem: PropTypes.func
 };
 
 const mapDispatchToProps = dispatch => {
@@ -94,4 +87,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RequestNotes);
+export default connect(null, mapDispatchToProps)(RequestNotes);
