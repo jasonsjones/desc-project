@@ -2,6 +2,7 @@ import React from 'react';
 import M from 'materialize-css';
 import ItemRequest from './ItemRequest';
 import RequestedItems from './RequestedItems';
+import TextField from '../Common/TextField';
 import AuthContext from '../../context/AuthContext';
 
 class RequestCreationPage extends React.Component {
@@ -92,37 +93,39 @@ class RequestCreationPage extends React.Component {
 
     render() {
         return (
-            <div className="container card-panel">
-                <h5>New Request</h5>
+            <div className="container">
+                <div className="card-panel">
+                    <h5 className="center-align">New Client Request</h5>
 
-                <div className="row">
-                    <div className="col s6">
-                        <p>Client Id</p>
-                        <input
-                            type="text"
-                            id="clientId"
-                            value={this.state.clientId}
-                            onChange={this.handleChange}
-                        />
+                    <div className="row">
+                        <div className="col s6">
+                            <TextField
+                                label="Client Id"
+                                type="text"
+                                name="clientId"
+                                value={this.state.clientId}
+                                handleChange={this.handleChange}
+                            />
+                        </div>
+                        <div className="col s6">
+                            <TextField
+                                label="Client Location"
+                                type="text"
+                                name="location"
+                                value={this.state.location}
+                                handleChange={this.handleChange}
+                            />
+                        </div>
                     </div>
-                    <div className="col s6">
-                        <p>Client Location</p>
-                        <input
-                            type="text"
-                            id="location"
-                            value={this.state.location}
-                            onChange={this.handleChange}
-                        />
+                    <ItemRequest onItemAdded={this.handleItemAdded} />
+
+                    <RequestedItems items={this.state.itemsInRequest} />
+
+                    <div className="card-action">
+                        <a className="btn" href="#!" onClick={this.submitRequest}>
+                            Submit Request
+                        </a>
                     </div>
-                </div>
-                <ItemRequest onItemAdded={this.handleItemAdded} />
-
-                <RequestedItems items={this.state.itemsInRequest} />
-
-                <div className="card-action">
-                    <a className="btn" href="#!" onClick={this.submitRequest}>
-                        Submit Request
-                    </a>
                 </div>
             </div>
         );

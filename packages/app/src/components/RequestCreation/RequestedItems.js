@@ -25,7 +25,7 @@ class RequestedItems extends React.Component {
 
     render() {
         return (
-            <div className="container card-panel">
+            <div className="card-panel">
                 <h6>Items to request:</h6>
 
                 {this.getRequestedItems()}

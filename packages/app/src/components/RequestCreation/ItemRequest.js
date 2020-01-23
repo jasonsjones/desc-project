@@ -1,5 +1,6 @@
 import React from 'react';
 import Select from './Select';
+import TextField from '../Common/TextField';
 import ItemOptionsUtility from './ItemOptionsUtility';
 
 class ItemRequest extends React.Component {
@@ -11,7 +12,7 @@ class ItemRequest extends React.Component {
             itemType: '',
             gender: '',
             size: '',
-            count: 1,
+            count: null,
             notes: ''
         };
 
@@ -32,7 +33,7 @@ class ItemRequest extends React.Component {
             itemType: '',
             gender: '',
             size: '',
-            count: 1,
+            count: null,
             notes: ''
         });
     }
@@ -135,32 +136,33 @@ class ItemRequest extends React.Component {
 
     itemCountSelection() {
         return (
-            <input
+            <TextField
+                label="Number of Items Requested"
                 type="number"
                 name="count"
-                placeholder="Number of item requested"
                 value={this.state.count}
-                onChange={this.handleInput}
+                handleChange={this.handleInput}
             />
         );
     }
 
     notesInput() {
         return (
-            <input
+            <TextField
+                label="Notes"
                 type="text"
-                placeholder="Notes"
                 name="notes"
                 value={this.state.notes}
-                onChange={this.handleInput}
+                handleChange={this.handleInput}
             />
         );
     }
 
     render() {
         return (
-            <form className="container card-panel">
+            <form className="card-panel">
                 <div className="card-content">
+                    <h6>Item Details:</h6>
                     {this.categorySelection()}
                     {this.itemTypeSelection()}
 
@@ -168,7 +170,6 @@ class ItemRequest extends React.Component {
                     {this.genderSelection()}
                     {this.genericSizeSelection() || this.genderedSizeSelection()}
 
-                    <p>Count requested</p>
                     {this.itemCountSelection()}
 
                     {this.notesInput()}
