@@ -128,7 +128,7 @@ class ItemRequest extends React.Component {
                 name={'itemType'}
                 options={this.getItemsInCategory()}
                 value={this.state.itemType}
-                placeholder={'Select Category'}
+                placeholder={'Select Item'}
                 handleChange={this.handleInput}
             />
         );
