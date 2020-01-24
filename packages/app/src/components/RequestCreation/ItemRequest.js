@@ -12,7 +12,7 @@ class ItemRequest extends React.Component {
             itemType: '',
             gender: '',
             size: '',
-            count: null,
+            count: '',
             notes: ''
         };
 
@@ -33,7 +33,7 @@ class ItemRequest extends React.Component {
             itemType: '',
             gender: '',
             size: '',
-            count: null,
+            count: '',
             notes: ''
         });
     }
