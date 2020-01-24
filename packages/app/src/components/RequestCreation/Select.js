@@ -6,6 +6,7 @@ const Select = props => {
             <label htmlFor={props.name}> {props.title} </label>
             <select
                 name={props.name}
+                id={props.name}
                 value={props.value}
                 onChange={props.handleChange}
                 className="browser-default"

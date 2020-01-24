@@ -22,20 +22,45 @@ class ItemRequest extends React.Component {
     }
 
     handleInput(event) {
-        this.setState({ [event.target.name]: event.target.value });
+        this.setState({ [event.target.id]: event.target.value });
     }
 
-    handleAddItem(event) {
-        this.props.onItemAdded(this.state);
-        // Reset state
-        this.setState({
-            category: '',
-            itemType: '',
-            gender: '',
-            size: '',
-            count: '',
-            notes: ''
-        });
+    handleAddItem() {
+        // basic validation:
+        if (this.state.category === '' || this.state.itemType === '') {
+            return;
+        }
+
+        if (this.state.count === '') {
+            this.setState(
+                {
+                    count: 1
+                },
+                () => {
+                    this.props.onItemAdded({ ...this.state });
+                    // Reset state
+                    this.setState({
+                        category: '',
+                        itemType: '',
+                        gender: '',
+                        size: '',
+                        count: '',
+                        notes: ''
+                    });
+                }
+            );
+        } else {
+            this.props.onItemAdded({ ...this.state });
+            // Reset state
+            this.setState({
+                category: '',
+                itemType: '',
+                gender: '',
+                size: '',
+                count: '',
+                notes: ''
+            });
+        }
     }
 
     getCategories() {
