@@ -6,6 +6,7 @@ import { fetchSessionUser } from '../services/auth';
 const Layout = props => {
     const [contextUser, setContextUser] = useState(null);
     const [token, setToken] = useState('');
+    const [isFetching, setIsFetching] = useState(true);
 
     useEffect(() => {
         fetchSessionUser().then(data => {
@@ -13,6 +14,10 @@ const Layout = props => {
                 setContextUser(data.payload.user);
                 setToken(data.payload.token);
             }
+
+            setTimeout(() => {
+                setIsFetching(false);
+            }, 1000);
         });
     }, []);
 
@@ -29,8 +34,18 @@ const Layout = props => {
     return (
         <React.Fragment>
             <AuthProvider value={{ contextUser, token, login, logout }}>
-                <Nav />
-                <div className="container">{props.children}</div>
+                {isFetching ? (
+                    <div style={{ position: 'absolute', left: '35%', top: '50%', width: '30%' }}>
+                        <div className="progress">
+                            <div className="indeterminate"></div>
+                        </div>
+                    </div>
+                ) : (
+                    <React.Fragment>
+                        <Nav />
+                        <div className="container">{props.children}</div>
+                    </React.Fragment>
+                )}
             </AuthProvider>
         </React.Fragment>
     );
