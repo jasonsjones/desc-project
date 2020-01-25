@@ -57,9 +57,13 @@ const AddNoteForm = ({ itemId, onNoteAdd }) => {
             body: note
         };
         addNoteToItem(itemId, noteBody).then(res => {
-            onNoteAdd(itemId, res.payload.item);
+            if (res.success) {
+                onNoteAdd(itemId, res.payload.item);
+                setNote('');
+                M.updateTextFields();
+                M.toast({ html: 'Note added to request', classes: 'teal' });
+            }
         });
-        setNote('');
     };
 
     const handleChange = e => {
