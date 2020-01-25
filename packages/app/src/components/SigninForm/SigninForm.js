@@ -1,20 +1,42 @@
 import React, { useState, useContext } from 'react';
-import 'materialize-css';
+import M from 'materialize-css';
 import AuthContext from '../../context/AuthContext';
 import TextField from '../Common/TextField';
 import { login } from '../../services/auth';
 
+const css = {
+    formContainer: {
+        padding: '1.5rem 2rem',
+        maxWidth: '670px',
+        margin: '2.5rem auto 0'
+    },
+
+    errorText: {
+        padding: '0 4rem',
+        fontSize: '1rem'
+    },
+
+    cancelButton: {
+        backgroundColor: 'white',
+        color: 'teal',
+        marginRight: '1rem'
+    }
+};
+
 const SigninForm = ({ history }) => {
     const authCtx = useContext(AuthContext);
+    const [isFetching, setIsFetching] = useState(false);
 
     const [form, setValues] = useState({
         email: '',
-        password: ''
+        password: '',
+        errorMsg: ''
     });
 
     const handleChange = e => {
         setValues({
             ...form,
+            errorMsg: '',
             [e.target.id]: e.target.value
         });
     };
@@ -26,6 +48,7 @@ const SigninForm = ({ history }) => {
     const handleSubmit = e => {
         e.preventDefault();
         if (isFormValid()) {
+            setIsFetching(true);
             const creds = {
                 email: form.email,
                 password: form.password
@@ -37,8 +60,15 @@ const SigninForm = ({ history }) => {
                         authCtx.login(user, token);
                         history.push('/');
                     } else {
-                        // handle unauthorized case here.  Dispay a generic error message.
-                        console.log(data);
+                        if (data.message === 'unauthorized') {
+                            setValues({
+                                email: '',
+                                password: '',
+                                errorMsg: 'Unathorized user. Please try again'
+                            });
+                        }
+                        M.updateTextFields();
+                        setIsFetching(false);
                     }
                 })
                 .catch(err => console.log(err));
@@ -50,10 +80,7 @@ const SigninForm = ({ history }) => {
     };
 
     return (
-        <div
-            className="card-panel"
-            style={{ padding: '20px 30px', maxWidth: '560px', margin: '40px auto 0' }}
-        >
+        <div className="card-panel" style={css.formContainer}>
             <h4 className="center-align teal-text text-darken-3">Sign In to Account</h4>
             <form onSubmit={handleSubmit}>
                 <div className="row">
@@ -82,24 +109,23 @@ const SigninForm = ({ history }) => {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col offset-s1 offset-l7">
-                        <div className="row">
-                            <button
-                                className="btn"
-                                type="button"
-                                onClick={handleCancel}
-                                style={{
-                                    backgroundColor: 'white',
-                                    color: 'teal',
-                                    marginRight: '20px'
-                                }}
-                            >
-                                Cancel
-                            </button>
-                            <button className="btn" type="submit">
-                                Sign In
-                            </button>
-                        </div>
+                    <p className="red-text" style={css.errorText}>
+                        {form.errorMsg}
+                    </p>
+                </div>
+                <div className="row">
+                    <div className="col right">
+                        <button
+                            className="btn"
+                            type="button"
+                            onClick={handleCancel}
+                            style={css.cancelButton}
+                        >
+                            Cancel
+                        </button>
+                        <button className="waves-effect waves-light btn" type="submit">
+                            {`${!isFetching ? 'Sign in' : 'Signing in...'}`}
+                        </button>
                     </div>
                 </div>
             </form>
