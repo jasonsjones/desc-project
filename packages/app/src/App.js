@@ -8,7 +8,8 @@ import Layout from './containers/Layout';
 import Signup from './containers/Signup';
 import Signin from './containers/Signin';
 import UserProfile from './containers/UserProfile';
-import RequestTabs from './components/RequestInbox/RequestTabs';
+import Inbox from './containers/Inbox';
+// import RequestTabs from './components/RequestInbox/RequestTabs';
 import RequestCreationPage from './components/RequestCreation/RequestCreationPage';
 import Home from './components/Home';
 import PrivateRoute from './components/PrivateRoute';
@@ -28,7 +29,7 @@ function App() {
                         <Route exact path="/" component={Home} />
                         <Route exact path="/signup" component={Signup} />
                         <Route exact path="/signin" component={Signin} />
-                        <PrivateRoute exact path="/inbox" component={RequestTabs} />
+                        <PrivateRoute exact path="/inbox" component={Inbox} />
                         <PrivateRoute exact path="/create" component={RequestCreationPage} />
                         <PrivateRoute exact path="/profile" component={UserProfile} />
                     </Switch>
