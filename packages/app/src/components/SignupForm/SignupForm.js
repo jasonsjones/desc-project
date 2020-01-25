@@ -4,6 +4,20 @@ import M from 'materialize-css';
 import TextField from '../Common/TextField';
 import { signup } from '../../services/users';
 
+const css = {
+    formContainer: {
+        padding: '1.5rem 2rem',
+        maxWidth: '670px',
+        margin: '2.5rem auto 0'
+    },
+
+    cancelButton: {
+        backgroundColor: 'white',
+        color: 'teal',
+        marginRight: '1rem'
+    }
+};
+
 const SignupForm = ({ history }) => {
     const authCtx = useContext(AuthContext);
     const [form, setValues] = useState({
@@ -15,6 +29,7 @@ const SignupForm = ({ history }) => {
         program: ''
     });
     const [error, setError] = useState(null);
+    const [isFetching, setIsFetching] = useState(false);
 
     useEffect(() => {
         if (form.confirmPassword.length > 0 && form.password !== form.confirmPassword) {
@@ -51,6 +66,7 @@ const SignupForm = ({ history }) => {
     const handleSubmit = e => {
         e.preventDefault();
         if (isFormValid()) {
+            setIsFetching(true);
             const payload = {
                 name: {
                     first: form.firstName,
@@ -66,6 +82,8 @@ const SignupForm = ({ history }) => {
                         const { user, token } = data.payload;
                         authCtx.login(user, token);
                         history.push('/');
+                    } else {
+                        setIsFetching(false);
                     }
                 })
                 .catch(err => console.error(err));
@@ -77,10 +95,7 @@ const SignupForm = ({ history }) => {
     };
 
     return (
-        <div
-            className="card-panel"
-            style={{ padding: '20px 30px', maxWidth: '670px', margin: '40px auto 0' }}
-        >
+        <div className="card-panel" style={css.formContainer}>
             <h4 className="center-align teal-text text-darken-3">Register for Account</h4>
             <form onSubmit={handleSubmit}>
                 <div className="row">
@@ -160,24 +175,18 @@ const SignupForm = ({ history }) => {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col offset-s1 offset-l8">
-                        <div className="row">
-                            <button
-                                className="btn"
-                                type="button"
-                                onClick={handleCancel}
-                                style={{
-                                    backgroundColor: 'white',
-                                    color: 'teal',
-                                    marginRight: '20px'
-                                }}
-                            >
-                                Cancel
-                            </button>
-                            <button className="btn" type="submit">
-                                Submit
-                            </button>
-                        </div>
+                    <div className="col right">
+                        <button
+                            className="btn"
+                            type="button"
+                            onClick={handleCancel}
+                            style={css.cancelButton}
+                        >
+                            Cancel
+                        </button>
+                        <button className="waves-effect waves-light btn" type="submit">
+                            {`${!isFetching ? 'Sign Up' : 'Signing up...'}`}
+                        </button>
                     </div>
                 </div>
             </form>
