@@ -52,18 +52,20 @@ const AddNoteForm = ({ itemId, onNoteAdd }) => {
     const [note, setNote] = useState('');
     const handleSubmit = e => {
         e.preventDefault();
-        const noteBody = {
-            submittedBy: authContext.contextUser._id,
-            body: note
-        };
-        addNoteToItem(itemId, noteBody).then(res => {
-            if (res.success) {
-                onNoteAdd(itemId, res.payload.item);
-                setNote('');
-                M.updateTextFields();
-                M.toast({ html: 'Note added to request', classes: 'teal' });
-            }
-        });
+        if (note.length > 0) {
+            const noteBody = {
+                submittedBy: authContext.contextUser._id,
+                body: note
+            };
+            addNoteToItem(itemId, noteBody).then(res => {
+                if (res.success) {
+                    onNoteAdd(itemId, res.payload.item);
+                    setNote('');
+                    M.updateTextFields();
+                    M.toast({ html: 'Note added to request', classes: 'teal' });
+                }
+            });
+        }
     };
 
     const handleChange = e => {
