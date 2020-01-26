@@ -20,6 +20,7 @@
         "start": "serve -s build",
         "build": "react-scripts build",
         "test": "react-scripts test",
+        "test:e2e": "BROWSER=none yarn dev",
         "eject": "react-scripts eject"
     },
     "eslintConfig": {

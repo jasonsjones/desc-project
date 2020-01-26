@@ -3,7 +3,8 @@
     "name": "desc",
     "workspaces": [
         "packages/api",
-        "packages/app"
+        "packages/app",
+        "packages/e2e"
     ],
     "scripts": {
         "bootstrap": "lerna bootstrap",
@@ -18,7 +19,8 @@
         "test:api:integration": "lerna run test:integration --stream --scope @desc/api",
         "test:api:acceptance": "lerna run test:acceptance --stream --scope @desc/api",
         "test:app:all": "lerna run test --stream --scope @desc/app -- --colors --watchAll=false",
-        "test:app:watch": "lerna run test --stream --scope @desc/app -- --colors"
+        "test:app:watch": "lerna run test --stream --scope @desc/app -- --colors",
+        "test:e2e": "lerna run test:e2e --stream"
     },
     "license": "MIT",
     "devDependencies": {

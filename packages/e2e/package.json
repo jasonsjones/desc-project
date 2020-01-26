@@ -1,0 +1,20 @@
+{
+    "name": "@desc/e2e",
+    "version": "0.1.0",
+    "private": true,
+    "description": "End-to-end test for the DESC project",
+    "scripts": {
+        "db:reset": "NODE_ENV=testing DEBUG=db* node index.js",
+        "test:e2e": "cypress open"
+    },
+    "author": "Jason Jones",
+    "license": "MIT",
+    "devDependencies": {
+        "cypress": "^3.8.3"
+    },
+    "dependencies": {
+        "debug": "^4.1.1",
+        "dotenv": "^8.2.0",
+        "mongoose": "^5.8.9"
+    }
+}
