@@ -8,19 +8,19 @@ describe('User Signup', () => {
             cy.visit('http://localhost:4200/signup');
             cy.get('#firstName')
                 .focus()
-                .type('Oliver');
+                .type('Raymond');
             cy.get('#lastName')
                 .focus()
-                .type('Queen');
+                .type('Palmer');
             cy.get('#email')
                 .focus()
-                .type('oliver@qc.com');
+                .type('raymond@palmertech.com');
 
             cy.get('input.select-dropdown')
                 .focus()
                 .click();
             cy.get('ul.dropdown-content')
-                .contains('Housing First')
+                .contains('Integrated Services')
                 .click();
 
             cy.get('#password')
@@ -36,7 +36,8 @@ describe('User Signup', () => {
 
             cy.url().should('eq', 'http://localhost:4200/');
 
-            cy.get('h3').should('contain', 'Oliver');
+            cy.get('nav .profile-menu a span').should('contain', 'Raymond Palmer');
+            cy.get('h3').should('contain', 'Raymond');
         });
 
         it('logs out the user after signup', () => {
@@ -46,7 +47,7 @@ describe('User Signup', () => {
                 .click();
             cy.url().should('eq', 'http://localhost:4200/');
             cy.get('h3').should('contain', 'Home Page');
-            cy.get('h3').not('contain', 'Oliver');
+            cy.get('h3').not('contain', 'Raymond');
         });
     });
 });
