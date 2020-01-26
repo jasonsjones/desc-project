@@ -40,6 +40,11 @@ describe('User Signup', () => {
             cy.get('h3').should('contain', 'Raymond');
         });
 
+        it('maintains new user context on page reload', () => {
+            cy.reload();
+            cy.get('h3').should('contain', 'Raymond');
+        });
+
         it('logs out the user after signup', () => {
             cy.get('.profile-menu > a').click();
             cy.get('.profile-menu a')
