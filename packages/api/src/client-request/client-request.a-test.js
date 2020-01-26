@@ -2,12 +2,14 @@ import { expect } from 'chai';
 import request from 'supertest';
 
 import app from '../config/app';
-import { createUser } from '../user/user-controller';
+import config from '../config/config';
 import { createClientRequest } from './client-request-controller';
 import { User, ClientRequest, Item, Note } from '../models';
 import { createUserAndGetToken, userBarry } from '../utils/user-test-utils';
 import { dbConnection, deleteCollection } from '../utils/db-test-utils';
 import { getMockItemData } from '../utils/item-test-utils';
+
+const AUTH_COOKIE_NAME = config.authCookieName;
 
 describe('Client Request acceptance tests', () => {
     let barryId;
@@ -41,7 +43,7 @@ describe('Client Request acceptance tests', () => {
             return request
                 .agent(app)
                 .post('/api/clientrequests/')
-                .set('Cookie', [`access-token=${token}`])
+                .set('Cookie', [`${AUTH_COOKIE_NAME}=${token}`])
                 .send(clientRequestData)
                 .expect(200)
                 .then(res => {
@@ -70,7 +72,7 @@ describe('Client Request acceptance tests', () => {
             return request
                 .agent(app)
                 .post('/api/clientrequests/')
-                .set('Cookie', [`access-token=${token}`])
+                .set('Cookie', [`${AUTH_COOKIE_NAME}=${token}`])
                 .send(clientRequestData)
                 .expect(200)
                 .then(res => {
@@ -97,7 +99,7 @@ describe('Client Request acceptance tests', () => {
             return request
                 .agent(app)
                 .post('/api/clientrequests/')
-                .set('Cookie', [`access-token=${token}`])
+                .set('Cookie', [`${AUTH_COOKIE_NAME}=${token}`])
                 .send(clientRequestData)
                 .expect(200)
                 .then(res => {
@@ -137,7 +139,7 @@ describe('Client Request acceptance tests', () => {
             return request
                 .agent(app)
                 .get('/api/clientrequests/')
-                .set('Cookie', [`access-token=${token}`])
+                .set('Cookie', [`${AUTH_COOKIE_NAME}=${token}`])
                 .expect(200)
                 .then(res => {
                     const json = res.body;
@@ -174,7 +176,7 @@ describe('Client Request acceptance tests', () => {
             return request
                 .agent(app)
                 .get(`/api/clientrequests/${clientRequestId}`)
-                .set('Cookie', [`access-token=${token}`])
+                .set('Cookie', [`${AUTH_COOKIE_NAME}=${token}`])
                 .expect(200)
                 .then(res => {
                     const json = res.body;

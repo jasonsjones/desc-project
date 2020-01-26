@@ -2,10 +2,13 @@ import { expect } from 'chai';
 import request from 'supertest';
 
 import app from '../config/app';
+import config from '../config/config';
 import { User } from '../models';
 import { createUser } from './user-controller';
 import { dbConnection, deleteCollection } from '../utils/db-test-utils';
 import { userOllie, userBarry, createUserAndGetToken } from '../utils/user-test-utils';
+
+const AUTH_COOKIE_NAME = config.authCookieName;
 
 describe('User acceptance tests', () => {
     let token;
@@ -58,7 +61,7 @@ describe('User acceptance tests', () => {
             return request
                 .agent(app)
                 .get('/api/users/')
-                .set('Cookie', [`access-token=${token}`])
+                .set('Cookie', [`${AUTH_COOKIE_NAME}=${token}`])
                 .expect(200)
                 .then(res => {
                     const json = res.body;
@@ -85,7 +88,7 @@ describe('User acceptance tests', () => {
             return request
                 .agent(app)
                 .get(`/api/users/${user._id}`)
-                .set('Cookie', [`access-token=${token}`])
+                .set('Cookie', [`${AUTH_COOKIE_NAME}=${token}`])
                 .expect(200)
                 .then(res => {
                     const json = res.body;
@@ -116,7 +119,7 @@ describe('User acceptance tests', () => {
             return request
                 .agent(app)
                 .put(`/api/users/${user._id}`)
-                .set('Cookie', [`access-token=${token}`])
+                .set('Cookie', [`${AUTH_COOKIE_NAME}=${token}`])
                 .send(updatedUserData)
                 .expect(200)
                 .then(res => {
@@ -149,7 +152,7 @@ describe('User acceptance tests', () => {
             return request
                 .agent(app)
                 .delete(`/api/users/${user._id}`)
-                .set('Cookie', [`access-token=${token}`])
+                .set('Cookie', [`${AUTH_COOKIE_NAME}=${token}`])
                 .expect(200)
                 .then(res => {
                     const json = res.body;

@@ -2,11 +2,14 @@ import { expect } from 'chai';
 import request from 'supertest';
 
 import app from '../config/app';
+import config from '../config/config';
 import { createItem } from './item-controller';
 import { User, Item, Note } from '../models';
 import { userBarry, createUserAndGetToken } from '../utils/user-test-utils';
 import { dbConnection, deleteCollection } from '../utils/db-test-utils';
 import { getMockItemData } from '../utils/item-test-utils';
+
+const AUTH_COOKIE_NAME = config.authCookieName;
 
 describe('Item acceptance tests', () => {
     let barryId;
@@ -33,7 +36,7 @@ describe('Item acceptance tests', () => {
             return request
                 .agent(app)
                 .post('/api/items/')
-                .set('Cookie', [`access-token=${token}`])
+                .set('Cookie', [`${AUTH_COOKIE_NAME}=${token}`])
                 .send(itemData)
                 .expect(200)
                 .then(res => {
@@ -56,7 +59,7 @@ describe('Item acceptance tests', () => {
             return request
                 .agent(app)
                 .post('/api/items/')
-                .set('Cookie', [`access-token=${token}`])
+                .set('Cookie', [`${AUTH_COOKIE_NAME}=${token}`])
                 .send(itemData)
                 .expect(200)
                 .then(res => {
@@ -80,7 +83,7 @@ describe('Item acceptance tests', () => {
             return request
                 .agent(app)
                 .post('/api/items/')
-                .set('Cookie', [`access-token=${token}`])
+                .set('Cookie', [`${AUTH_COOKIE_NAME}=${token}`])
                 .send(itemData)
                 .expect(200)
                 .then(res => {
@@ -104,7 +107,7 @@ describe('Item acceptance tests', () => {
                     request
                         .agent(app)
                         .get('/api/items')
-                        .set('Cookie', [`access-token=${token}`])
+                        .set('Cookie', [`${AUTH_COOKIE_NAME}=${token}`])
                         .expect(200)
                 )
                 .then(res => {
@@ -134,7 +137,7 @@ describe('Item acceptance tests', () => {
                         request
                             .agent(app)
                             .get(`/api/items?${query}`)
-                            .set('Cookie', [`access-token=${token}`])
+                            .set('Cookie', [`${AUTH_COOKIE_NAME}=${token}`])
                             .expect(200)
                     )
                     .then(res => {
@@ -165,7 +168,7 @@ describe('Item acceptance tests', () => {
                     request
                         .agent(app)
                         .get(`/api/items/${itemId}`)
-                        .set('Cookie', [`access-token=${token}`])
+                        .set('Cookie', [`${AUTH_COOKIE_NAME}=${token}`])
                         .expect(200)
                 )
                 .then(res => {
@@ -192,7 +195,7 @@ describe('Item acceptance tests', () => {
                     request
                         .agent(app)
                         .put(`/api/items/${itemId}`)
-                        .set('Cookie', [`access-token=${token}`])
+                        .set('Cookie', [`${AUTH_COOKIE_NAME}=${token}`])
                         .send({ size: updatedSize })
                         .expect(200)
                 )
@@ -220,7 +223,7 @@ describe('Item acceptance tests', () => {
                     request
                         .agent(app)
                         .put(`/api/items/${itemId}`)
-                        .set('Cookie', [`access-token=${token}`])
+                        .set('Cookie', [`${AUTH_COOKIE_NAME}=${token}`])
                         .send({ name: updatedName })
                         .expect(200)
                 )
@@ -248,7 +251,7 @@ describe('Item acceptance tests', () => {
                     request
                         .agent(app)
                         .put(`/api/items/${itemId}`)
-                        .set('Cookie', [`access-token=${token}`])
+                        .set('Cookie', [`${AUTH_COOKIE_NAME}=${token}`])
                         .send({ urgency: updatedUrgency })
                         .expect(200)
                 )
@@ -277,7 +280,7 @@ describe('Item acceptance tests', () => {
                     request
                         .agent(app)
                         .delete(`/api/items/${itemId}`)
-                        .set('Cookie', [`access-token=${token}`])
+                        .set('Cookie', [`${AUTH_COOKIE_NAME}=${token}`])
                         .expect(200)
                 )
                 .then(res => {
@@ -304,7 +307,7 @@ describe('Item acceptance tests', () => {
                     request
                         .agent(app)
                         .post(`/api/items/${itemId}/notes`)
-                        .set('Cookie', [`access-token=${token}`])
+                        .set('Cookie', [`${AUTH_COOKIE_NAME}=${token}`])
                         .send({ submittedBy: barryId, body: 'This is another note for the item' })
                         .expect(200)
                 )

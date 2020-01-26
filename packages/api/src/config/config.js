@@ -5,6 +5,7 @@ const {
     NODE_ENV: env = 'development',
     PORT: port = 3000,
     JWT_SECRET: token_secret = 'defaulttokensecret12345',
+    AUTH_COOKIE_NAME: authCookieName = 'qid',
     DB_USER: dbUser,
     DB_PASSWORD: dbPassword,
     DB_URL: dbUrl,
@@ -43,6 +44,7 @@ const config = {
     env,
     port,
     token_secret,
+    authCookieName,
     db
 };
 

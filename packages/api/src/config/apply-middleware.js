@@ -7,13 +7,15 @@ import cors from 'cors';
 import config from './config';
 import { verifyToken } from '../auth/auth-utils';
 
+const AUTH_COOKIE_NAME = config.authCookieName;
+
 const getTokens = req => {
     let bearerToken = null;
     if (req.headers.authorization) {
         bearerToken = req.headers.authorization.split(' ')[1];
     }
 
-    const token = bearerToken || req.cookies['access-token'];
+    const token = bearerToken || req.cookies[AUTH_COOKIE_NAME];
     const refreshToken = req.cookies['refresh-token'];
 
     return {
