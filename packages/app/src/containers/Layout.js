@@ -42,8 +42,19 @@ const Layout = props => {
                     </div>
                 ) : (
                     <React.Fragment>
-                        <Nav />
-                        <div className="container">{props.children}</div>
+                        <header>
+                            <Nav />
+                        </header>
+                        <main className="container">{props.children}</main>
+                        <footer className="page-footer teal">
+                            <div className="container"></div>
+                            <div className="footer-copyright">
+                                <div className="container center-align">
+                                    © 2020 &bull; All Rights Reserved &bull; Downtown Emergency
+                                    Service Center{' '}
+                                </div>
+                            </div>
+                        </footer>
                     </React.Fragment>
                 )}
             </AuthProvider>
