@@ -1,6 +1,9 @@
 import express from 'express';
+import config from '../config/config';
 import * as UserController from './user-controller';
 import * as AuthUtils from '../auth/auth-utils';
+
+const AUTH_COOKIE_NAME = config.authCookieName;
 
 const isAdmin = async (req, _, next) => {
     if (req.user) {
@@ -32,7 +35,7 @@ export default () => {
     let userRouter = express.Router();
     userRouter
         .route('/')
-        .get(isAdmin, (req, res) => {
+        .get(isAdmin, (_, res) => {
             UserController.getUsers()
                 .then(users => {
                     res.json({
@@ -53,6 +56,13 @@ export default () => {
             UserController.createUser(req.body)
                 .then(user => {
                     req.user = user;
+
+                    const token = AuthUtils.generateToken(user);
+                    res.cookie(AUTH_COOKIE_NAME, token, {
+                        httpOnly: true,
+                        maxAge: 1000 * 60 * 60 // 1hr
+                    });
+
                     req.login(user, err => {
                         if (err) {
                             return next(err);

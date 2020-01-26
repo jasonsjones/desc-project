@@ -10,6 +10,13 @@ import { userOllie, userBarry, createUserAndGetToken } from '../utils/user-test-
 
 const AUTH_COOKIE_NAME = config.authCookieName;
 
+const getAuthCookie = res => {
+    if (res.headers['set-cookie']) {
+        return res.headers['set-cookie'].find(cookie => cookie.startsWith(AUTH_COOKIE_NAME));
+    }
+    return '';
+};
+
 describe('User acceptance tests', () => {
     let token;
     afterEach(async () => {
@@ -31,6 +38,7 @@ describe('User acceptance tests', () => {
                     expect(json.payload).to.have.property('user');
                     expect(json.payload).to.have.property('token');
                     expect(json.success).to.be.true;
+                    expect(getAuthCookie(res)).not.to.be.empty;
                 });
         }).timeout(5000);
 
