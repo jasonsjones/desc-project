@@ -124,7 +124,7 @@ const SigninForm = ({ history }) => {
                             Cancel
                         </button>
                         <button className="waves-effect waves-light btn" type="submit">
-                            {`${!isFetching ? 'Sign in' : 'Signing in...'}`}
+                            {`${!isFetching ? 'Sign In' : 'Signing In...'}`}
                         </button>
                     </div>
                 </div>
