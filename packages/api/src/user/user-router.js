@@ -57,22 +57,23 @@ export default () => {
                 .then(user => {
                     req.user = user;
 
-                    const token = AuthUtils.generateToken(user);
-                    res.cookie(AUTH_COOKIE_NAME, token, {
-                        httpOnly: true,
-                        maxAge: 1000 * 60 * 60 // 1hr
-                    });
-
                     req.login(user, err => {
                         if (err) {
                             return next(err);
                         }
+
+                        const token = AuthUtils.generateToken(user);
+                        res.cookie(AUTH_COOKIE_NAME, token, {
+                            httpOnly: true,
+                            maxAge: 1000 * 60 * 60 // 1hr
+                        });
+
                         return res.json({
                             success: true,
                             message: 'user created',
                             payload: {
                                 user: user.toClientJSON(),
-                                token: AuthUtils.generateToken(user)
+                                token
                             }
                         });
                     });
