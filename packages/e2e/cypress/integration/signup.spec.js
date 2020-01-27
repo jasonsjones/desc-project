@@ -7,6 +7,10 @@ describe('User Signup', () => {
         password: '123456'
     };
 
+    beforeEach(() => {
+        Cypress.Cookies.preserveOnce('qid');
+    });
+
     after(() => {
         cy.exec('npm run db:reset');
     });
@@ -69,9 +73,42 @@ describe('User Signup', () => {
                 .type(userData.password);
             cy.get('#confirmPassword')
                 .focus()
-                .type('notthepassword');
+                .type('doesnotmatch');
 
             cy.get('.helper-text').should('contain', 'Passwords do NOT match');
+        });
+
+        it('does not submit form if the passwords do not match', () => {
+            cy.visit('http://localhost:4200/signup');
+            cy.get('#firstName')
+                .focus()
+                .type(userData.firstName);
+            cy.get('#lastName')
+                .focus()
+                .type(userData.lastName);
+            cy.get('#email')
+                .focus()
+                .type(userData.email);
+
+            cy.get('input.select-dropdown')
+                .focus()
+                .click();
+            cy.get('ul.dropdown-content')
+                .contains(userData.program)
+                .click();
+
+            cy.get('#password')
+                .focus()
+                .type(userData.password);
+            cy.get('#confirmPassword')
+                .focus()
+                .type('doesnotmatch');
+
+            cy.get('button')
+                .contains('Sign Up')
+                .click();
+
+            cy.url().should('eq', 'http://localhost:4200/signup');
         });
 
         it('signs up a new user', () => {
@@ -113,12 +150,14 @@ describe('User Signup', () => {
             cy.get('h3').should('contain', userData.firstName);
         });
 
-        it.skip('maintains new user context on page reload', () => {
+        it('maintains new user context on page reload', () => {
             cy.reload();
             cy.get('h3').should('contain', userData.firstName);
         });
 
-        it.skip('logs out the user after signup', () => {
+        it('logs out the user after signup', () => {
+            cy.visit('http://localhost:4200/');
+
             cy.get('.profile-menu > a').click();
             cy.get('.profile-menu a')
                 .contains('Logout')
