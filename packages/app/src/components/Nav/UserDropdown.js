@@ -26,7 +26,7 @@ const UserDropdwon = ({ user, handleLogout }) => {
             <div>
                 <ul id="profile" className="dropdown-content">
                     <li>
-                        <a href="#!">Profile</a>
+                        <Link to="/profile">Profile</Link>
                     </li>
                     <li>
                         <Link to="/" onClick={handleLogout}>

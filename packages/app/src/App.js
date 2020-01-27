@@ -7,6 +7,7 @@ import thunk from 'redux-thunk';
 import Layout from './containers/Layout';
 import Signup from './containers/Signup';
 import Signin from './containers/Signin';
+import UserProfile from './containers/UserProfile';
 import RequestTabs from './components/RequestInbox/RequestTabs';
 import RequestCreationPage from './components/RequestCreation/RequestCreationPage';
 import Home from './components/Home';
@@ -29,6 +30,7 @@ function App() {
                         <Route exact path="/signin" component={Signin} />
                         <PrivateRoute exact path="/inbox" component={RequestTabs} />
                         <PrivateRoute exact path="/create" component={RequestCreationPage} />
+                        <PrivateRoute exact path="/profile" component={UserProfile} />
                     </Switch>
                 </Layout>
             </BrowserRouter>
