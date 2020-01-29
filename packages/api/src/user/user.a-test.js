@@ -178,4 +178,56 @@ describe('User acceptance tests', () => {
                 });
         });
     });
+
+    context.only('POST /api/users/testonly', () => {
+        it('returns json payload with test user only', () => {
+            return request(app)
+                .post('/api/users/testonly')
+                .send(userOllie)
+                .expect(200)
+                .then(res => {
+                    const json = res.body;
+                    expect(json).to.have.property('success');
+                    expect(json).to.have.property('message');
+                    expect(json).to.have.property('payload');
+                    expect(json.payload).to.have.property('user');
+                    expect(json.payload).not.to.have.property('token');
+                    expect(json.payload.user).to.exist;
+                    expect(json.success).to.be.true;
+                });
+        }).timeout(5000);
+
+        it('does not send auth cookie to client', () => {
+            return request(app)
+                .post('/api/users/testonly')
+                .send(userOllie)
+                .expect(200)
+                .then(res => {
+                    const json = res.body;
+                    expect(json).to.have.property('success');
+                    expect(json).to.have.property('message');
+                    expect(json).to.have.property('payload');
+                    expect(json.success).to.be.true;
+                    expect(getAuthCookie(res)).to.equal('');
+                });
+        }).timeout(5000);
+
+        it('does not create user if not in in "testing" mode', () => {
+            process.env.NODE_ENV = 'development';
+            return request(app)
+                .post('/api/users/testonly')
+                .send(userOllie)
+                .expect(200)
+                .then(res => {
+                    const json = res.body;
+                    expect(json).to.have.property('success');
+                    expect(json).to.have.property('message');
+                    expect(json).to.have.property('payload');
+                    expect(json.payload).to.have.property('user');
+                    expect(json.payload.user).to.be.null;
+                    expect(json.success).to.be.false;
+                    process.env.NODE_ENV = 'testing';
+                });
+        }).timeout(5000);
+    });
 });

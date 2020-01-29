@@ -162,5 +162,35 @@ export default () => {
         });
     });
 
+    // below endpoint is for test purposes only
+    userRouter.route('/testonly').post((req, res) => {
+        if (process.env.NODE_ENV !== 'testing') {
+            return res.json({
+                success: false,
+                message: 'creation of test user only availabe in test mode',
+                payload: {
+                    user: null
+                }
+            });
+        }
+        UserController.createUser(req.body)
+            .then(user => {
+                return res.json({
+                    success: true,
+                    message: 'test user created',
+                    payload: {
+                        user: user.toClientJSON()
+                    }
+                });
+            })
+            .catch(err =>
+                res.json({
+                    success: false,
+                    message: err.message,
+                    error: err
+                })
+            );
+    });
+
     return userRouter;
 };
