@@ -34,7 +34,7 @@ const useItems = () => {
             setItems(data.payload.items);
             setTimeout(() => {
                 setIsLoading(false);
-            }, 1000);
+            }, 500);
         });
     }, [authContext.contextUser]);
 
@@ -198,6 +198,9 @@ const RequestorInbox = () => {
 
     useEffect(() => {
         M.Tabs.init(document.querySelectorAll('.tabs'), {});
+    }, []);
+
+    useEffect(() => {
         initCollapsibleElements();
     }, [items, isLoading]);
 
