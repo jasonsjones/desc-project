@@ -10,7 +10,7 @@ const Layout = props => {
 
     useEffect(() => {
         fetchSessionUser().then(data => {
-            if (data) {
+            if (data && data.payload) {
                 setContextUser(data.payload.user);
                 setToken(data.payload.token);
             }
