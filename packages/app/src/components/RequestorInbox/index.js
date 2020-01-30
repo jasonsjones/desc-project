@@ -22,6 +22,25 @@ const css = {
     }
 };
 
+const useItems = () => {
+    const authContext = useContext(AuthContext);
+    const [items, setItems] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        setIsLoading(true);
+
+        getItemsForUser(authContext.contextUser._id).then(data => {
+            setItems(data.payload.items);
+            setTimeout(() => {
+                setIsLoading(false);
+            }, 1000);
+        });
+    }, [authContext.contextUser]);
+
+    return [items, isLoading];
+};
+
 const initCollapsibleElements = () => {
     const bgClasses = ['teal', 'lighten-5'];
     const onOpenStartCb = el => {
@@ -175,22 +194,12 @@ const List = ({ items, filter, isLoading }) => {
 };
 
 const RequestorInbox = () => {
-    const authContext = useContext(AuthContext);
-    const [items, setItems] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [items, isLoading] = useItems();
 
     useEffect(() => {
         M.Tabs.init(document.querySelectorAll('.tabs'), {});
-        setIsLoading(true);
-
-        getItemsForUser(authContext.contextUser._id).then(data => {
-            setItems(data.payload.items);
-            setTimeout(() => {
-                setIsLoading(false);
-                initCollapsibleElements();
-            }, 1000);
-        });
-    }, [authContext.contextUser]);
+        initCollapsibleElements();
+    }, [items, isLoading]);
 
     return (
         <div style={{ marginTop: '3rem' }}>
