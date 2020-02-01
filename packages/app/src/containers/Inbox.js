@@ -7,14 +7,13 @@ const Inbox = () => {
     const authContext = useContext(AuthContext);
     const isApprover = authContext.contextUser.roles.includes('approver');
     const isRequestor = authContext.contextUser.roles.includes('requestor');
-    if (isApprover) {
-        return <RequestTabs />;
-    }
-
-    if (isRequestor) {
-        return <RequestorInbox />;
-    }
-    return <h3>Unknown role</h3>;
+    return (
+        <React.Fragment>
+            {isRequestor && <RequestorInbox />}
+            {isApprover && <RequestTabs />}
+            {!isApprover && !isRequestor && <h3>Unknown Role</h3>}
+        </React.Fragment>
+    );
 };
 
 export default Inbox;

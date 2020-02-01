@@ -25,11 +25,9 @@ const css = {
 const useItems = () => {
     const authContext = useContext(AuthContext);
     const [items, setItems] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        setIsLoading(true);
-
         getItemsForUser(authContext.contextUser._id).then(data => {
             setItems(data.payload.items);
             setTimeout(() => {
@@ -110,7 +108,7 @@ const AddNoteForm = ({ itemId, onNoteAdd }) => {
 const ListHeader = () => {
     return (
         <li>
-            <div style={css.listHeader}>
+            <div className="teal-text text-darken-3" style={css.listHeader}>
                 <p style={css.flexItem}>Item</p>
                 <p style={css.flexItem}>Quantity</p>
                 <p style={css.flexItem}>Client ID</p>
@@ -120,7 +118,7 @@ const ListHeader = () => {
     );
 };
 
-const List = ({ items, filter, isLoading }) => {
+const List = ({ items, filter }) => {
     const [displayableItems, setDisplayableItems] = useState([]);
 
     useEffect(() => {
@@ -147,14 +145,6 @@ const List = ({ items, filter, isLoading }) => {
             })
         );
     };
-
-    if (isLoading) {
-        return (
-            <div style={{ margin: '5rem 0', display: 'flex', justifyContent: 'center' }}>
-                <Spinner />
-            </div>
-        );
-    }
 
     return (
         <ul className="collapsible expandable">
@@ -198,47 +188,56 @@ const RequestorInbox = () => {
 
     useEffect(() => {
         M.Tabs.init(document.querySelectorAll('.tabs'), {});
-    }, []);
-
-    useEffect(() => {
         initCollapsibleElements();
     }, [items, isLoading]);
 
     return (
         <div style={{ marginTop: '3rem' }}>
-            <h5 className="center-align">Requestor Inbox</h5>
-            <div className="row" style={{ marginTop: '40px' }}>
-                <div className="col s12">
-                    <ul className="tabs">
-                        <li className="tab col s3">
-                            <a className="active" href="#open">
-                                Open
-                            </a>
-                        </li>
-                        <li className="tab col s3">
-                            <a href="#approved">Approved</a>
-                        </li>
-                        <li className="tab col s3">
-                            <a href="#declined">Declined</a>
-                        </li>
-                        <li className="tab col s3">
-                            <a href="#wishlist">Wishlist</a>
-                        </li>
-                    </ul>
+            {isLoading ? (
+                <div style={{ margin: '5rem 0', display: 'flex', justifyContent: 'center' }}>
+                    <Spinner />
                 </div>
-                <div id="open" className="col s12">
-                    <List type="open" items={items} filter="active" isLoading={isLoading} />
-                </div>
-                <div id="approved" className="col s12">
-                    <List type="approved" items={items} filter="approved" isLoading={isLoading} />
-                </div>
-                <div id="declined" className="col s12">
-                    <List type="declined" items={items} filter="denied" isLoading={isLoading} />
-                </div>
-                <div id="wishlist" className="col s12">
-                    <List type="wishlist" items={items} filter="wishlist" isLoading={isLoading} />
-                </div>
-            </div>
+            ) : (
+                <React.Fragment>
+                    <div className="row" style={{ marginTop: '40px' }}>
+                        <div className="col s12">
+                            <ul className="tabs">
+                                <li className="tab col s3">
+                                    <a className="active" href="#open">
+                                        Open
+                                    </a>
+                                </li>
+                                <li className="tab col s3">
+                                    <a href="#approved">Approved</a>
+                                </li>
+                                <li className="tab col s3">
+                                    <a href="#declined">Declined</a>
+                                </li>
+                                <li className="tab col s3">
+                                    <a href="#wishlist">Wishlist</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="open" className="col s12">
+                            <List type="open" items={items} filter="active" />
+                        </div>
+                        <div id="approved" className="col s12">
+                            <List
+                                type="approved"
+                                items={items}
+                                filter="approved"
+                                isLoading={isLoading}
+                            />
+                        </div>
+                        <div id="declined" className="col s12">
+                            <List type="declined" items={items} filter="denied" />
+                        </div>
+                        <div id="wishlist" className="col s12">
+                            <List type="wishlist" items={items} filter="wishlist" />
+                        </div>
+                    </div>
+                </React.Fragment>
+            )}
         </div>
     );
 };
