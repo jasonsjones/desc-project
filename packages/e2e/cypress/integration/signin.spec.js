@@ -11,15 +11,13 @@ describe('User Signin', () => {
     };
 
     before(() => {
-        cy.request({
+        // Will likely need to be refactored out as a Cypress.Command to reuse in all the other
+        // tests.  Most likely consolidate a command to create a user and sign in.
+        return cy.request({
             url: 'http://localhost:3000/api/users/testonly',
             method: 'POST',
             body: user
-        })
-            .its('body')
-            .then(body => {
-                console.log(body);
-            });
+        });
     });
 
     beforeEach(() => {
@@ -73,5 +71,17 @@ describe('User Signin', () => {
     it('maintains user context on page reload', () => {
         cy.reload();
         cy.get('h3').should('contain', user.name.first);
+    });
+
+    it('logs out the user after signup', () => {
+        cy.visit('http://localhost:4200/');
+
+        cy.get('.profile-menu > a').click();
+        cy.get('.profile-menu a')
+            .contains('Logout')
+            .click();
+        cy.url().should('eq', 'http://localhost:4200/');
+        cy.get('h3').should('contain', 'Home Page');
+        cy.get('h3').not('contain', user.name.first);
     });
 });
