@@ -27,8 +27,13 @@ const Layout = props => {
     };
 
     const logout = () => {
+        setIsFetching(true);
         setContextUser(null);
         setToken('');
+
+        setTimeout(() => {
+            setIsFetching(false);
+        }, 1000);
     };
 
     return (

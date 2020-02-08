@@ -9,6 +9,7 @@ const Select = props => {
                 id={props.name}
                 value={props.value}
                 onChange={props.handleChange}
+                disabled={props.disabled}
             >
                 <option value="" disabled>
                     {props.placeholder}
