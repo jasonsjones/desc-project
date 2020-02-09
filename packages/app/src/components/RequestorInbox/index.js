@@ -194,49 +194,47 @@ const RequestorInbox = () => {
     return (
         <div style={{ marginTop: '3rem' }}>
             {isLoading ? (
-                <div style={{ margin: '5rem 0', display: 'flex', justifyContent: 'center' }}>
+                <div style={{ margin: '6rem 0', display: 'flex', justifyContent: 'center' }}>
                     <Spinner />
                 </div>
             ) : (
-                <React.Fragment>
-                    <div className="row" style={{ marginTop: '40px' }}>
-                        <div className="col s12">
-                            <ul className="tabs">
-                                <li className="tab col s3">
-                                    <a className="active" href="#open">
-                                        Open
-                                    </a>
-                                </li>
-                                <li className="tab col s3">
-                                    <a href="#approved">Approved</a>
-                                </li>
-                                <li className="tab col s3">
-                                    <a href="#declined">Declined</a>
-                                </li>
-                                <li className="tab col s3">
-                                    <a href="#wishlist">Wishlist</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div id="open" className="col s12">
-                            <List type="open" items={items} filter="active" />
-                        </div>
-                        <div id="approved" className="col s12">
-                            <List
-                                type="approved"
-                                items={items}
-                                filter="approved"
-                                isLoading={isLoading}
-                            />
-                        </div>
-                        <div id="declined" className="col s12">
-                            <List type="declined" items={items} filter="denied" />
-                        </div>
-                        <div id="wishlist" className="col s12">
-                            <List type="wishlist" items={items} filter="wishlist" />
-                        </div>
+                <div className="row" style={{ marginTop: '40px' }}>
+                    <div className="col s12">
+                        <ul className="tabs">
+                            <li className="tab col s3">
+                                <a className="active" href="#open">
+                                    Open
+                                </a>
+                            </li>
+                            <li className="tab col s3">
+                                <a href="#approved">Approved</a>
+                            </li>
+                            <li className="tab col s3">
+                                <a href="#declined">Declined</a>
+                            </li>
+                            <li className="tab col s3">
+                                <a href="#wishlist">Wishlist</a>
+                            </li>
+                        </ul>
                     </div>
-                </React.Fragment>
+                    <div id="open" className="col s12">
+                        <List type="open" items={items} filter="active" />
+                    </div>
+                    <div id="approved" className="col s12">
+                        <List
+                            type="approved"
+                            items={items}
+                            filter="approved"
+                            isLoading={isLoading}
+                        />
+                    </div>
+                    <div id="declined" className="col s12">
+                        <List type="declined" items={items} filter="denied" />
+                    </div>
+                    <div id="wishlist" className="col s12">
+                        <List type="wishlist" items={items} filter="wishlist" />
+                    </div>
+                </div>
             )}
         </div>
     );
