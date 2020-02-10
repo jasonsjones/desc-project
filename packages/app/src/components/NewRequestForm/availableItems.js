@@ -1,20 +1,4 @@
 export default {
-    Household: {
-        Bedding: {},
-        Pillow: {},
-        Plates: {},
-        Cutlery: {}
-    },
-
-    'Personal Hygeine': {
-        Soap: {},
-        Shampoo: {},
-        Conditioner: {},
-        'Brush/Comb': {},
-        Toothbrush: {},
-        Toothpaste: {}
-    },
-
     Clothing: {
         Shirt: {
             gender: {
@@ -171,6 +155,22 @@ export default {
         },
         Scarf: {},
         Hat: {}
+    },
+
+    Household: {
+        Bedding: {},
+        Pillow: {},
+        Plates: {},
+        Cutlery: {}
+    },
+
+    'Personal Hygeine': {
+        Soap: {},
+        Shampoo: {},
+        Conditioner: {},
+        'Brush/Comb': {},
+        Toothbrush: {},
+        Toothpaste: {}
     },
 
     Engagement: {

@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useContext, useState, useEffect, useReducer } from 'react';
 import M from 'materialize-css';
+import AuthContext from '../../context/AuthContext';
 import TextField from '../Common/TextField';
 import Select from '../RequestCreation/Select';
 import * as ItemUtil from './itemsUtil';
@@ -16,7 +17,9 @@ const initialState = {
     gender: [],
     selectedGender: '',
     availableSizes: [],
-    selectedSize: ''
+    selectedSize: '',
+    count: '',
+    note: ''
 };
 
 const itemReducer = (state, action) => {
@@ -31,7 +34,9 @@ const itemReducer = (state, action) => {
                 gender: [],
                 selectedItem: '',
                 selectedSize: '',
-                selectedGender: ''
+                selectedGender: '',
+                count: '',
+                note: ''
             };
         case 'ITEM_SELECTED':
             if (action.payload === 'Bra') {
@@ -40,7 +45,21 @@ const itemReducer = (state, action) => {
                     selectedItem: action.payload,
                     selectedSize: '',
                     selectedGender: 'Female',
-                    availableSizes: ItemUtil.getBraSizes()
+                    availableSizes: ItemUtil.getBraSizes(),
+                    count: '',
+                    note: ''
+                };
+            }
+
+            if (action.payload === 'Scarf' || action.payload === 'Hat') {
+                return {
+                    ...state,
+                    selectedItem: action.payload,
+                    selectedSize: '',
+                    selectedGender: '',
+                    availableSizes: [],
+                    count: '',
+                    note: ''
                 };
             }
             const isItemGendered = ItemUtil.isItemGendered(state.selectedCategory, action.payload);
@@ -55,7 +74,8 @@ const itemReducer = (state, action) => {
                 selectedGender: '',
                 selectedSize: '',
                 gender: isItemGendered ? ['Male', 'Female'] : [],
-                availableSizes: sizes
+                availableSizes: sizes,
+                count: ''
             };
         case 'GENDER_SELECTED':
             return {
@@ -66,19 +86,33 @@ const itemReducer = (state, action) => {
                     state.selectedCategory,
                     state.selectedItem,
                     action.payload
-                )
+                ),
+                count: ''
             };
         case 'SIZE_SELECTED':
             return {
                 ...state,
-                selectedSize: action.payload
+                selectedSize: action.payload,
+                count: ''
             };
+        case 'COUNT_CHANGED':
+            return {
+                ...state,
+                count: action.payload
+            };
+        case 'NOTE_ADDED':
+            return {
+                ...state,
+                note: action.payload
+            };
+        case 'CLEAR_STATE':
+            return initialState;
         default:
             return state;
     }
 };
 
-const ItemForm = () => {
+const ItemForm = ({ onItemAdd }) => {
     const [state, dispatch] = useReducer(itemReducer, initialState);
 
     useEffect(() => {
@@ -90,6 +124,10 @@ const ItemForm = () => {
             initSelect();
         });
     }, [state]);
+
+    const disableCount = () => {
+        return state.selectedItem.length === 0;
+    };
 
     const handleSelection = field => {
         return e => {
@@ -104,8 +142,13 @@ const ItemForm = () => {
                     dispatch({ type: 'GENDER_SELECTED', payload: e.target.value });
                     break;
                 case 'size':
-                    console.log('size: ', e.target.value);
                     dispatch({ type: 'SIZE_SELECTED', payload: e.target.value });
+                    break;
+                case 'count':
+                    dispatch({ type: 'COUNT_CHANGED', payload: e.target.value });
+                    break;
+                case 'note':
+                    dispatch({ type: 'NOTE_ADDED', payload: e.target.value });
                     break;
                 default:
                     break;
@@ -115,16 +158,21 @@ const ItemForm = () => {
 
     const handleSubmit = evt => {
         evt.preventDefault();
-        console.log('state: ', {
-            category: state.selectedCategory,
-            item: state.selectedItem,
-            gender: state.selectedGender,
-            size: state.selectedSize
-        });
+        if (state.selectedItem.length > 0 && state.count > 0) {
+            onItemAdd({
+                category: state.selectedCategory,
+                item: state.selectedItem,
+                gender: state.selectedGender,
+                size: state.selectedSize,
+                count: state.count,
+                note: state.note
+            });
+            dispatch({ type: 'CLEAR_STATE' });
+        }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <div>
             <h6 className="teal-text text-darken-3">Select Item Details:</h6>
             <Select
                 title="Category"
@@ -165,29 +213,71 @@ const ItemForm = () => {
                     handleChange={handleSelection('size')}
                 />
             )}
+            <TextField
+                label="Number of Items Requested"
+                type="number"
+                name="count"
+                value={state.count}
+                handleChange={handleSelection('count')}
+                disabled={disableCount()}
+            />
+
+            <TextField
+                label="Add a Note"
+                type="text"
+                name="note"
+                value={state.note}
+                handleChange={handleSelection('note')}
+                disabled={state.selectedItem.length === 0}
+            />
 
             <div className="row">
                 <div className="col right">
-                    <button className="waves-effect waves-light btn" type="submit">
+                    <button
+                        className="waves-effect waves-light btn"
+                        type="button"
+                        onClick={handleSubmit}
+                    >
                         Add Item
                     </button>
                 </div>
             </div>
-        </form>
+        </div>
+    );
+};
+
+const RequestedItem = ({ item, id, onDelete }) => {
+    return (
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.25rem' }}>
+            <p>{`${item.numberOfItems} ${item.gender} ${item.size} ${item.name}`}</p>
+            <p>{item.note && item.note.length > 0 ? 'Note: ' + item.note : ''}</p>
+            <i
+                style={{ cursor: 'pointer' }}
+                onClick={() => onDelete(id)}
+                className="small material-icons teal-text"
+            >
+                clear
+            </i>
+        </div>
     );
 };
 
 const NewRequestForm = () => {
+    const authCtx = useContext(AuthContext);
     const [form, setValues] = useState({
-        clientId: '',
+        clientId: '963201',
         location: '',
-        submittedBy: '',
-        items: []
+        submittedBy: authCtx.contextUser._id,
+        itemsForRequest: []
     });
 
     useEffect(() => {
         initSelect();
     }, []);
+
+    useEffect(() => {
+        console.log(form);
+    }, [form]);
 
     const handleChange = e => {
         setValues({
@@ -196,10 +286,47 @@ const NewRequestForm = () => {
         });
     };
 
+    const handleAddItem = itemState => {
+        console.log('item state: ', itemState);
+        const transformedItem = {
+            clientId: form.clientId,
+            submittedBy: form.submittedBy,
+            status: 'active',
+            location: form.location,
+            note: itemState.note,
+            itemCategory: itemState.category,
+            name: itemState.item,
+            gender: itemState.gender,
+            size: itemState.size,
+            numberOfItems: itemState.count
+        };
+
+        setValues(() => {
+            return {
+                ...form,
+                itemsForRequest: [...form.itemsForRequest, transformedItem]
+            };
+        });
+    };
+
+    const handleDeleteItem = id => {
+        console.log('delete item: ', id);
+        setValues(() => {
+            return {
+                ...form,
+                itemsForRequest: form.itemsForRequest.filter((_, i) => i !== id)
+            };
+        });
+    };
+
     return (
-        <div
+        <form
+            onSubmit={e => {
+                e.preventDefault();
+                console.log('submitting form...');
+            }}
             className="card-panel"
-            style={{ padding: '20px 30px', maxWidth: '670px', margin: '40px auto 0' }}
+            style={{ padding: '20px 30px', maxWidth: '670px', margin: '2.5rem auto' }}
         >
             <h5 className="center-align teal-text text-darken-3">New Request</h5>
             <div className="row">
@@ -238,9 +365,31 @@ const NewRequestForm = () => {
             </div>
 
             <div className="col s12">
-                <ItemForm />
+                <ItemForm onItemAdd={handleAddItem} />
             </div>
-        </div>
+            {form.itemsForRequest.length > 0 && (
+                <>
+                    <div className="card">
+                        <div className="card-content">
+                            <span className="card-title teal-text text-darken-3">
+                                Requested Items:
+                            </span>
+                            {form.itemsForRequest.map((item, index) => (
+                                <RequestedItem
+                                    key={index}
+                                    item={item}
+                                    id={index}
+                                    onDelete={handleDeleteItem}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                    <button className="waves-effect waves-light btn" type="submit">
+                        Submit Request
+                    </button>
+                </>
+            )}
+        </form>
     );
 };
 
