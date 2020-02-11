@@ -265,10 +265,11 @@ const RequestedItem = ({ item, id, onDelete }) => {
 const NewRequestForm = () => {
     const authCtx = useContext(AuthContext);
     const [form, setValues] = useState({
-        clientId: '963201',
+        clientId: '',
         location: '',
+        remember: false,
         submittedBy: authCtx.contextUser._id,
-        itemsForRequest: []
+        items: []
     });
 
     useEffect(() => {
@@ -280,10 +281,17 @@ const NewRequestForm = () => {
     }, [form]);
 
     const handleChange = e => {
-        setValues({
-            ...form,
-            [e.target.id]: e.target.value
-        });
+        if (e.target.id === 'remember') {
+            setValues({
+                ...form,
+                remember: e.target.checked
+            });
+        } else {
+            setValues({
+                ...form,
+                [e.target.id]: e.target.value
+            });
+        }
     };
 
     const handleAddItem = itemState => {
@@ -304,7 +312,7 @@ const NewRequestForm = () => {
         setValues(() => {
             return {
                 ...form,
-                itemsForRequest: [...form.itemsForRequest, transformedItem]
+                items: [...form.items, transformedItem]
             };
         });
     };
@@ -314,17 +322,65 @@ const NewRequestForm = () => {
         setValues(() => {
             return {
                 ...form,
-                itemsForRequest: form.itemsForRequest.filter((_, i) => i !== id)
+                items: form.items.filter((_, i) => i !== id)
             };
         });
     };
 
+    const isRequestValid = () => {
+        return form.clientId && form.location && form.items.length > 0;
+    };
+
+    const handleSubmitRequest = e => {
+        e.preventDefault();
+        console.log('submitting form...');
+        console.log(form);
+
+        if (isRequestValid()) {
+            // refactor to services file
+            fetch('http://localhost:3000/api/clientrequests', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify(form)
+            })
+                .then(response => {
+                    console.log(response);
+                    if (response.ok && response.status === 200) {
+                        return response.json();
+                    } else {
+                        return Promise.reject({ message: 'err' });
+                    }
+                })
+                .then(data => {
+                    if (data.success) {
+                        if (form.remember) {
+                            setValues({
+                                ...form,
+                                items: []
+                            });
+                        } else {
+                            setValues({
+                                ...form,
+                                clientId: '',
+                                location: '',
+                                items: []
+                            });
+                        }
+                        // M.toast({ html: 'Your request has been created' });
+                        // navigate to home
+                    }
+                    console.log(data);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+    };
+
     return (
         <form
-            onSubmit={e => {
-                e.preventDefault();
-                console.log('submitting form...');
-            }}
+            onSubmit={handleSubmitRequest}
             className="card-panel"
             style={{ padding: '20px 30px', maxWidth: '670px', margin: '2.5rem auto' }}
         >
@@ -345,36 +401,49 @@ const NewRequestForm = () => {
                         <option value="default" disabled>
                             Select your location
                         </option>
-                        <option value="eastlake">1811 Eastlake</option>
-                        <option value="aurora">Aurora House</option>
-                        <option value="canaday">Canaday House</option>
+                        <option value="eastlake building">1811 Eastlake</option>
+                        <option value="aurora house">Aurora House</option>
+                        <option value="canaday house">Canaday House</option>
                         <option value="clement">Clement Place</option>
-                        <option value="cottage-grove">Cottage Grove Commons</option>
+                        <option value="cottage grove commons">Cottage Grove Commons</option>
                         <option value="estelle">The Estelle</option>
-                        <option value="evans">Evans House</option>
-                        <option value="interbay">Interbay Place</option>
-                        <option value="kerner-scott">Kerner-Scott House</option>
+                        <option value="evans house">Evans House</option>
+                        <option value="interbay place">Interbay Place</option>
+                        <option value="kerner-scott house">Kerner-Scott House</option>
                         <option value="keyes">Keys to Home</option>
-                        <option value="lyon">Lyon Building</option>
-                        <option value="morrison">The Morrison</option>
-                        <option value="rainier">Rainier House</option>
-                        <option value="union">The Union Hotel</option>
+                        <option value="lyon building">Lyon Building</option>
+                        <option value="morrison building">The Morrison</option>
+                        <option value="rainier house">Rainier House</option>
+                        <option value="union hotel">The Union Hotel</option>
                     </select>
                     <label htmlFor="location">Location</label>
                 </div>
             </div>
+            <div className="row">
+                <div className="col s12">
+                    <label>
+                        <input
+                            type="checkbox"
+                            id="remember"
+                            checked={form.remember}
+                            onChange={handleChange}
+                        />
+                        <span>Remember Client ID and Location</span>
+                    </label>
+                </div>
+            </div>
 
-            <div className="col s12">
+            <div style={{ marginTop: '2rem' }} className="col s12">
                 <ItemForm onItemAdd={handleAddItem} />
             </div>
-            {form.itemsForRequest.length > 0 && (
+            {form.items.length > 0 && (
                 <>
                     <div className="card">
                         <div className="card-content">
                             <span className="card-title teal-text text-darken-3">
                                 Requested Items:
                             </span>
-                            {form.itemsForRequest.map((item, index) => (
+                            {form.items.map((item, index) => (
                                 <RequestedItem
                                     key={index}
                                     item={item}
