@@ -221,12 +221,7 @@ const RequestorInbox = () => {
                         <List type="open" items={items} filter="active" />
                     </div>
                     <div id="approved" className="col s12">
-                        <List
-                            type="approved"
-                            items={items}
-                            filter="approved"
-                            isLoading={isLoading}
-                        />
+                        <List type="approved" items={items} filter="approved" />
                     </div>
                     <div id="declined" className="col s12">
                         <List type="declined" items={items} filter="denied" />
