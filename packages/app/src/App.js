@@ -9,7 +9,6 @@ import Signup from './containers/Signup';
 import Signin from './containers/Signin';
 import UserProfile from './containers/UserProfile';
 import Inbox from './containers/Inbox';
-// import RequestTabs from './components/RequestInbox/RequestTabs';
 import RequestCreationPage from './components/RequestCreation/RequestCreationPage';
 import Home from './components/Home';
 import PrivateRoute from './components/PrivateRoute';
