@@ -164,7 +164,7 @@ export default {
         Cutlery: {}
     },
 
-    'Personal Hygeine': {
+    'Personal Hygiene': {
         Soap: {},
         Shampoo: {},
         Conditioner: {},
