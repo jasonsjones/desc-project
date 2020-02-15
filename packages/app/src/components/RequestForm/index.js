@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect, useReducer } from 'react';
 import M from 'materialize-css';
 import AuthContext from '../../context/AuthContext';
 import TextField from '../Common/TextField';
-import Select from '../RequestCreation/Select';
+import Select from '../Common/Select';
 import * as ItemUtil from './itemsUtil';
 
 const initSelect = () => {
