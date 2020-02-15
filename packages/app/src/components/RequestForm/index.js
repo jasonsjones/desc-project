@@ -4,10 +4,18 @@ import AuthContext from '../../context/AuthContext';
 import TextField from '../Common/TextField';
 import Select from '../Common/Select';
 import * as ItemUtil from './itemsUtil';
+import { makeClientRequest } from '../../services/clientRequests';
 
 const initSelect = () => {
     const elems = document.querySelectorAll('select');
     M.FormSelect.init(elems);
+};
+
+const itemCategoryMap = {
+    Clothing: 'Clothing',
+    Household: 'Household',
+    'Personal Hygiene': 'PersonalHygiene',
+    Engagement: 'Engagement'
 };
 
 const initialState = {
@@ -28,7 +36,7 @@ const itemReducer = (state, action) => {
         case 'CATEGORY_SELECTED':
             return {
                 ...state,
-                selectedCategory: action.payload,
+                selectedCategory: itemCategoryMap[action.payload],
                 availableItems: ItemUtil.getItemsInCategory(action.payload),
                 availableSizes: [],
                 gender: [],
@@ -338,20 +346,7 @@ const NewRequestForm = () => {
 
         if (isRequestValid()) {
             // refactor to services file
-            fetch('http://localhost:3000/api/clientrequests', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-                body: JSON.stringify(form)
-            })
-                .then(response => {
-                    console.log(response);
-                    if (response.ok && response.status === 200) {
-                        return response.json();
-                    } else {
-                        return Promise.reject({ message: 'err' });
-                    }
-                })
+            makeClientRequest(form)
                 .then(data => {
                     if (data.success) {
                         if (form.remember) {
