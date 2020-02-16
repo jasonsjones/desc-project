@@ -362,8 +362,8 @@ const NewRequestForm = () => {
                                 items: []
                             });
                         }
-                        // M.toast({ html: 'Your request has been created' });
-                        // navigate to home
+                        M.toast({ html: 'Request has been submitted', classes: 'teal' });
+                        // navigate to home?
                     }
                     console.log(data);
                 })
