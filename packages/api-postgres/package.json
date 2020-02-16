@@ -1,0 +1,44 @@
+{
+    "name": "@desc/api-postgres",
+    "version": "0.1.0",
+    "description": "RESTful json API for the DESC project written in typescript and backed by a postgres data store",
+    "main": "index.js",
+    "scripts": {
+        "build": "tsc",
+        "clean": "rm -rf dist coverage",
+        "dev": "NODE_ENV=development ts-node src/index.ts",
+        "lint": "eslint src/**/*.ts",
+        "test": "NODE_ENV=testing jest --color --runInBand"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.ts": [
+            "eslint --fix --max-warnings 0",
+            "git add"
+        ]
+    },
+    "author": "Jason S. Jones",
+    "license": "MIT",
+    "dependencies": {},
+    "devDependencies": {
+        "@types/jest": "^25.1.2",
+        "@typescript-eslint/eslint-plugin": "^2.19.2",
+        "@typescript-eslint/parser": "^2.19.2",
+        "eslint": "^6.8.0",
+        "eslint-config-prettier": "^6.10.0",
+        "eslint-plugin-prettier": "^3.1.2",
+        "jest": "24.7.1",
+        "prettier": "^1.19.1",
+        "ts-jest": "^25.2.0",
+        "ts-node": "^8.6.2",
+        "typescript": "^3.7.5"
+    },
+    "engines": {
+        "node": ">=10.15.0 <11.0.0",
+        "yarn": ">=1.16.0"
+    }
+}
