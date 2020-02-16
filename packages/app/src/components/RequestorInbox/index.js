@@ -24,19 +24,52 @@ const css = {
 
 const useItems = () => {
     const authContext = useContext(AuthContext);
-    const [items, setItems] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [state, updateState] = useState({
+        items: [],
+        error: null,
+        isFetching: true
+    });
 
     useEffect(() => {
-        getItemsForUser(authContext.contextUser._id).then(data => {
-            setItems(data.payload.items);
-            setTimeout(() => {
-                setIsLoading(false);
-            }, 500);
-        });
+        if (authContext.contextUser._id) {
+            getItemsForUser(authContext.contextUser._id)
+                .then(data => {
+                    if (data.success) {
+                        updateState(s => ({
+                            items: data.payload.items,
+                            error: null,
+                            isFetching: false
+                        }));
+                    } else {
+                        updateState(s => ({
+                            ...s,
+                            error: data.message,
+                            isFetching: false
+                        }));
+                    }
+                })
+                .catch(error =>
+                    updateState(s => ({
+                        ...s,
+                        error: error.message,
+                        isFetching: false
+                    }))
+                );
+        } else {
+            updateState(s => ({
+                items: [],
+                error: 'User no longer authenticated.  Pleaase sign in again',
+                isFetching: false
+            }));
+        }
     }, [authContext.contextUser]);
 
-    return [items, isLoading];
+    const { items, error, isFetching } = state;
+    return {
+        items,
+        error,
+        isFetching
+    };
 };
 
 const initCollapsibleElements = () => {
@@ -184,16 +217,21 @@ const List = ({ items, filter }) => {
 };
 
 const RequestorInbox = () => {
-    const [items, isLoading] = useItems();
+    const { items, error, isFetching } = useItems();
 
     useEffect(() => {
         M.Tabs.init(document.querySelectorAll('.tabs'), {});
         initCollapsibleElements();
-    }, [items, isLoading]);
+    }, [items, isFetching]);
 
     return (
         <div style={{ marginTop: '3rem' }}>
-            {isLoading ? (
+            {error && (
+                <div className="center-align red-text text-lighten-1">
+                    <h6>{error}</h6>
+                </div>
+            )}
+            {isFetching ? (
                 <div style={{ margin: '6rem 0', display: 'flex', justifyContent: 'center' }}>
                     <Spinner />
                 </div>
