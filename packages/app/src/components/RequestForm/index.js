@@ -396,10 +396,10 @@ const NewRequestForm = () => {
                         <option value="default" disabled>
                             Select your location
                         </option>
-                        <option value="eastlake building">1811 Eastlake</option>
+                        <option value="eastlake">1811 Eastlake</option>
                         <option value="aurora house">Aurora House</option>
                         <option value="canaday house">Canaday House</option>
-                        <option value="clement">Clement Place</option>
+                        <option value="clement place">Clement Place</option>
                         <option value="cottage grove commons">Cottage Grove Commons</option>
                         <option value="estelle">The Estelle</option>
                         <option value="evans house">Evans House</option>
@@ -407,7 +407,7 @@ const NewRequestForm = () => {
                         <option value="kerner-scott house">Kerner-Scott House</option>
                         <option value="keyes">Keys to Home</option>
                         <option value="lyon building">Lyon Building</option>
-                        <option value="morrison building">The Morrison</option>
+                        <option value="morrison">The Morrison</option>
                         <option value="rainier house">Rainier House</option>
                         <option value="union hotel">The Union Hotel</option>
                     </select>
