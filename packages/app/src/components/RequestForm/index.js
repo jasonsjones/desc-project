@@ -254,13 +254,26 @@ const ItemForm = ({ onItemAdd }) => {
     );
 };
 
-const RequestedItem = ({ item, id, onDelete }) => {
+const RequestedItem = ({ item, id, onDelete, showBottomBorder }) => {
+    const itemStyles = {
+        display: 'flex',
+        justifyContent: 'space-between',
+        fontSize: '1.25rem',
+        borderBottom: `${showBottomBorder ? '1px solid #ccc' : ''}`,
+        padding: '1.5rem 0'
+    };
+
     return (
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.25rem' }}>
-            <p>{`${item.numberOfItems} ${item.gender} ${item.size} ${item.name}`}</p>
-            <p>{item.note && item.note.length > 0 ? 'Note: ' + item.note : ''}</p>
+        <div style={itemStyles}>
+            <p
+                style={{ flex: '0 0 30%' }}
+            >{`${item.numberOfItems} ${item.gender} ${item.size} ${item.name}`}</p>
+            <p style={{ flex: '0 0 60%' }}>
+                {item.note && item.note.length > 0 && <em>Note: </em>}
+                {item.note && item.note.length > 0 ? item.note : ''}
+            </p>
             <i
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: 'pointer', flex: '0 0 auto' }}
                 onClick={() => onDelete(id)}
                 className="small material-icons teal-text"
             >
@@ -345,7 +358,6 @@ const NewRequestForm = () => {
         console.log(form);
 
         if (isRequestValid()) {
-            // refactor to services file
             makeClientRequest(form)
                 .then(data => {
                     if (data.success) {
@@ -444,6 +456,7 @@ const NewRequestForm = () => {
                                     item={item}
                                     id={index}
                                     onDelete={handleDeleteItem}
+                                    showBottomBorder={index !== form.items.length - 1}
                                 />
                             ))}
                         </div>
