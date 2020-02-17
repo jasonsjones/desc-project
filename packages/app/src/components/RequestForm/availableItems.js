@@ -147,7 +147,14 @@ export default {
         },
 
         Socks: {
-            sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
+            gender: {
+                Female: {
+                    sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
+                },
+                Male: {
+                    sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
+                }
+            }
         },
 
         Underwear: {
@@ -181,4 +188,14 @@ export default {
         Artwork: {},
         Games: {}
     }
+
+    /*
+        Other categories not listed here:
+
+        Tickets
+        What are the items that should fall under tickets?
+
+        Pets
+        What are the items that should fall under pets?
+    */
 };
