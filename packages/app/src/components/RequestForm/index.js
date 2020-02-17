@@ -18,6 +18,35 @@ const itemCategoryMap = {
     Engagement: 'Engagement'
 };
 
+const genderMap = {
+    Male: 'M',
+    Female: 'F'
+};
+
+const itemMap = {
+    Shirt: 'shirt',
+    Coat: 'coat',
+    Pants: 'pants',
+    Shoes: 'shoes',
+    Socks: 'socks',
+    Underwear: 'underwear',
+    Bra: 'bra',
+    Scarf: 'scarf',
+    Hat: 'hat',
+    Bedding: 'bedding',
+    Pillow: 'pillow',
+    Plates: 'plates',
+    Cutlery: 'cutlery',
+    Soap: 'soap',
+    Shampoo: 'shampoo',
+    Conditioner: 'conditioner',
+    'Brush/Comb': 'brush/comb',
+    Toothbrush: 'toothbrush',
+    Toothpaste: 'toothpaste',
+    Artwork: 'artwork',
+    Games: 'games'
+};
+
 const initialState = {
     selectedCategory: '',
     availableItems: [],
@@ -36,7 +65,7 @@ const itemReducer = (state, action) => {
         case 'CATEGORY_SELECTED':
             return {
                 ...state,
-                selectedCategory: itemCategoryMap[action.payload],
+                selectedCategory: action.payload,
                 availableItems: ItemUtil.getItemsInCategory(action.payload),
                 availableSizes: [],
                 gender: [],
@@ -358,7 +387,19 @@ const NewRequestForm = () => {
         console.log(form);
 
         if (isRequestValid()) {
-            makeClientRequest(form)
+            // make clone of form data to tranform a bit so the API is happy
+            const formData = {
+                ...form,
+                items: form.items.map(item => {
+                    return {
+                        ...item,
+                        itemCategory: itemCategoryMap[item.itemCategory],
+                        name: itemMap[item.name],
+                        gender: genderMap[item.gender]
+                    };
+                })
+            };
+            makeClientRequest(formData)
                 .then(data => {
                     if (data.success) {
                         if (form.remember) {
