@@ -9,7 +9,7 @@ import Signup from './containers/Signup';
 import Signin from './containers/Signin';
 import UserProfile from './containers/UserProfile';
 import Inbox from './containers/Inbox';
-// import RequestCreationPage from './components/RequestCreation/RequestCreationPage';
+import RequestCreationPage from './components/RequestCreation/RequestCreationPage';
 import Request from './containers/Request';
 import Home from './components/Home';
 import PrivateRoute from './components/PrivateRoute';
@@ -30,7 +30,8 @@ function App() {
                         <Route exact path="/signup" component={Signup} />
                         <Route exact path="/signin" component={Signin} />
                         <PrivateRoute exact path="/inbox" component={Inbox} />
-                        <PrivateRoute exact path="/create" component={Request} />
+                        <PrivateRoute exact path="/create" component={RequestCreationPage} />
+                        <PrivateRoute exact path="/createv2" component={Request} />
                         <PrivateRoute exact path="/profile" component={UserProfile} />
                     </Switch>
                 </Layout>
