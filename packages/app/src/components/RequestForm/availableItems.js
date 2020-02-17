@@ -150,6 +150,10 @@ export default {
             sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
         },
 
+        Underwear: {
+            sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']
+        },
+
         Gloves: {
             sizes: ['S', 'M', 'L']
         },
