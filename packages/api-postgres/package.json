@@ -6,7 +6,7 @@
     "scripts": {
         "build": "tsc",
         "clean": "rm -rf dist coverage",
-        "dev": "NODE_ENV=development ts-node src/index.ts",
+        "dev": "NODE_ENV=development ts-node-dev --respawn src/index.ts",
         "lint": "eslint src/**/*.ts",
         "test": "NODE_ENV=testing jest --color --runInBand"
     },
@@ -23,8 +23,13 @@
     },
     "author": "Jason S. Jones",
     "license": "MIT",
-    "dependencies": {},
+    "dependencies": {
+        "@types/dotenv": "^8.2.0",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1"
+    },
     "devDependencies": {
+        "@types/express": "^4.17.2",
         "@types/jest": "^25.1.2",
         "@typescript-eslint/eslint-plugin": "^2.19.2",
         "@typescript-eslint/parser": "^2.19.2",
@@ -34,7 +39,7 @@
         "jest": "24.7.1",
         "prettier": "^1.19.1",
         "ts-jest": "^25.2.0",
-        "ts-node": "^8.6.2",
+        "ts-node-dev": "^1.0.0-pre.44",
         "typescript": "^3.7.5"
     },
     "engines": {

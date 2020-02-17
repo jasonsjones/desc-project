@@ -1,8 +1,12 @@
-process.env.TZ = 'UTC';
-const PORT = process.env.PORT || 3001;
+import app from './config/app';
+import config from './config/config';
 
-const start = (): void => {
-    console.log(`express server running at http://localhost:${PORT}`);
+process.env.TZ = 'UTC';
+
+const startApp = (): void => {
+    app.listen(config.port, () =>
+        console.log(`express server running at ${config.baseUrl}:${config.port}`)
+    );
 };
 
-start();
+startApp();
