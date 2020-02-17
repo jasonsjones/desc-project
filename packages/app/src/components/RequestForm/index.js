@@ -60,7 +60,6 @@ const initialState = {
 };
 
 const itemReducer = (state, action) => {
-    console.log(action);
     switch (action.type) {
         case 'CATEGORY_SELECTED':
             return {
@@ -100,7 +99,6 @@ const itemReducer = (state, action) => {
                 };
             }
             const isItemGendered = ItemUtil.isItemGendered(state.selectedCategory, action.payload);
-            console.log('Is item gendered? ', action.payload, isItemGendered);
             const sizes =
                 !isItemGendered && state.selectedCategory === 'Clothing'
                     ? ItemUtil.getItemNonGenderSizes(state.selectedCategory, action.payload)
@@ -314,30 +312,28 @@ const RequestedItem = ({ item, id, onDelete, showBottomBorder }) => {
 
 const NewRequestForm = () => {
     const authCtx = useContext(AuthContext);
-    const [form, setValues] = useState({
+    const [form, setForm] = useState({
         clientId: '',
-        location: '',
+        location: 'default',
         remember: false,
         submittedBy: authCtx.contextUser._id,
         items: []
     });
 
     useEffect(() => {
-        initSelect();
-    }, []);
-
-    useEffect(() => {
-        console.log(form);
-    }, [form]);
+        Promise.resolve().then(() => {
+            initSelect();
+        });
+    }, [form.location]);
 
     const handleChange = e => {
         if (e.target.id === 'remember') {
-            setValues({
+            setForm({
                 ...form,
                 remember: e.target.checked
             });
         } else {
-            setValues({
+            setForm({
                 ...form,
                 [e.target.id]: e.target.value
             });
@@ -345,7 +341,6 @@ const NewRequestForm = () => {
     };
 
     const handleAddItem = itemState => {
-        console.log('item state: ', itemState);
         const transformedItem = {
             clientId: form.clientId,
             submittedBy: form.submittedBy,
@@ -359,7 +354,7 @@ const NewRequestForm = () => {
             numberOfItems: itemState.count
         };
 
-        setValues(() => {
+        setForm(() => {
             return {
                 ...form,
                 items: [...form.items, transformedItem]
@@ -368,8 +363,7 @@ const NewRequestForm = () => {
     };
 
     const handleDeleteItem = id => {
-        console.log('delete item: ', id);
-        setValues(() => {
+        setForm(() => {
             return {
                 ...form,
                 items: form.items.filter((_, i) => i !== id)
@@ -383,8 +377,6 @@ const NewRequestForm = () => {
 
     const handleSubmitRequest = e => {
         e.preventDefault();
-        console.log('submitting form...');
-        console.log(form);
 
         if (isRequestValid()) {
             // make clone of form data to tranform a bit so the API is happy
@@ -403,22 +395,27 @@ const NewRequestForm = () => {
                 .then(data => {
                     if (data.success) {
                         if (form.remember) {
-                            setValues({
+                            setForm({
                                 ...form,
                                 items: []
                             });
                         } else {
-                            setValues({
+                            setForm({
                                 ...form,
                                 clientId: '',
                                 location: '',
                                 items: []
                             });
+                            document.querySelector('#location').value = 'default';
                         }
                         M.toast({ html: 'Request has been submitted', classes: 'teal' });
                         // navigate to home?
+                    } else {
+                        M.toast({
+                            html: 'Oops.  Something went wrong submitting your request ',
+                            classes: 'red lighten-1'
+                        });
                     }
-                    console.log(data);
                 })
                 .catch(err => {
                     console.log(err);
@@ -458,7 +455,7 @@ const NewRequestForm = () => {
                         <option value="evans house">Evans House</option>
                         <option value="interbay place">Interbay Place</option>
                         <option value="kerner-scott house">Kerner-Scott House</option>
-                        <option value="keyes">Keys to Home</option>
+                        <option value="keys">Keys to Home</option>
                         <option value="lyon building">Lyon Building</option>
                         <option value="morrison">The Morrison</option>
                         <option value="rainier house">Rainier House</option>
