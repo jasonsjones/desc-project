@@ -5,7 +5,7 @@ const { NODE_ENV: env = 'development', PORT: port = 3001 } = process.env;
 const baseUrl = env === 'production' ? 'https://desc-api.herokuapp.com' : 'http://localhost';
 
 const config = {
-    name: 'desc-simplify-api',
+    name: 'desc-api',
     version: pkgJSON.version,
     env,
     baseUrl,

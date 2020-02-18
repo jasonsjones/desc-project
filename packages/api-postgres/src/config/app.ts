@@ -1,21 +1,7 @@
 import express from 'express';
-import config from './config';
+import IndexRouter from '../index/IndexRouter';
 
 const app = express();
-
-app.get('/', (_, res): void => {
-    res.json({
-        success: true,
-        message: 'api endpoint is not here',
-        url: 'http://localhost:3001/api'
-    });
-});
-
-app.get('/api', (_, res): void => {
-    res.json({
-        name: config.name,
-        version: config.version
-    });
-});
+app.use('/', IndexRouter.getRouter());
 
 export default app;
