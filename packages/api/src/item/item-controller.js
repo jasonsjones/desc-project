@@ -25,22 +25,28 @@ export const createItem = itemData => {
 
     let newItem;
     switch (itemData.itemCategory) {
-        case 'Clothing' || 'clothing':
+        case 'Clothing':
+        case 'clothing':
             newItem = new ClothingItem(itemData);
             break;
-        case 'Household' || 'household':
+        case 'Household':
+        case 'household':
             newItem = new HouseholdItem(itemData);
             break;
-        case 'Engagement' || 'engagement':
+        case 'Engagement':
+        case 'engagement':
             newItem = new EngagementItem(itemData);
             break;
-        case 'PersonalHygiene' || 'personalHygiene':
+        case 'PersonalHygiene':
+        case 'personalHygiene':
             newItem = new PersonalHygieneItem(itemData);
             break;
-        case 'Ticket' || 'ticket':
+        case 'Ticket':
+        case 'ticket':
             newItem = new TicketItem(itemData);
             break;
-        case 'Pet' || 'pet':
+        case 'Pet':
+        case 'pet':
             newItem = new PetItem(itemData);
             break;
         default:

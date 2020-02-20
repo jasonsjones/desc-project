@@ -5,19 +5,20 @@ import { Note, ClientRequest } from '../models';
 const Schema = mongoose.Schema;
 
 const LOCATIONS = [
+    'eastlake',
     'aurora house',
-    'n 96th street',
+    'canaday house',
+    'clement place',
+    'cottage grove commons',
+    'estelle',
+    'evans house',
     'interbay place',
     'kerner-scott house',
-    'canaday house',
-    'eastlake building',
+    'keys',
     'lyon building',
-    'morrison building',
-    'evans house',
-    'union hotel',
-    'estelle',
+    'morrison',
     'rainier house',
-    'cottage grove commons'
+    'union hotel'
 ];
 
 const options = {

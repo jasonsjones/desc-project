@@ -9,6 +9,11 @@ export default config => {
     };
 
     const buildConnectionString = () => {
+        if (process.env.USE_LOCAL_MONGO) {
+            log('connecting to mongodb running in a local container');
+            return `mongodb://localhost:27017/${getDbName()}`;
+        }
+
         if (config.db.options) {
             return `${config.db.baseUri}/${getDbName()}?${config.db.options}`;
         }

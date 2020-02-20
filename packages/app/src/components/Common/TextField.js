@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TextField = ({ type, name, label, validate, value, error, icon, handleChange }) => {
+const TextField = ({ type, name, label, validate, value, error, icon, disabled, handleChange }) => {
     return (
         <div className="input-field">
             {icon && <i className="small material-icons prefix">{icon}</i>}
@@ -10,6 +10,7 @@ const TextField = ({ type, name, label, validate, value, error, icon, handleChan
                 id={name}
                 value={value}
                 onChange={handleChange}
+                disabled={disabled}
             />
             <label htmlFor={name}>{label}</label>
             {error && <span className="helper-text red-text">{error}</span>}
