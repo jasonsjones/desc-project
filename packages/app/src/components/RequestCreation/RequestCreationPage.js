@@ -44,22 +44,6 @@ class RequestCreationPage extends React.Component {
 
     submitRequest() {
         const submittedBy = this.context.contextUser._id;
-        // let oneItem = this.state.itemsInRequest[0];
-        // let body = {
-        //     clientId: this.state.clientId,
-        //     submittedBy,
-        //     items: [
-        //         {
-        //             clientId: this.state.clientId,
-        //             submittedBy,
-        //             status: 'active',
-        //             location: 'Rainier House',
-        //             note: oneItem.notes,
-        //             itemCategory: oneItem.category,
-        //             name: oneItem.itemType,
-        //             numberOfItems: oneItem.count
-        //         }
-        //     ]
         var items = this.state.itemsInRequest;
         for (var i = 0; i < items.length; i++) {
             items[i] = {
@@ -71,7 +55,9 @@ class RequestCreationPage extends React.Component {
                 numberOfItems: items[i].count,
                 note: items[i].notes,
                 itemCategory: items[i].category,
-                name: items[i].itemType
+                name: items[i].itemType,
+                size: items[i].size,
+                gender: genderMap[items[i].gender]
             };
         }
 
@@ -149,5 +135,12 @@ class RequestCreationPage extends React.Component {
         );
     }
 }
+
+const genderMap = {
+    Male: 'M',
+    male: 'M',
+    Female: 'F',
+    female: 'F'
+};
 
 export default RequestCreationPage;
