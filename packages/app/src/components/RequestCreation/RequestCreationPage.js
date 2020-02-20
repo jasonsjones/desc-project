@@ -44,23 +44,41 @@ class RequestCreationPage extends React.Component {
 
     submitRequest() {
         const submittedBy = this.context.contextUser._id;
-        let oneItem = this.state.itemsInRequest[0];
+        // let oneItem = this.state.itemsInRequest[0];
+        // let body = {
+        //     clientId: this.state.clientId,
+        //     submittedBy,
+        //     items: [
+        //         {
+        //             clientId: this.state.clientId,
+        //             submittedBy,
+        //             status: 'active',
+        //             location: 'Rainier House',
+        //             note: oneItem.notes,
+        //             itemCategory: oneItem.category,
+        //             name: oneItem.itemType,
+        //             numberOfItems: oneItem.count
+        //         }
+        //     ]
+        var items = this.state.itemsInRequest;
+        for (var i = 0; i < items.length; i++) {
+            items[i] = {
+                clientId: this.state.clientId,
+                submittedBy: submittedBy,
+                urgency: 'survival',
+                location: 'Rainier House',
+                status: 'active',
+                numberOfItems: items[i].count,
+                note: items[i].notes,
+                itemCategory: items[i].category,
+                name: items[i].itemType
+            };
+        }
 
         let body = {
             clientId: this.state.clientId,
-            submittedBy,
-            items: [
-                {
-                    clientId: this.state.clientId,
-                    submittedBy,
-                    status: 'active',
-                    location: 'Rainier House',
-                    note: oneItem.notes,
-                    itemCategory: oneItem.category,
-                    name: oneItem.itemType,
-                    numberOfItems: oneItem.count
-                }
-            ]
+            submittedBy: submittedBy,
+            items: items
         };
         fetch('http://localhost:3000/api/clientrequests', {
             method: 'post',
@@ -78,10 +96,10 @@ class RequestCreationPage extends React.Component {
             })
             .then(function(data) {
                 if (data.success) {
-                    // M.toast({ html: 'Your request has been created' });
-                    // navigate to home
+                    M.toast({ html: 'Your request has been created' });
+                    // TODO: navigate to inbox
                 } else {
-                    // M.toast({ html: 'Error' });
+                    M.toast({ html: 'Error' });
                 }
                 console.log(data);
             })
