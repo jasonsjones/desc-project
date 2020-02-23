@@ -12,6 +12,7 @@ class IndexController {
 
     apiRoute(_: Request, res: Response): Response {
         return res.json({
+            success: true,
             name: config.name,
             version: config.version
         });
