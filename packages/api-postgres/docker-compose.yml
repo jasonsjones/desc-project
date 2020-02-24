@@ -33,7 +33,7 @@ services:
         volumes:
             - ./data/pgadmin:/var/lib/pgadmin
         ports:
-            - '${PGADMIN_PORT:-5050}:80'
+            - '${PGADMIN_PORT:-5055}:80'
         networks:
             - sandbox
         restart: unless-stopped

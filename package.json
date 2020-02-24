@@ -1,12 +1,18 @@
 {
     "private": true,
     "name": "desc",
-    "workspaces": [
-        "packages/api",
-        "packages/api-postgres",
-        "packages/app",
-        "packages/e2e"
-    ],
+    "workspaces": {
+        "packages": [
+            "packages/api",
+            "packages/api-postgres",
+            "packages/app",
+            "packages/e2e"
+        ],
+        "nohoist": [
+            "**/typeorm/**",
+            "**/typeorm"
+        ]
+    },
     "scripts": {
         "bootstrap": "lerna bootstrap",
         "clean": "lerna clean",
