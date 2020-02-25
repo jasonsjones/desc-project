@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcrypt-nodejs';
+import bcrypt from 'bcryptjs';
 import * as middleware from './user-model-middleware';
 const Schema = mongoose.Schema;
 

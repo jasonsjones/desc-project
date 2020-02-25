@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
-import bcrypt from 'bcrypt-nodejs';
+import bcrypt from 'bcryptjs';
 
 import User from './user-model';
 import * as Middleware from './user-model-middleware';

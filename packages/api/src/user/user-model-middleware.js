@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt-nodejs';
+import bcrypt from 'bcryptjs';
 import config from '../config/config';
 
 const NUM_ROUNDS_TESTING = 1;
