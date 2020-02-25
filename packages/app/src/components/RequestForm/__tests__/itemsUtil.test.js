@@ -74,7 +74,7 @@ describe('Item Utilities', () => {
             ]);
         });
 
-        it('fetches the correct sizes for  female pants', () => {
+        it('fetches the correct sizes for female pants', () => {
             const sizes = Util.getItemGenderSizes('Clothing', 'Pants', 'Female');
             expect(sizes).toStrictEqual([
                 'XS (25-26)',
@@ -86,17 +86,17 @@ describe('Item Utilities', () => {
                 'XXXL (47+)'
             ]);
         });
+
+        it('fetches the correct sizes for female socks', () => {
+            const socks = Util.getItemGenderSizes('Clothing', 'Socks', 'Female');
+            expect(socks).toStrictEqual(['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']);
+        });
     });
 
     describe('Non gender sizes', () => {
         it('fetches the correct sizes for gloves', () => {
             const gloves = Util.getItemNonGenderSizes('Clothing', 'Gloves');
             expect(gloves).toStrictEqual(['S', 'M', 'L']);
-        });
-
-        it('fetches the correct sizes for socks', () => {
-            const socks = Util.getItemNonGenderSizes('Clothing', 'Socks');
-            expect(socks).toStrictEqual(['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL']);
         });
 
         it('non clothing items have no sizes', () => {
@@ -114,8 +114,8 @@ describe('Item Utilities', () => {
             expect(Util.isItemGendered('Clothing', 'Coat')).toBe(true);
         });
 
-        it('socks are not', () => {
-            expect(Util.isItemGendered('Clothing', 'Socks')).toBe(false);
+        it('gloves are not', () => {
+            expect(Util.isItemGendered('Clothing', 'Gloves')).toBe(false);
         });
 
         it('pillows are not', () => {
