@@ -1,12 +1,12 @@
 import indexController from '../IndexController';
 
-const mockResponse = () => {
+const mockResponse = (): any => {
     const res: any = {};
     res.json = jest.fn().mockReturnValue(res);
     return res;
 };
 
-const mockRequest = () => {
+const mockRequest = (): any => {
     const req: any = {};
     return req;
 };
