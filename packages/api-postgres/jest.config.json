@@ -1,0 +1,4 @@
+{
+    "preset": "ts-jest",
+    "setupFilesAfterEnv": ["<rootDir>/src/testUtils/jest-setup.ts"]
+}

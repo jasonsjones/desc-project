@@ -21,9 +21,6 @@
             "git add"
         ]
     },
-    "jest": {
-        "preset": "ts-jest"
-    },
     "author": "Jason S. Jones",
     "license": "MIT",
     "dependencies": {
