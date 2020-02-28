@@ -25,7 +25,7 @@
         "port": 5432,
         "username": "postgres",
         "password": "",
-        "database": "desc-dev",
+        "database": "desc-test",
         "synchronize": true,
         "logging": true,
         "entities": ["src/entity/**/*.ts"],
