@@ -20,7 +20,7 @@ describe('IndexController unit tests', () => {
         req = mockRequest();
     });
 
-    it('homeRoute calls res.json()', () => {
+    it('homeRoute() calls res.json() with correct payload', () => {
         indexController.homeRoute(req, res);
 
         expect(res.json).toBeCalledWith(
@@ -32,7 +32,7 @@ describe('IndexController unit tests', () => {
         );
     });
 
-    it('apiRoute calls res.json()', () => {
+    it('apiRoute() calls res.json() with correct payload', () => {
         indexController.apiRoute(req, res);
 
         expect(res.json).toBeCalledWith(
