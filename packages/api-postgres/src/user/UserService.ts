@@ -1,8 +1,13 @@
 import User from '../entity/User';
 
 export default class UserService {
-    static createUser(firstName: string, lastName: string, email: string): Promise<User> {
-        const user = User.create({ firstName, lastName, email });
+    static createUser(
+        firstName: string,
+        lastName: string,
+        email: string,
+        password: string
+    ): Promise<User> {
+        const user = User.create({ firstName, lastName, email, password });
         return user.save();
     }
 

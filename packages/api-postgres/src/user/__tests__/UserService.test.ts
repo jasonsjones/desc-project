@@ -3,10 +3,29 @@ import UserService from '../UserService';
 import User from '../../entity/User';
 import { createPostgresConnection, closeConnection } from '../../config/database';
 
+const getUserShapeToVerify = (): {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    fullName: string;
+} => {
+    return {
+        id: expect.any(String),
+        firstName: expect.any(String),
+        lastName: expect.any(String),
+        email: expect.any(String),
+        password: expect.any(String),
+        fullName: expect.any(String)
+    };
+};
+
 const testUser = {
     firstName: 'John',
     lastName: 'Diggle',
-    email: 'john@qc.com'
+    email: 'john@qc.com',
+    password: '123456'
 };
 
 describe('User service integration tests', () => {
@@ -23,18 +42,11 @@ describe('User service integration tests', () => {
 
     describe('createUser method', () => {
         it('creates a new user', async () => {
-            const { firstName, lastName, email } = testUser;
-            const result = await UserService.createUser(firstName, lastName, email);
+            const { firstName, lastName, email, password } = testUser;
+            const result = await UserService.createUser(firstName, lastName, email, password);
             userId = result.id;
 
-            expect(result).toEqual(
-                expect.objectContaining({
-                    id: expect.any(String),
-                    firstName: expect.any(String),
-                    lastName: expect.any(String),
-                    email: expect.any(String)
-                })
-            );
+            expect(result).toEqual(expect.objectContaining(getUserShapeToVerify()));
         });
     });
 
@@ -48,7 +60,9 @@ describe('User service integration tests', () => {
                     id: expect.any(String),
                     firstName: expect.any(String),
                     lastName: expect.any(String),
-                    email: expect.any(String)
+                    email: expect.any(String),
+                    password: expect.any(String),
+                    fullName: expect.any(String)
                 })
             );
         });
@@ -56,14 +70,7 @@ describe('User service integration tests', () => {
         it('getUserById() fetches the user with the given id', async () => {
             const result = await UserService.getUserById(userId);
 
-            expect(result).toEqual(
-                expect.objectContaining({
-                    id: expect.any(String),
-                    firstName: expect.any(String),
-                    lastName: expect.any(String),
-                    email: expect.any(String)
-                })
-            );
+            expect(result).toEqual(expect.objectContaining(getUserShapeToVerify()));
         });
     });
 });

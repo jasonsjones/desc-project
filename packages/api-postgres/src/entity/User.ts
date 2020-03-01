@@ -1,4 +1,11 @@
-import { BaseEntity, PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
+import {
+    BaseEntity,
+    PrimaryGeneratedColumn,
+    Column,
+    Entity,
+    CreateDateColumn,
+    UpdateDateColumn
+} from 'typeorm';
 
 @Entity()
 export default class User extends BaseEntity {
@@ -13,4 +20,17 @@ export default class User extends BaseEntity {
 
     @Column('varchar', { unique: true, length: 255 })
     email: string;
+
+    @Column()
+    password: string;
+
+    @CreateDateColumn()
+    createdAt: Date;
+
+    @UpdateDateColumn()
+    updatedAt: Date;
+
+    get fullName(): string {
+        return `${this.firstName} ${this.lastName}`;
+    }
 }

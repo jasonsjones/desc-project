@@ -12,7 +12,7 @@ describe('User route acceptance tests', () => {
         await closeConnection();
     });
 
-    beforeEach(async () => {
+    afterEach(async () => {
         const userRepository = getRepository(User);
         await userRepository.clear();
     });
@@ -22,7 +22,8 @@ describe('User route acceptance tests', () => {
         const response = await client.creatUser({
             firstName: 'Oliver',
             lastName: 'Queen',
-            email: 'oliver@qc.com'
+            email: 'oliver@qc.com',
+            password: '123456'
         });
 
         expect(response.body).toEqual(
@@ -32,5 +33,7 @@ describe('User route acceptance tests', () => {
                 payload: expect.any(Object)
             })
         );
+
+        expect(response.body.payload).toHaveProperty('user');
     });
 });

@@ -17,7 +17,12 @@ class TestClient {
         return request(this.app).get('/api');
     }
 
-    public creatUser(userData: { firstName: string; lastName: string; email: string }): Test {
+    public creatUser(userData: {
+        firstName: string;
+        lastName: string;
+        email: string;
+        password: string;
+    }): Test {
         return request(this.app)
             .post('/api/user')
             .set('Content-Type', 'application/json')

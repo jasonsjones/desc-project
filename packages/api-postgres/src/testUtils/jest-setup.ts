@@ -5,9 +5,9 @@
 */
 
 beforeAll(() => {
-    console.log('This will run before each test file, but may not have access to postres db yet');
+    // console.log('This will run before each test file, but may not have access to postres db yet');
 });
 
 afterAll(() => {
-    console.log('This will run after each test file, but the postgres may be already closed...');
+    // console.log('This will run after each test file, but the postgres may be already closed...');
 });
