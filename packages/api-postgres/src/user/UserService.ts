@@ -1,13 +1,15 @@
+import bcrypt from 'bcryptjs';
 import User from '../entity/User';
 
 export default class UserService {
-    static createUser(
+    static async createUser(
         firstName: string,
         lastName: string,
         email: string,
         password: string
     ): Promise<User> {
-        const user = User.create({ firstName, lastName, email, password });
+        const hashedPassword = await bcrypt.hash(password, 12);
+        const user = User.create({ firstName, lastName, email, password: hashedPassword });
         return user.save();
     }
 

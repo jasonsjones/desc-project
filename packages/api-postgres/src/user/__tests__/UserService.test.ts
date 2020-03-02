@@ -47,6 +47,7 @@ describe('User service integration tests', () => {
             userId = result.id;
 
             expect(result).toEqual(expect.objectContaining(getUserShapeToVerify()));
+            expect(result.password).not.toEqual(testUser.password);
         });
     });
 
@@ -55,16 +56,7 @@ describe('User service integration tests', () => {
             const result = await UserService.getAllUsers();
 
             expect(result).toHaveLength(1);
-            expect(result[0]).toEqual(
-                expect.objectContaining({
-                    id: expect.any(String),
-                    firstName: expect.any(String),
-                    lastName: expect.any(String),
-                    email: expect.any(String),
-                    password: expect.any(String),
-                    fullName: expect.any(String)
-                })
-            );
+            expect(result[0]).toEqual(expect.objectContaining(getUserShapeToVerify()));
         });
 
         it('getUserById() fetches the user with the given id', async () => {
