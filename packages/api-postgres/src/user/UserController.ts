@@ -23,6 +23,17 @@ class UserController {
             });
         });
     }
+
+    static getUser(req: Request, res: Response): Promise<Response> {
+        const id = req.params.id;
+        return UserService.getUserById(id).then(user => {
+            return res.json({
+                success: true,
+                message: 'user fetched',
+                payload: { user }
+            });
+        });
+    }
 }
 
 export default UserController;

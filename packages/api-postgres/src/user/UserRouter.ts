@@ -13,6 +13,8 @@ class UserRouter {
             .route('/')
             .post(UserController.createUser)
             .get(UserController.getAllUsers);
+
+        UserRouter.router.route('/:id').get(UserController.getUser);
     }
 }
 

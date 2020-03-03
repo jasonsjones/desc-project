@@ -34,6 +34,12 @@ class TestClient {
             .get('/api/user')
             .set('Content-Type', 'application/json');
     }
+
+    public getUser(id: string): Test {
+        return request(this.app)
+            .get(`/api/user/${id}`)
+            .set('Content-Type', 'application/json');
+    }
 }
 
 export default TestClient;

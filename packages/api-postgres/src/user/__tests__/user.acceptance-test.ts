@@ -12,42 +12,77 @@ describe('User route acceptance tests', () => {
         await closeConnection();
     });
 
-    afterEach(async () => {
-        const userRepository = getRepository(User);
-        await userRepository.clear();
-    });
-
-    it('POST /api/user creates a new user', async () => {
-        const client = new TestClient();
-        const response = await client.creatUser({
-            firstName: 'Oliver',
-            lastName: 'Queen',
-            email: 'oliver@qc.com',
-            password: '123456'
+    describe('/api/user route', () => {
+        afterAll(async () => {
+            const userRepository = getRepository(User);
+            await userRepository.clear();
         });
 
-        expect(response.body).toEqual(
-            expect.objectContaining({
-                success: expect.any(Boolean),
-                message: expect.any(String),
-                payload: expect.any(Object)
-            })
-        );
+        it('POST /api/user creates a new user', async () => {
+            const client = new TestClient();
+            const response = await client.creatUser({
+                firstName: 'Oliver',
+                lastName: 'Queen',
+                email: 'oliver@qc.com',
+                password: '123456'
+            });
 
-        expect(response.body.payload).toHaveProperty('user');
+            expect(response.body).toEqual(
+                expect.objectContaining({
+                    success: expect.any(Boolean),
+                    message: expect.any(String),
+                    payload: expect.any(Object)
+                })
+            );
+            expect(response.body.payload).toHaveProperty('user');
+        });
+
+        it('GET /api/user fetches all users', async () => {
+            const client = new TestClient();
+            const response = await client.getAllUsers();
+            expect(response.body).toEqual(
+                expect.objectContaining({
+                    success: expect.any(Boolean),
+                    message: expect.any(String),
+                    payload: expect.any(Object)
+                })
+            );
+            expect(response.body.payload).toHaveProperty('users');
+            expect(response.body.payload.users).toHaveLength(1);
+        });
     });
 
-    it('GET /api/user fetches all users', async () => {
-        const client = new TestClient();
-        const response = await client.getAllUsers();
-        expect(response.body).toEqual(
-            expect.objectContaining({
-                success: expect.any(Boolean),
-                message: expect.any(String),
-                payload: expect.any(Object)
-            })
-        );
+    describe('/api/user/:id route', () => {
+        let userId: string;
 
-        expect(response.body.payload).toHaveProperty('users');
+        beforeAll(async () => {
+            const client = new TestClient();
+            const response = await client.creatUser({
+                firstName: 'Oliver',
+                lastName: 'Queen',
+                email: 'oliver@qc.com',
+                password: '123456'
+            });
+            userId = response.body.payload.user.id;
+        });
+
+        afterAll(async () => {
+            const userRepository = getRepository(User);
+            await userRepository.clear();
+        });
+
+        it('GET /api/user/:id fetches the user with the given id', async () => {
+            const client = new TestClient();
+            const response = await client.getUser(userId);
+
+            expect(response.body).toEqual(
+                expect.objectContaining({
+                    success: expect.any(Boolean),
+                    message: expect.any(String),
+                    payload: expect.any(Object)
+                })
+            );
+            expect(response.body.payload).toHaveProperty('user');
+        });
     });
 });
