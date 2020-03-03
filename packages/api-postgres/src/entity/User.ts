@@ -24,6 +24,21 @@ export default class User extends BaseEntity {
     @Column()
     password: string;
 
+    @Column()
+    emailVerificationToken: string;
+
+    @Column({ default: false })
+    isEmailVerified: boolean;
+
+    @Column({ default: 0 })
+    resetTokenVersion: number;
+
+    @Column({ default: '' })
+    passwordResetToken: string;
+
+    @Column({ default: new Date() })
+    passwordResetTokenExpiresAt: Date;
+
     @CreateDateColumn()
     createdAt: Date;
 

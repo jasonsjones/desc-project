@@ -10,6 +10,13 @@ const getUserShapeToVerify = (): {
     email: string;
     password: string;
     fullName: string;
+    emailVerificationToken: string;
+    isEmailVerified: boolean;
+    resetTokenVersion: number;
+    passwordResetToken: string;
+    passwordResetTokenExpiresAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
 } => {
     return {
         id: expect.any(String),
@@ -17,7 +24,14 @@ const getUserShapeToVerify = (): {
         lastName: expect.any(String),
         email: expect.any(String),
         password: expect.any(String),
-        fullName: expect.any(String)
+        fullName: expect.any(String),
+        emailVerificationToken: expect.any(String),
+        isEmailVerified: expect.any(Boolean),
+        resetTokenVersion: expect.any(Number),
+        passwordResetToken: expect.any(String),
+        passwordResetTokenExpiresAt: expect.any(Date),
+        createdAt: expect.any(Date),
+        updatedAt: expect.any(Date)
     };
 };
 
