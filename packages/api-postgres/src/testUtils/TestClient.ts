@@ -28,6 +28,12 @@ class TestClient {
             .set('Content-Type', 'application/json')
             .send(userData);
     }
+
+    public getAllUsers(): Test {
+        return request(this.app)
+            .get('/api/user')
+            .set('Content-Type', 'application/json');
+    }
 }
 
 export default TestClient;

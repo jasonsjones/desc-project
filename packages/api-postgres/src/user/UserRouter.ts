@@ -9,7 +9,10 @@ class UserRouter {
     }
 
     private static defineRoutes(): void {
-        UserRouter.router.route('/').post(UserController.createUser);
+        UserRouter.router
+            .route('/')
+            .post(UserController.createUser)
+            .get(UserController.getAllUsers);
     }
 }
 

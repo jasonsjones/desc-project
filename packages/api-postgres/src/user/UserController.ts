@@ -13,6 +13,16 @@ class UserController {
             });
         });
     }
+
+    static getAllUsers(_: Request, res: Response): Promise<Response> {
+        return UserService.getAllUsers().then(users => {
+            return res.json({
+                success: true,
+                message: 'all users fetched',
+                payload: { users }
+            });
+        });
+    }
 }
 
 export default UserController;

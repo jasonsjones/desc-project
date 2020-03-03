@@ -17,7 +17,7 @@ describe('User route acceptance tests', () => {
         await userRepository.clear();
     });
 
-    it('POST /api/users creates a new user', async () => {
+    it('POST /api/user creates a new user', async () => {
         const client = new TestClient();
         const response = await client.creatUser({
             firstName: 'Oliver',
@@ -35,5 +35,19 @@ describe('User route acceptance tests', () => {
         );
 
         expect(response.body.payload).toHaveProperty('user');
+    });
+
+    it('GET /api/user fetches all users', async () => {
+        const client = new TestClient();
+        const response = await client.getAllUsers();
+        expect(response.body).toEqual(
+            expect.objectContaining({
+                success: expect.any(Boolean),
+                message: expect.any(String),
+                payload: expect.any(Object)
+            })
+        );
+
+        expect(response.body.payload).toHaveProperty('users');
     });
 });
