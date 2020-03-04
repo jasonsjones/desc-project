@@ -36,10 +36,7 @@ export default class UserService {
 
     static async deleteUser(id: string): Promise<User | undefined> {
         const user = UserService.getUserById(id);
-        const deleteOp = await User.delete({ id });
-        if (deleteOp.affected === 1) {
-            return user;
-        }
-        return Promise.resolve(undefined);
+        await User.delete({ id });
+        return user;
     }
 }
