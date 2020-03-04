@@ -43,22 +43,23 @@ const testUser = {
 };
 
 describe('User service integration tests', () => {
-    let userId: string;
     beforeAll(async () => {
         await createPostgresConnection();
     });
 
     afterAll(async () => {
-        const userRepository = await getRepository(User);
-        await userRepository.clear();
         await closeConnection();
     });
 
     describe('createUser method', () => {
+        afterEach(async () => {
+            const userRepository = await getRepository(User);
+            await userRepository.clear();
+        });
+
         it('creates a new user', async () => {
             const { firstName, lastName, email, password } = testUser;
             const result = await UserService.createUser(firstName, lastName, email, password);
-            userId = result.id;
 
             expect(result).toEqual(expect.objectContaining(getUserShapeToVerify()));
             expect(result.password).not.toEqual(testUser.password);
@@ -66,6 +67,16 @@ describe('User service integration tests', () => {
     });
 
     describe('get[All]User* methods', () => {
+        let userId: string;
+        beforeEach(async () => {
+            const { firstName, lastName, email, password } = testUser;
+            const user = await UserService.createUser(firstName, lastName, email, password);
+            userId = user.id;
+        });
+        afterEach(async () => {
+            const userRepository = await getRepository(User);
+            await userRepository.clear();
+        });
         it('getAllUsers() fetches all the users', async () => {
             const result = await UserService.getAllUsers();
 
@@ -77,6 +88,35 @@ describe('User service integration tests', () => {
             const result = await UserService.getUserById(userId);
 
             expect(result).toEqual(expect.objectContaining(getUserShapeToVerify()));
+        });
+    });
+
+    describe('updateUser method', () => {
+        let userId: string;
+        beforeEach(async () => {
+            const { firstName, lastName, email, password } = testUser;
+            const user = await UserService.createUser(firstName, lastName, email, password);
+            userId = user.id;
+        });
+
+        afterEach(async () => {
+            const userRepository = await getRepository(User);
+            await userRepository.clear();
+        });
+
+        it(`updates user's firstName`, async () => {
+            const result = await UserService.updateUser(userId, { firstName: 'Spartan' });
+            expect(result?.firstName).toEqual('Spartan');
+        });
+
+        it(`updates user's lastName`, async () => {
+            const result = await UserService.updateUser(userId, { lastName: 'DC Character' });
+            expect(result?.lastName).toEqual('DC Character');
+        });
+
+        it(`updates user's email`, async () => {
+            const result = await UserService.updateUser(userId, { email: 'spartan@qc.com' });
+            expect(result?.email).toEqual('spartan@qc.com');
         });
     });
 });
