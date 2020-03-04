@@ -20,7 +20,7 @@ describe('User route acceptance tests', () => {
 
         it('POST /api/user creates a new user', async () => {
             const client = new TestClient();
-            const response = await client.creatUser({
+            const response = await client.creatUserViaAPI({
                 firstName: 'Oliver',
                 lastName: 'Queen',
                 email: 'oliver@qc.com',

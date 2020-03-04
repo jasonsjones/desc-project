@@ -29,7 +29,7 @@ class TestClient {
         return UserService.createUser(firstName, lastName, email, password);
     }
 
-    public creatUser(userData: {
+    public creatUserViaAPI(userData: {
         firstName: string;
         lastName: string;
         email: string;
