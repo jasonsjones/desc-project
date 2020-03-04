@@ -55,18 +55,18 @@ describe('User route acceptance tests', () => {
     describe('/api/user/:id route', () => {
         let userId: string;
 
-        beforeAll(async () => {
+        beforeEach(async () => {
             const client = new TestClient();
-            const response = await client.creatUser({
+            const user = await client.createTestUser({
                 firstName: 'Oliver',
                 lastName: 'Queen',
                 email: 'oliver@qc.com',
                 password: '123456'
             });
-            userId = response.body.payload.user.id;
+            userId = user.id;
         });
 
-        afterAll(async () => {
+        afterEach(async () => {
             const userRepository = getRepository(User);
             await userRepository.clear();
         });
@@ -74,6 +74,20 @@ describe('User route acceptance tests', () => {
         it('GET /api/user/:id fetches the user with the given id', async () => {
             const client = new TestClient();
             const response = await client.getUser(userId);
+
+            expect(response.body).toEqual(
+                expect.objectContaining({
+                    success: expect.any(Boolean),
+                    message: expect.any(String),
+                    payload: expect.any(Object)
+                })
+            );
+            expect(response.body.payload).toHaveProperty('user');
+        });
+
+        it('PATCH /api/user/:id updates the user with the given id with the provided data', async () => {
+            const client = new TestClient();
+            const response = await client.updateUser(userId, { firstName: 'Ollie' });
 
             expect(response.body).toEqual(
                 expect.objectContaining({

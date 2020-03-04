@@ -34,6 +34,18 @@ class UserController {
             });
         });
     }
+
+    static updateUser(req: Request, res: Response): Promise<Response> {
+        const id = req.params.id;
+        const data = req.body as { firstName: string; lastName: string; email: string };
+        return UserService.updateUser(id, data).then(updatedUser => {
+            return res.json({
+                success: true,
+                message: 'user updated',
+                payload: { user: updatedUser }
+            });
+        });
+    }
 }
 
 export default UserController;

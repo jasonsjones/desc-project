@@ -14,7 +14,10 @@ class UserRouter {
             .post(UserController.createUser)
             .get(UserController.getAllUsers);
 
-        UserRouter.router.route('/:id').get(UserController.getUser);
+        UserRouter.router
+            .route('/:id')
+            .get(UserController.getUser)
+            .patch(UserController.updateUser);
     }
 }
 
