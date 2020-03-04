@@ -108,6 +108,13 @@ describe('User service integration tests', () => {
             await userRepository.clear();
         });
 
+        it('returns undefined if user cannot be found with given id', async () => {
+            const result = await UserService.updateUser('4157b081-e365-4984-aeac-c31aa255a474', {
+                lastName: 'notfound'
+            });
+            expect(result).toBeUndefined();
+        });
+
         it(`updates user's firstName`, async () => {
             const result = await UserService.updateUser(userId, { firstName: 'Spartan' });
             expect(result?.firstName).toEqual('Spartan');
