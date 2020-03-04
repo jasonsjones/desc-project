@@ -68,15 +68,18 @@ describe('User service integration tests', () => {
 
     describe('get[All]User* methods', () => {
         let userId: string;
+
         beforeEach(async () => {
             const { firstName, lastName, email, password } = testUser;
             const user = await UserService.createUser(firstName, lastName, email, password);
             userId = user.id;
         });
+
         afterEach(async () => {
             const userRepository = await getRepository(User);
             await userRepository.clear();
         });
+
         it('getAllUsers() fetches all the users', async () => {
             const result = await UserService.getAllUsers();
 
@@ -93,6 +96,7 @@ describe('User service integration tests', () => {
 
     describe('updateUser method', () => {
         let userId: string;
+
         beforeEach(async () => {
             const { firstName, lastName, email, password } = testUser;
             const user = await UserService.createUser(firstName, lastName, email, password);
@@ -117,6 +121,35 @@ describe('User service integration tests', () => {
         it(`updates user's email`, async () => {
             const result = await UserService.updateUser(userId, { email: 'spartan@qc.com' });
             expect(result?.email).toEqual('spartan@qc.com');
+        });
+    });
+
+    describe('deleteUser method', () => {
+        let userIdToDelete: string;
+
+        beforeEach(async () => {
+            await UserService.createUser('Barry', 'Allen', 'barry@starlabs.com', 'test1234');
+            const { firstName, lastName, email, password } = testUser;
+            const user = await UserService.createUser(firstName, lastName, email, password);
+            userIdToDelete = user.id;
+        });
+
+        afterEach(async () => {
+            const userRepository = await getRepository(User);
+            await userRepository.clear();
+        });
+
+        it('returns undefined if user cannot be found with given id', async () => {
+            const result = await UserService.deleteUser('4157b081-e365-4984-aeac-c31aa255a474');
+            expect(result).toBeUndefined();
+        });
+
+        it(`deletes the user with the given id`, async () => {
+            const result = await UserService.deleteUser(userIdToDelete);
+            expect(result?.id).toEqual(userIdToDelete);
+
+            const users = await UserService.getAllUsers();
+            expect(users).toHaveLength(1);
         });
     });
 });
