@@ -18,7 +18,7 @@ describe('User route acceptance tests', () => {
             await userRepository.clear();
         });
 
-        it('POST /api/user creates a new user', async () => {
+        it('POST request method creates a new user', async () => {
             const client = new TestClient();
             const response = await client.creatUserViaAPI({
                 firstName: 'Oliver',
@@ -37,7 +37,7 @@ describe('User route acceptance tests', () => {
             expect(response.body.payload).toHaveProperty('user');
         });
 
-        it('GET /api/user fetches all users', async () => {
+        it('GET request method fetches all users', async () => {
             const client = new TestClient();
             const response = await client.getAllUsers();
             expect(response.body).toEqual(
@@ -71,7 +71,7 @@ describe('User route acceptance tests', () => {
             await userRepository.clear();
         });
 
-        it('GET /api/user/:id fetches the user with the given id', async () => {
+        it('GET request method fetches the user with the given id', async () => {
             const client = new TestClient();
             const response = await client.getUser(userId);
 
@@ -85,7 +85,7 @@ describe('User route acceptance tests', () => {
             expect(response.body.payload).toHaveProperty('user');
         });
 
-        it('PATCH /api/user/:id updates the user with the given id with the provided data', async () => {
+        it('PATCH request method updates the user with the given id with the provided data', async () => {
             const client = new TestClient();
             const response = await client.updateUser(userId, { firstName: 'Ollie' });
 
@@ -99,7 +99,7 @@ describe('User route acceptance tests', () => {
             expect(response.body.payload).toHaveProperty('user');
         });
 
-        it('DELETE /api/user/:id deletes the user with the given id', async () => {
+        it('DELETE request method deletes the user with the given id', async () => {
             const client = new TestClient();
             const response = await client.deleteUser(userId);
 
