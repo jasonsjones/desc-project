@@ -17,7 +17,8 @@ class UserRouter {
         UserRouter.router
             .route('/:id')
             .get(UserController.getUser)
-            .patch(UserController.updateUser);
+            .patch(UserController.updateUser)
+            .delete(UserController.deleteUser);
     }
 }
 

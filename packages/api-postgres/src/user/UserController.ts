@@ -46,6 +46,17 @@ class UserController {
             });
         });
     }
+
+    static deleteUser(req: Request, res: Response): Promise<Response> {
+        const id = req.params.id;
+        return UserService.deleteUser(id).then(deletedUser => {
+            return res.json({
+                success: true,
+                message: 'user deleted',
+                payload: { user: deletedUser }
+            });
+        });
+    }
 }
 
 export default UserController;

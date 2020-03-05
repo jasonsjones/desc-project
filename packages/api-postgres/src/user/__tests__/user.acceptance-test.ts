@@ -98,5 +98,22 @@ describe('User route acceptance tests', () => {
             );
             expect(response.body.payload).toHaveProperty('user');
         });
+
+        it('DELETE /api/user/:id deletes the user with the given id', async () => {
+            const client = new TestClient();
+            const response = await client.deleteUser(userId);
+
+            expect(response.body).toEqual(
+                expect.objectContaining({
+                    success: expect.any(Boolean),
+                    message: expect.any(String),
+                    payload: expect.any(Object)
+                })
+            );
+            expect(response.body.payload).toHaveProperty('user');
+
+            const verify = await client.getAllUsers();
+            expect(verify.body.payload.users).toHaveLength(0);
+        });
     });
 });
