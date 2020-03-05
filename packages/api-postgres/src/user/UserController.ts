@@ -3,6 +3,8 @@ import UserService from './UserService';
 
 class UserController {
     static createUser(req: Request, res: Response): Promise<Response> {
+        // TODO: add better input validation to ensure the updated data has the required shape and/or
+        // only includes the accepted properties
         const { firstName, lastName, email, password } = req.body;
 
         return UserService.createUser(firstName, lastName, email, password).then(user => {
@@ -37,7 +39,11 @@ class UserController {
 
     static updateUser(req: Request, res: Response): Promise<Response> {
         const id = req.params.id;
+
+        // TODO: add better input validation to ensure the updated data has the required shape and/or
+        // only includes the accepted properties
         const data = req.body as { firstName: string; lastName: string; email: string };
+
         return UserService.updateUser(id, data).then(updatedUser => {
             return res.json({
                 success: true,
