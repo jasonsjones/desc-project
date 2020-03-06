@@ -9,6 +9,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/', IndexRouter.getRouter());
-app.use('/api/user', UserRouter.getRouter());
+app.use('/api/users', UserRouter.getRouter());
 
 export default app;

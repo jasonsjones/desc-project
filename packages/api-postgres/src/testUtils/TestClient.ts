@@ -36,20 +36,20 @@ class TestClient {
         password: string;
     }): Test {
         return request(this.app)
-            .post('/api/user')
+            .post('/api/users')
             .set('Content-Type', 'application/json')
             .send(userData);
     }
 
     public getAllUsers(): Test {
         return request(this.app)
-            .get('/api/user')
+            .get('/api/users')
             .set('Content-Type', 'application/json');
     }
 
     public getUser(id: string): Test {
         return request(this.app)
-            .get(`/api/user/${id}`)
+            .get(`/api/users/${id}`)
             .set('Content-Type', 'application/json');
     }
 
@@ -58,14 +58,14 @@ class TestClient {
         updatedData: { firstName?: string; lastName?: string; email?: string }
     ): Test {
         return request(this.app)
-            .patch(`/api/user/${id}`)
+            .patch(`/api/users/${id}`)
             .set('Content-Type', 'application/json')
             .send(updatedData);
     }
 
     public deleteUser(id: string): Test {
         return request(this.app)
-            .delete(`/api/user/${id}`)
+            .delete(`/api/users/${id}`)
             .set('Content-Type', 'application/json');
     }
 }
