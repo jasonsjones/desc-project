@@ -29,6 +29,10 @@ export default class UserService {
         return User.findOne({ where: { id } });
     }
 
+    static getUserByEmail(email: string): Promise<User | undefined> {
+        return User.findOne({ where: { email } });
+    }
+
     static async updateUser(id: string, data: UpdatableUserFields): Promise<User | undefined> {
         await User.update({ id }, data);
         return UserService.getUserById(id);

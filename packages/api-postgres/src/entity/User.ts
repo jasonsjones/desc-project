@@ -6,6 +6,7 @@ import {
     CreateDateColumn,
     UpdateDateColumn
 } from 'typeorm';
+import bcrypt from 'bcryptjs';
 
 @Entity()
 export default class User extends BaseEntity {
@@ -39,6 +40,9 @@ export default class User extends BaseEntity {
     @Column({ default: new Date() })
     passwordResetTokenExpiresAt: Date;
 
+    @Column({ nullable: true })
+    lastLoginAt: Date;
+
     @CreateDateColumn()
     createdAt: Date;
 
@@ -48,4 +52,8 @@ export default class User extends BaseEntity {
     get fullName(): string {
         return `${this.firstName} ${this.lastName}`;
     }
+
+    verifyPassword = (password: string): boolean => {
+        return bcrypt.compareSync(password, this.password);
+    };
 }
