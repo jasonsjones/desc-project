@@ -5,11 +5,11 @@ class AuthUtils {
     static createAccessToken = (user: User): string => {
         const token = jwt.sign(
             {
-                id: user.id,
+                sub: user.id,
                 email: user.email
             },
             process.env.ACCESS_TOKEN_SECRET as string,
-            { expiresIn: '15m' }
+            { expiresIn: '2m' }
         );
         return token;
     };
@@ -17,8 +17,9 @@ class AuthUtils {
     static createRefreshToken = (user: User): string => {
         const token = jwt.sign(
             {
-                id: user.id,
-                email: user.email
+                sub: user.id,
+                email: user.email,
+                version: user.refreshTokenVersion
             },
             process.env.REFRESH_TOKEN_SECRET as string,
             { expiresIn: '7d' }
@@ -26,17 +27,13 @@ class AuthUtils {
         return token;
     };
 
-    /*
-
-    const verifyAccessToken = (token: string): string | object => {
+    static verifyAccessToken = (token: string): string | object => {
         return jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string);
     };
 
-    const verifyRefreshToken = (token: string): string | object => {
+    static verifyRefreshToken = (token: string): string | object => {
         return jwt.verify(token, process.env.REFRESH_TOKEN_SECRET as string);
     };
-
-    */
 }
 
 export default AuthUtils;

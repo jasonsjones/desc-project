@@ -32,7 +32,7 @@ export default class User extends BaseEntity {
     isEmailVerified: boolean;
 
     @Column({ default: 0 })
-    resetTokenVersion: number;
+    refreshTokenVersion: number;
 
     @Column({ default: '' })
     passwordResetToken: string;

@@ -13,6 +13,8 @@ class AuthRouter {
         AuthRouter.router
             .route('/login')
             .post(passport.authenticate('local'), AuthController.login);
+
+        AuthRouter.router.route('/me').get(AuthController.me);
     }
 }
 
