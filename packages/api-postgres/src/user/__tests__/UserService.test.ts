@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
 import UserService from '../UserService';
-import User from '../../entity/User';
+import User, { Program } from '../../entity/User';
 import { createPostgresConnection, closeConnection } from '../../config/database';
 
 const getUserShapeToVerify = (): {
@@ -10,13 +10,18 @@ const getUserShapeToVerify = (): {
     email: string;
     password: string;
     fullName: string;
+    roles: string[];
+    program: string;
     emailVerificationToken: string;
     isEmailVerified: boolean;
-    resetTokenVersion: number;
+    refreshTokenVersion: number;
     passwordResetToken: string;
     passwordResetTokenExpiresAt: Date;
+    lastLoginAt: Date | null;
     createdAt: Date;
     updatedAt: Date;
+    verifyPassword: (password: string) => boolean;
+    toClientJSON: () => any;
 } => {
     return {
         id: expect.any(String),
@@ -25,13 +30,18 @@ const getUserShapeToVerify = (): {
         email: expect.any(String),
         password: expect.any(String),
         fullName: expect.any(String),
+        roles: expect.anything(),
+        program: expect.any(String),
         emailVerificationToken: expect.any(String),
         isEmailVerified: expect.any(Boolean),
-        resetTokenVersion: expect.any(Number),
+        refreshTokenVersion: expect.any(Number),
         passwordResetToken: expect.any(String),
         passwordResetTokenExpiresAt: expect.any(Date),
+        lastLoginAt: null,
         createdAt: expect.any(Date),
-        updatedAt: expect.any(Date)
+        updatedAt: expect.any(Date),
+        verifyPassword: expect.any(Function),
+        toClientJSON: expect.any(Function)
     };
 };
 
@@ -39,7 +49,8 @@ const testUser = {
     firstName: 'John',
     lastName: 'Diggle',
     email: 'john@qc.com',
-    password: '123456'
+    password: '123456',
+    program: Program.EMPLOYMENT
 };
 
 describe('User service integration tests', () => {
@@ -58,8 +69,14 @@ describe('User service integration tests', () => {
         });
 
         it('creates a new user', async () => {
-            const { firstName, lastName, email, password } = testUser;
-            const result = await UserService.createUser(firstName, lastName, email, password);
+            const { firstName, lastName, email, password, program } = testUser;
+            const result = await UserService.createUser(
+                firstName,
+                lastName,
+                email,
+                password,
+                program
+            );
 
             expect(result).toEqual(expect.objectContaining(getUserShapeToVerify()));
             expect(result.password).not.toEqual(testUser.password);

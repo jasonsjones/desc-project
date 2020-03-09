@@ -8,6 +8,24 @@ import {
 } from 'typeorm';
 import bcrypt from 'bcryptjs';
 
+export enum UserRole {
+    ADMIN = 'admin',
+    APPROVER = 'approver',
+    REQUESTOR = 'requestor',
+    VOLUNTEER = 'volunteer',
+    UNKNOWN = 'unknown'
+}
+
+export enum Program {
+    HOUSING = 'housing first',
+    INTEGRATED = 'integrated services',
+    SURVIVAL = 'survival services',
+    HEALTH = 'health services',
+    EMPLOYMENT = 'employment services',
+    RESEARCH_INNOVATION = 'research_innovation',
+    UNKNOWN = 'unknown'
+}
+
 @Entity()
 export default class User extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
@@ -24,6 +42,12 @@ export default class User extends BaseEntity {
 
     @Column()
     password: string;
+
+    @Column({ type: 'enum', enum: Program, default: Program.UNKNOWN })
+    program: Program;
+
+    @Column({ type: 'enum', enum: UserRole, default: [UserRole.REQUESTOR] })
+    roles: UserRole[];
 
     @Column()
     emailVerificationToken: string;
@@ -55,5 +79,18 @@ export default class User extends BaseEntity {
 
     verifyPassword = (password: string): boolean => {
         return bcrypt.compareSync(password, this.password);
+    };
+
+    toClientJSON = () => {
+        return {
+            id: this.id,
+            name: {
+                first: this.firstName,
+                last: this.lastName
+            },
+            email: this.email,
+            program: this.program,
+            roles: this.roles
+        };
     };
 }

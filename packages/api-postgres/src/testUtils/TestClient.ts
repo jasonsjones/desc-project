@@ -2,7 +2,7 @@ import { Application } from 'express';
 import request, { Test } from 'supertest';
 import app from '../config/app';
 import UserService from '../user/UserService';
-import User from '../entity/User';
+import User, { Program } from '../entity/User';
 
 class TestClient {
     private app: Application;
@@ -24,9 +24,10 @@ class TestClient {
         lastName: string;
         email: string;
         password: string;
+        program: Program;
     }): Promise<User> {
-        const { firstName, lastName, email, password } = userData;
-        return UserService.createUser(firstName, lastName, email, password);
+        const { firstName, lastName, email, password, program } = userData;
+        return UserService.createUser(firstName, lastName, email, password, program);
     }
 
     public creatUserViaAPI(userData: {
@@ -34,6 +35,7 @@ class TestClient {
         lastName: string;
         email: string;
         password: string;
+        program: Program;
     }): Test {
         return request(this.app)
             .post('/api/users')

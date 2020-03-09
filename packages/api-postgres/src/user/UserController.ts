@@ -5,9 +5,9 @@ class UserController {
     static createUser(req: Request, res: Response): Promise<Response> {
         // TODO: add better input validation to ensure the updated data has the required shape and/or
         // only includes the accepted properties
-        const { firstName, lastName, email, password } = req.body;
+        const { firstName, lastName, email, password, program } = req.body;
 
-        return UserService.createUser(firstName, lastName, email, password).then(user => {
+        return UserService.createUser(firstName, lastName, email, password, program).then(user => {
             return res.json({
                 success: true,
                 message: 'user created',

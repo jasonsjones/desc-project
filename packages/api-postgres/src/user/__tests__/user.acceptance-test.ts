@@ -1,5 +1,5 @@
 import { getRepository } from 'typeorm';
-import User from '../../entity/User';
+import User, { Program } from '../../entity/User';
 import TestClient from '../../testUtils/TestClient';
 import { createPostgresConnection, closeConnection } from '../../config/database';
 
@@ -24,7 +24,8 @@ describe('User route acceptance tests', () => {
                 firstName: 'Oliver',
                 lastName: 'Queen',
                 email: 'oliver@qc.com',
-                password: '123456'
+                password: '123456',
+                program: Program.SURVIVAL
             });
 
             expect(response.body).toEqual(
@@ -61,7 +62,8 @@ describe('User route acceptance tests', () => {
                 firstName: 'Oliver',
                 lastName: 'Queen',
                 email: 'oliver@qc.com',
-                password: '123456'
+                password: '123456',
+                program: Program.SURVIVAL
             });
             userId = user.id;
         });
