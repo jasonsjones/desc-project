@@ -9,7 +9,7 @@ class AuthUtils {
                 email: user.email
             },
             process.env.ACCESS_TOKEN_SECRET as string,
-            { expiresIn: '2m' }
+            { expiresIn: '15m' }
         );
         return token;
     };
