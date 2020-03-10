@@ -8,68 +8,103 @@ class AuthController {
         const user = req.user as User;
 
         res.cookie('qid', AuthUtils.createRefreshToken(user), { httpOnly: true });
-        const token = AuthUtils.createAccessToken(user);
+        const accessToken = AuthUtils.createAccessToken(user);
 
         return res.json({
             success: true,
             message: 'user authenticated',
             payload: {
                 user,
-                token
+                accessToken
             }
         });
     }
 
+    static async getRefreshToken(req: Request, res: Response): Promise<Response> {
+        const currentToken = req.cookies['qid'];
+
+        if (!currentToken) {
+            return AuthController.sendEmptyAccessToken(res);
+        }
+
+        let user: User;
+        try {
+            const tokenPayload: any = AuthUtils.verifyRefreshToken(currentToken);
+            user = (await UserService.getUserById(tokenPayload.sub)) as User;
+            if (!user) {
+                return AuthController.sendEmptyAccessToken(res);
+            }
+
+            if (user && tokenPayload.version === user.refreshTokenVersion) {
+                res.cookie('qid', AuthUtils.createRefreshToken(user), { httpOnly: true });
+                return res.json({
+                    success: true,
+                    message: 'new access token requested.',
+                    payload: {
+                        accessToken: AuthUtils.createAccessToken(user)
+                    }
+                });
+            }
+        } catch (err) {
+            return AuthController.sendEmptyAccessToken(res);
+        }
+
+        return res.json({
+            success: false,
+            message: 'unable to refresh token',
+            payload: null
+        });
+    }
+
     static async me(req: Request, res: Response): Promise<Response> {
+        let baseResponse = {
+            success: true,
+            message: 'authenticated user'
+        };
+        let json = null;
         let payload = null;
         const reqUser = req.user as User;
         if (reqUser) {
             const user: User = (await UserService.getUserById(reqUser.id)) as User;
             if (user) {
-                res.cookie('qid', AuthUtils.createRefreshToken(user), { httpOnly: true });
-                const token = AuthUtils.createAccessToken(user);
                 payload = {
-                    user,
-                    token
+                    user: user.toClientJSON()
+                };
+                json = {
+                    ...baseResponse,
+                    payload
                 };
             }
         } else {
             payload = {
-                user: null,
-                token: ''
+                user: null
+            };
+            json = {
+                ...baseResponse,
+                message: 'no authenticated user',
+                payload
             };
         }
 
-        return res.json({
-            successs: true,
-            message: 'authenticated user',
-            payload
-        });
+        return res.json(json);
     }
 
     static processToken = async (req: Request, _: Response, next: NextFunction): Promise<void> => {
         const { token, refreshToken } = AuthController.getTokens(req);
-        let user: User;
         if (token && refreshToken) {
             try {
                 const decoded: any = AuthUtils.verifyAccessToken(token);
                 if (decoded) {
-                    user = (await UserService.getUserById(decoded.sub)) as User;
-                    req.user = user;
+                    req.user = {
+                        id: decoded.sub,
+                        email: decoded.email
+                    };
                 } else {
                     req.user = undefined;
                 }
             } catch (err) {
                 if (err.name === 'TokenExpiredError') {
-                    const decodedRefreshToken: any = AuthUtils.verifyRefreshToken(refreshToken);
-                    if (decodedRefreshToken) {
-                        user = (await UserService.getUserById(decodedRefreshToken.sub)) as User;
-                        if (user && decodedRefreshToken.version === user.refreshTokenVersion) {
-                            req.user = user;
-                        } else {
-                            req.user = undefined;
-                        }
-                    }
+                    console.log('access token is expired.');
                 }
             }
         } else {
@@ -91,6 +126,16 @@ class AuthController {
             token,
             refreshToken
         };
+    };
+
+    private static sendEmptyAccessToken = (res: Response): Response => {
+        return res.json({
+            success: true,
+            message: 'new access token requested.',
+            payload: {
+                accessToken: ''
+            }
+        });
     };
 }
 
