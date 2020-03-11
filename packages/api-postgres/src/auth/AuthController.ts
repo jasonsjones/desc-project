@@ -39,7 +39,7 @@ class AuthController {
                 res.cookie('qid', AuthUtils.createRefreshToken(user), { httpOnly: true });
                 return res.json({
                     success: true,
-                    message: 'new access token requested.',
+                    message: 'new access token issued',
                     payload: {
                         accessToken: AuthUtils.createAccessToken(user)
                     }
@@ -51,7 +51,7 @@ class AuthController {
 
         return res.json({
             success: false,
-            message: 'unable to refresh token',
+            message: 'unable to issue new access token',
             payload: null
         });
     }
@@ -88,6 +88,8 @@ class AuthController {
 
         return res.json(json);
     }
+
+    // Middleware methods and utilities
 
     static processToken = async (req: Request, _: Response, next: NextFunction): Promise<void> => {
         const { token, refreshToken } = AuthController.getTokens(req);
