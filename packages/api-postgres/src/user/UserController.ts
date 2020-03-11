@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import User from '../entity/User';
 import UserService from './UserService';
 
 class UserController {
@@ -62,6 +63,39 @@ class UserController {
                 payload: { user: deletedUser }
             });
         });
+    }
+
+    static async me(req: Request, res: Response): Promise<Response> {
+        let baseResponse = {
+            success: true,
+            message: 'authenticated user'
+        };
+        let json = null;
+        let payload = null;
+        const reqUser = req.user as User;
+        if (reqUser) {
+            const user: User = (await UserService.getUserById(reqUser.id)) as User;
+            if (user) {
+                payload = {
+                    user: user.toClientJSON()
+                };
+                json = {
+                    ...baseResponse,
+                    payload
+                };
+            }
+        } else {
+            payload = {
+                user: null
+            };
+            json = {
+                ...baseResponse,
+                message: 'no authenticated user',
+                payload
+            };
+        }
+
+        return res.json(json);
     }
 }
 
