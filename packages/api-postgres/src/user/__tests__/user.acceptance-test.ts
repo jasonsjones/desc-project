@@ -55,9 +55,10 @@ describe('User route acceptance tests', () => {
 
     describe('/api/user/:id route', () => {
         let userId: string;
+        let client: TestClient;
 
         beforeEach(async () => {
-            const client = new TestClient();
+            client = new TestClient();
             const user = await client.createTestUser({
                 firstName: 'Oliver',
                 lastName: 'Queen',
@@ -74,7 +75,6 @@ describe('User route acceptance tests', () => {
         });
 
         it('GET request method fetches the user with the given id', async () => {
-            const client = new TestClient();
             const response = await client.getUser(userId);
 
             expect(response.body).toEqual(
@@ -88,7 +88,6 @@ describe('User route acceptance tests', () => {
         });
 
         it('PATCH request method updates the user with the given id with the provided data', async () => {
-            const client = new TestClient();
             const response = await client.updateUser(userId, { firstName: 'Ollie' });
 
             expect(response.body).toEqual(
@@ -102,7 +101,6 @@ describe('User route acceptance tests', () => {
         });
 
         it('DELETE request method deletes the user with the given id', async () => {
-            const client = new TestClient();
             const response = await client.deleteUser(userId);
 
             expect(response.body).toEqual(
