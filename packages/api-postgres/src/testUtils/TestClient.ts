@@ -70,6 +70,13 @@ class TestClient {
             .delete(`/api/users/${id}`)
             .set('Content-Type', 'application/json');
     }
+
+    public loginUser(email: string, password: string): Test {
+        return request(this.app)
+            .post('/api/auth/login')
+            .set('Content-Type', 'application/json')
+            .send({ email, password });
+    }
 }
 
 export default TestClient;

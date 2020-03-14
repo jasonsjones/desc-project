@@ -14,7 +14,7 @@ class AuthController {
             success: true,
             message: 'user authenticated',
             payload: {
-                user,
+                user: user.toClientJSON(),
                 accessToken
             }
         });
