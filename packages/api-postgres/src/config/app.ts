@@ -17,7 +17,7 @@ passportConfig(passport);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cors({ credentials: true }));
+app.use(cors({ origin: ['http://localhost:4200'], credentials: true }));
 app.use(passport.initialize());
 
 app.use(AuthController.processToken);
