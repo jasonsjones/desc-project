@@ -1,7 +1,7 @@
-import { getRepository } from 'typeorm';
 import UserService from '../UserService';
-import User, { Program } from '../../entity/User';
+import { Program } from '../../entity/User';
 import { createPostgresConnection, closeConnection } from '../../config/database';
+import TestClient from '../../testUtils/TestClient';
 
 const getUserShapeToVerify = (): {
     id: string;
@@ -64,8 +64,7 @@ describe('User service integration tests', () => {
 
     describe('createUser method', () => {
         afterEach(async () => {
-            const userRepository = await getRepository(User);
-            await userRepository.clear();
+            await TestClient.deleteUserByEmail('john@qc.com');
         });
 
         it('creates a new user', async () => {
@@ -93,8 +92,7 @@ describe('User service integration tests', () => {
         });
 
         afterEach(async () => {
-            const userRepository = await getRepository(User);
-            await userRepository.clear();
+            await TestClient.deleteUserByEmail('john@qc.com');
         });
 
         it('getAllUsers() fetches all the users', async () => {
@@ -121,8 +119,8 @@ describe('User service integration tests', () => {
         });
 
         afterEach(async () => {
-            const userRepository = await getRepository(User);
-            await userRepository.clear();
+            await TestClient.deleteUserByEmail('john@qc.com');
+            await TestClient.deleteUserByEmail('spartan@qc.com');
         });
 
         it('returns undefined if user cannot be found with given id', async () => {
@@ -159,8 +157,8 @@ describe('User service integration tests', () => {
         });
 
         afterEach(async () => {
-            const userRepository = await getRepository(User);
-            await userRepository.clear();
+            await TestClient.deleteUserByEmail('john@qc.com');
+            await TestClient.deleteUserByEmail('barry@starlabs.com');
         });
 
         it('returns undefined if user cannot be found with given id', async () => {

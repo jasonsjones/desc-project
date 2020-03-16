@@ -1,5 +1,6 @@
 import { Application } from 'express';
 import request, { Test } from 'supertest';
+import { getConnection } from 'typeorm';
 import app from '../config/app';
 import UserService from '../user/UserService';
 import User, { Program } from '../entity/User';
@@ -76,6 +77,15 @@ class TestClient {
             .post('/api/auth/login')
             .set('Content-Type', 'application/json')
             .send({ email, password });
+    }
+
+    public static async deleteUserByEmail(email: string): Promise<void> {
+        await getConnection()
+            .createQueryBuilder()
+            .delete()
+            .from(User)
+            .where('email = :email', { email })
+            .execute();
     }
 }
 

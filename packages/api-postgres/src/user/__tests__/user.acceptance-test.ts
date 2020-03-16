@@ -1,5 +1,4 @@
-import { getRepository } from 'typeorm';
-import User, { Program } from '../../entity/User';
+import { Program } from '../../entity/User';
 import TestClient from '../../testUtils/TestClient';
 import { createPostgresConnection, closeConnection } from '../../config/database';
 
@@ -14,8 +13,7 @@ describe('User route acceptance tests', () => {
 
     describe('/api/user route', () => {
         afterAll(async () => {
-            const userRepository = getRepository(User);
-            await userRepository.clear();
+            await TestClient.deleteUserByEmail('oliver@desc.org');
         });
 
         it('POST request method creates a new user', async () => {
@@ -23,7 +21,7 @@ describe('User route acceptance tests', () => {
             const response = await client.creatUserViaAPI({
                 firstName: 'Oliver',
                 lastName: 'Queen',
-                email: 'oliver@qc.com',
+                email: 'oliver@desc.org',
                 password: '123456',
                 program: Program.SURVIVAL
             });
@@ -62,7 +60,7 @@ describe('User route acceptance tests', () => {
             const user = await client.createTestUser({
                 firstName: 'Oliver',
                 lastName: 'Queen',
-                email: 'oliver@qc.com',
+                email: 'oliver@desc.org',
                 password: '123456',
                 program: Program.SURVIVAL
             });
@@ -70,8 +68,7 @@ describe('User route acceptance tests', () => {
         });
 
         afterEach(async () => {
-            const userRepository = getRepository(User);
-            await userRepository.clear();
+            await TestClient.deleteUserByEmail('oliver@desc.org');
         });
 
         it('GET request method fetches the user with the given id', async () => {

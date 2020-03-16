@@ -2,11 +2,12 @@ import ItemService from '../ItemService';
 import { createPostgresConnection, closeConnection } from '../../config/database';
 import User from '../../entity/User';
 import Item from '../../entity/Item';
-import { getRepository, getConnection } from 'typeorm';
+import { getRepository } from 'typeorm';
 import { EngagementItem } from '../../entity/EngagementItem';
 import { HouseholdItem } from '../../entity/HouseholdItem';
 import { ItemCategory } from '../types';
 import UserService from '../../user/UserService';
+import TestClient from '../../testUtils/TestClient';
 
 describe('Item service', () => {
     let userId: string;
@@ -21,12 +22,7 @@ describe('Item service', () => {
     });
 
     afterAll(async () => {
-        await getConnection()
-            .createQueryBuilder()
-            .delete()
-            .from(User)
-            .where('email = :email', { email: 'test@desc.org' })
-            .execute();
+        await TestClient.deleteUserByEmail('test@desc.org');
 
         await closeConnection();
     });

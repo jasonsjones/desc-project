@@ -1,7 +1,6 @@
 import { createPostgresConnection, closeConnection } from '../../config/database';
 import TestClient from '../../testUtils/TestClient';
-import User, { Program } from '../../entity/User';
-import { getRepository } from 'typeorm';
+import { Program } from '../../entity/User';
 
 const expectedUserShape = {
     id: expect.any(String),
@@ -38,8 +37,7 @@ describe('Auth route acceptance tests', () => {
         });
 
         afterAll(async () => {
-            const userRepository = getRepository(User);
-            await userRepository.clear();
+            await TestClient.deleteUserByEmail('oliver@qc.com');
         });
 
         it('logs in an authorized user', async () => {
