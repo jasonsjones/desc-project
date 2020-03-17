@@ -9,6 +9,7 @@ import IndexRouter from '../index/IndexRouter';
 import AuthRouter from '../auth/AuthRouter';
 import UserRouter from '../user/UserRouter';
 import AuthController from '../auth/AuthController';
+import ItemRouter from '../item/ItemRouter';
 
 const app = express();
 
@@ -21,8 +22,10 @@ app.use(cors({ origin: ['http://localhost:4200'], credentials: true }));
 app.use(passport.initialize());
 
 app.use(AuthController.processToken);
+
 app.use('/', IndexRouter.getRouter());
 app.use('/api/auth', AuthRouter.getRouter(passport));
 app.use('/api/users', UserRouter.getRouter());
+app.use('/api/items', ItemRouter.getRouter());
 
 export default app;

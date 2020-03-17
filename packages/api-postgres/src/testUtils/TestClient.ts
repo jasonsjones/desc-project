@@ -79,6 +79,13 @@ class TestClient {
             .send({ email, password });
     }
 
+    public createItem(itemData: any): Test {
+        return request(this.app)
+            .post('/api/items')
+            .set('Content-Type', 'application/json')
+            .send(itemData);
+    }
+
     public static async deleteUserByEmail(email: string): Promise<void> {
         await getConnection()
             .createQueryBuilder()

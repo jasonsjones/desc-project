@@ -26,4 +26,11 @@ export default abstract class Item extends BaseEntity {
     // urgency: string;
     // status: string;
     // notes -> Notes[]
+
+    toClientJSON = () => {
+        return {
+            ...this,
+            submittedBy: this.submittedBy.toClientJSON()
+        };
+    };
 }
