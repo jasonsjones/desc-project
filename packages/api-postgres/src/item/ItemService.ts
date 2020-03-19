@@ -1,7 +1,7 @@
 import Item from '../entity/Item';
 import { EngagementItem } from '../entity/EngagementItem';
 import { HouseholdItem } from '../entity/HouseholdItem';
-import { ItemCategory, ItemData, EngagementItems, HouseholdItems } from './types';
+import { ItemCategory, ItemData } from './types';
 import UserService from '../user/UserService';
 
 export default class ItemService {
@@ -16,14 +16,18 @@ export default class ItemService {
 
         switch (category) {
             case ItemCategory.ENGAGEMENT:
-                item = EngagementItem.create({ name: name as EngagementItems });
+                item = EngagementItem.create({ name });
                 item.submittedBy = requestor;
                 break;
             case ItemCategory.HOUSEHOLD:
-                item = HouseholdItem.create({ name: name as HouseholdItems });
+                item = HouseholdItem.create({ name });
                 item.submittedBy = requestor;
                 break;
         }
         return item.save();
+    }
+
+    static getAllItems(): Promise<Item[]> {
+        return Item.find({ relations: ['submittedBy'] });
     }
 }

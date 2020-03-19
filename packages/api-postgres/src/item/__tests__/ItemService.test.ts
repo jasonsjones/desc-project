@@ -23,48 +23,67 @@ describe('Item service', () => {
 
     afterAll(async () => {
         await TestClient.deleteUserByEmail('test@desc.org');
-
         await closeConnection();
     });
 
-    it('creates a new engagement item', async () => {
-        const itemName = 'games';
-        const item = (await ItemService.createItem(ItemCategory.ENGAGEMENT, {
-            name: itemName,
-            requestorId: userId
-        })) as EngagementItem;
+    describe('createItem() method', () => {
+        it('creates a new engagement item', async () => {
+            const itemName = 'games';
+            const item = (await ItemService.createItem(ItemCategory.ENGAGEMENT, {
+                name: itemName,
+                requestorId: userId
+            })) as EngagementItem;
 
-        expect(item).toEqual(
-            expect.objectContaining({
-                id: expect.any(String),
-                submittedBy: expect.any(User),
-                name: itemName
-            })
-        );
+            expect(item).toEqual(
+                expect.objectContaining({
+                    id: expect.any(String),
+                    submittedBy: expect.any(User),
+                    name: itemName
+                })
+            );
+        });
+
+        it('creates a new household item', async () => {
+            const item = (await ItemService.createItem(ItemCategory.HOUSEHOLD, {
+                name: 'pillows',
+                requestorId: userId
+            })) as HouseholdItem;
+
+            expect(item).toEqual(
+                expect.objectContaining({
+                    id: expect.any(String),
+                    submittedBy: expect.any(User),
+                    name: 'pillows'
+                })
+            );
+        });
+
+        it('does not create a new item if the requestor is not found', async () => {
+            const unkownUserId = '4a29f793-ad0f-4388-9a40-0c0423c5b78c';
+            const item = (await ItemService.createItem(ItemCategory.HOUSEHOLD, {
+                name: 'bedding',
+                requestorId: unkownUserId
+            })) as HouseholdItem;
+
+            expect(item).toBeUndefined();
+        });
     });
 
-    it('creates a new household item', async () => {
-        const item = (await ItemService.createItem(ItemCategory.HOUSEHOLD, {
-            name: 'bedding',
-            requestorId: userId
-        })) as HouseholdItem;
+    describe('getAllItems() method', () => {
+        beforeEach(async () => {
+            (await ItemService.createItem(ItemCategory.ENGAGEMENT, {
+                name: 'games',
+                requestorId: userId
+            })) as EngagementItem;
+            (await ItemService.createItem(ItemCategory.HOUSEHOLD, {
+                name: 'bedding',
+                requestorId: userId
+            })) as HouseholdItem;
+        });
 
-        expect(item).toEqual(
-            expect.objectContaining({
-                id: expect.any(String),
-                submittedBy: expect.any(User),
-                name: 'bedding'
-            })
-        );
-    });
-
-    it('does not create a new item if the requestor is not found', async () => {
-        const unkownUserId = '4a29f793-ad0f-4388-9a40-0c0423c5b78c';
-        const item = (await ItemService.createItem(ItemCategory.HOUSEHOLD, {
-            name: 'bedding',
-            requestorId: unkownUserId
-        })) as HouseholdItem;
-
-        expect(item).toBeUndefined();
+        it('fetches all the items', async () => {
+            const items = await ItemService.getAllItems();
+            expect(items).toHaveLength(2);
+        });
     });
 });
