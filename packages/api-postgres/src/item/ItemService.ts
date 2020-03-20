@@ -1,6 +1,4 @@
 import Item from '../entity/Item';
-import { EngagementItem } from '../entity/EngagementItem';
-import { HouseholdItem } from '../entity/HouseholdItem';
 import { ItemCategory, ItemData } from './types';
 import UserService from '../user/UserService';
 
@@ -13,17 +11,9 @@ export default class ItemService {
         if (!requestor) {
             return;
         }
+        item = Item.create({ category: category.valueOf(), name });
+        item.submittedBy = requestor;
 
-        switch (category) {
-            case ItemCategory.ENGAGEMENT:
-                item = EngagementItem.create({ name });
-                item.submittedBy = requestor;
-                break;
-            case ItemCategory.HOUSEHOLD:
-                item = HouseholdItem.create({ name });
-                item.submittedBy = requestor;
-                break;
-        }
         return item.save();
     }
 
