@@ -86,6 +86,12 @@ class TestClient {
             .send(itemData);
     }
 
+    public getAllItems(): Test {
+        return request(this.app)
+            .get('/api/items')
+            .set('Content-Type', 'application/json');
+    }
+
     public static async deleteUserByEmail(email: string): Promise<void> {
         await getConnection()
             .createQueryBuilder()

@@ -22,10 +22,12 @@ describe('Item route acceptance tests', () => {
         userId = user.id;
     });
 
-    afterAll(async () => {
+    afterEach(async () => {
         const itemRepository = await getRepository(Item);
         await itemRepository.clear();
+    });
 
+    afterAll(async () => {
         await TestClient.deleteUserByEmail('oliver@desc.org');
         await closeConnection();
     });
@@ -47,6 +49,31 @@ describe('Item route acceptance tests', () => {
                     })
                 })
             );
+        });
+
+        it('fetches all the items', async () => {
+            await client.createItem({
+                category: 'engagement',
+                name: 'games',
+                requestorId: userId
+            });
+            await client.createItem({
+                category: 'household',
+                name: 'pillows',
+                requestorId: userId
+            });
+            const response = await client.getAllItems();
+
+            expect(response.body).toEqual(
+                expect.objectContaining({
+                    success: true,
+                    message: expect.any(String),
+                    payload: expect.objectContaining({
+                        items: expect.any(Object)
+                    })
+                })
+            );
+            expect(response.body.payload.items).toHaveLength(2);
         });
     });
 });

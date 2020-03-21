@@ -8,7 +8,10 @@ class ItemRouter {
         return ItemRouter.router;
     }
     private static defineRoutes(): void {
-        ItemRouter.router.route('/').post(ItemController.createItem);
+        ItemRouter.router
+            .route('/')
+            .post(ItemController.createItem)
+            .get(ItemController.getAllItems);
     }
 }
 

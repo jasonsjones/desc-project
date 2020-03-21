@@ -14,6 +14,18 @@ class ItemController {
             });
         });
     }
+
+    static getAllItems(_: Request, res: Response): Promise<Response> {
+        return ItemService.getAllItems().then(items => {
+            return res.json({
+                success: true,
+                message: 'items fetched',
+                payload: {
+                    items
+                }
+            });
+        });
+    }
 }
 
 export default ItemController;
