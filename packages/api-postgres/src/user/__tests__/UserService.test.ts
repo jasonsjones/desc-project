@@ -1,49 +1,7 @@
 import UserService from '../UserService';
-import { Program } from '../../entity/User';
+import User, { Program } from '../../entity/User';
 import { createPostgresConnection, closeConnection } from '../../config/database';
 import TestClient from '../../testUtils/TestClient';
-
-const getUserShapeToVerify = (): {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    fullName: string;
-    roles: string[];
-    program: string;
-    emailVerificationToken: string;
-    isEmailVerified: boolean;
-    refreshTokenVersion: number;
-    passwordResetToken: string;
-    passwordResetTokenExpiresAt: Date;
-    lastLoginAt: Date | null;
-    createdAt: Date;
-    updatedAt: Date;
-    verifyPassword: (password: string) => boolean;
-    toClientJSON: () => any;
-} => {
-    return {
-        id: expect.any(String),
-        firstName: expect.any(String),
-        lastName: expect.any(String),
-        email: expect.any(String),
-        password: expect.any(String),
-        fullName: expect.any(String),
-        roles: expect.anything(),
-        program: expect.any(String),
-        emailVerificationToken: expect.any(String),
-        isEmailVerified: expect.any(Boolean),
-        refreshTokenVersion: expect.any(Number),
-        passwordResetToken: expect.any(String),
-        passwordResetTokenExpiresAt: expect.any(Date),
-        lastLoginAt: null,
-        createdAt: expect.any(Date),
-        updatedAt: expect.any(Date),
-        verifyPassword: expect.any(Function),
-        toClientJSON: expect.any(Function)
-    };
-};
 
 const testUser = {
     firstName: 'John',
@@ -77,7 +35,7 @@ describe('User service integration tests', () => {
                 program
             );
 
-            expect(result).toEqual(expect.objectContaining(getUserShapeToVerify()));
+            expect(result).toEqual(expect.any(User));
             expect(result.password).not.toEqual(testUser.password);
         });
     });
@@ -99,13 +57,13 @@ describe('User service integration tests', () => {
             const result = await UserService.getAllUsers();
 
             expect(result).toHaveLength(1);
-            expect(result[0]).toEqual(expect.objectContaining(getUserShapeToVerify()));
+            expect(result[0]).toEqual(expect.any(User));
         });
 
         it('getUserById() fetches the user with the given id', async () => {
             const result = await UserService.getUserById(userId);
 
-            expect(result).toEqual(expect.objectContaining(getUserShapeToVerify()));
+            expect(result).toEqual(expect.any(User));
         });
     });
 
