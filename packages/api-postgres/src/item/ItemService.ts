@@ -1,17 +1,17 @@
 import Item from '../entity/Item';
-import { ItemCategory, ItemData } from './types';
+import { ItemData } from './types';
 import UserService from '../user/UserService';
 
 export default class ItemService {
-    static async createItem(category: ItemCategory, itemData: ItemData): Promise<Item | undefined> {
+    static async createItem(itemData: ItemData): Promise<Item | undefined> {
         let item: Item;
-        const { name, requestorId } = itemData;
+        const { category, name, requestorId } = itemData;
         const requestor = await UserService.getUserById(requestorId);
 
         if (!requestor) {
             return;
         }
-        item = Item.create({ category: category.valueOf(), name });
+        item = Item.create({ category, name });
         item.submittedBy = requestor;
 
         return item.save();

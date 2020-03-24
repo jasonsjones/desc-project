@@ -35,7 +35,8 @@ describe('Item service', () => {
     describe('createItem() method', () => {
         it('creates a new engagement item', async () => {
             const itemName = 'games';
-            const item = await ItemService.createItem(ItemCategory.ENGAGEMENT, {
+            const item = await ItemService.createItem({
+                category: ItemCategory.ENGAGEMENT,
                 name: itemName,
                 requestorId: userId
             });
@@ -51,7 +52,8 @@ describe('Item service', () => {
         });
 
         it('creates a new household item', async () => {
-            const item = await ItemService.createItem(ItemCategory.HOUSEHOLD, {
+            const item = await ItemService.createItem({
+                category: ItemCategory.HOUSEHOLD,
                 name: 'pillows',
                 requestorId: userId
             });
@@ -68,7 +70,8 @@ describe('Item service', () => {
 
         it('does not create a new item if the requestor is not found', async () => {
             const unkownUserId = '4a29f793-ad0f-4388-9a40-0c0423c5b78c';
-            const item = await ItemService.createItem(ItemCategory.HOUSEHOLD, {
+            const item = await ItemService.createItem({
+                category: ItemCategory.HOUSEHOLD,
                 name: 'bedding',
                 requestorId: unkownUserId
             });
@@ -79,11 +82,13 @@ describe('Item service', () => {
 
     describe('getAllItems() method', () => {
         beforeEach(async () => {
-            await ItemService.createItem(ItemCategory.ENGAGEMENT, {
+            await ItemService.createItem({
+                category: ItemCategory.ENGAGEMENT,
                 name: 'games',
                 requestorId: userId
             });
-            await ItemService.createItem(ItemCategory.HOUSEHOLD, {
+            await ItemService.createItem({
+                category: ItemCategory.HOUSEHOLD,
                 name: 'bedding',
                 requestorId: userId
             });

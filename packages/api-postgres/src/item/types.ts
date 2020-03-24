@@ -15,6 +15,7 @@ export type HouseholdItems =
     | 'shower curtain';
 
 export interface ItemData {
+    category: ItemCategory;
     name: EngagementItems | HouseholdItems;
     requestorId: string;
 }
