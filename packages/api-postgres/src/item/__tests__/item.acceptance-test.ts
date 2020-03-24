@@ -33,47 +33,59 @@ describe('Item route acceptance tests', () => {
     });
 
     describe('/api/items route', () => {
-        it('creates a new item', async () => {
-            const response = await client.createItem({
-                category: 'engagement',
-                name: 'games',
-                requestorId: userId
-            });
+        describe('POST request method', () => {
+            it('creates a new item', async () => {
+                const response = await client.createItem({
+                    category: 'engagement',
+                    name: 'games',
+                    requestorId: userId
+                });
 
-            expect(response.body).toEqual(
-                expect.objectContaining({
-                    success: true,
-                    message: expect.any(String),
-                    payload: expect.objectContaining({
-                        item: expect.any(Object)
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: true,
+                        message: expect.any(String),
+                        payload: expect.objectContaining({
+                            item: expect.any(Object)
+                        })
                     })
-                })
-            );
+                );
+            });
         });
 
-        it('fetches all the items', async () => {
-            await client.createItem({
-                category: 'engagement',
-                name: 'games',
-                requestorId: userId
+        describe('GET request method', () => {
+            beforeEach(async () => {
+                await client.createItem({
+                    category: 'engagement',
+                    name: 'games',
+                    requestorId: userId
+                });
+                await client.createItem({
+                    category: 'household',
+                    name: 'pillows',
+                    requestorId: userId
+                });
             });
-            await client.createItem({
-                category: 'household',
-                name: 'pillows',
-                requestorId: userId
-            });
-            const response = await client.getAllItems();
 
-            expect(response.body).toEqual(
-                expect.objectContaining({
-                    success: true,
-                    message: expect.any(String),
-                    payload: expect.objectContaining({
-                        items: expect.any(Object)
+            it('fetches all the items', async () => {
+                const response = await client.getAllItems();
+
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: true,
+                        message: expect.any(String),
+                        payload: expect.objectContaining({
+                            items: expect.any(Object)
+                        })
                     })
-                })
-            );
-            expect(response.body.payload.items).toHaveLength(2);
+                );
+                expect(response.body.payload.items).toHaveLength(2);
+            });
+
+            it('includes sanitized user info', async () => {
+                const response = await client.getAllItems();
+                expect(response.body.payload.items[0].submittedBy.password).not.toBeDefined();
+            });
         });
     });
 });

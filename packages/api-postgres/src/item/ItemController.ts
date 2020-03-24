@@ -17,11 +17,15 @@ class ItemController {
 
     static getAllItems(_: Request, res: Response): Promise<Response> {
         return ItemService.getAllItems().then(items => {
+            let sanitizedItems;
+            if (items) {
+                sanitizedItems = items.map(item => item.toClientJSON());
+            }
             return res.json({
                 success: true,
                 message: 'items fetched',
                 payload: {
-                    items
+                    items: sanitizedItems
                 }
             });
         });
