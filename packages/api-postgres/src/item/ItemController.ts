@@ -4,7 +4,7 @@ import ItemService from './ItemService';
 class ItemController {
     static createItem(req: Request, res: Response): Promise<Response> {
         const { category, name, requestorId } = req.body;
-        return ItemService.createItem(category, { name, requestorId }).then(item => {
+        return ItemService.createItem({ category, name, requestorId }).then(item => {
             return res.json({
                 success: true,
                 message: 'item created',
