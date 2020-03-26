@@ -134,10 +134,39 @@ describe('Item service', () => {
             );
         });
 
-        it('returns undefined if the item  the item with the given id is not found', async () => {
+        it('returns undefined if the item with the given id is not found', async () => {
             const badId = '80453b6b-d1af-4142-903b-3ba9f92e7f39';
             const item = await ItemService.getItemById(badId);
             expect(item).toBeUndefined();
+        });
+    });
+
+    describe('deleteItem() method', () => {
+        let itemId: string;
+        beforeEach(async () => {
+            const games = await ItemService.createItem({
+                category: ItemCategory.ENGAGEMENT,
+                name: 'games',
+                requestorId: userId
+            });
+
+            itemId = games?.id as string;
+        });
+
+        it('deletes the item with the given id', async () => {
+            const item = await ItemService.deleteItem(itemId);
+
+            expect(item).toEqual(
+                expect.objectContaining({
+                    id: expect.any(String),
+                    category: 'engagement',
+                    name: 'games',
+                    submittedBy: expect.any(User)
+                })
+            );
+
+            const items = await ItemService.getAllItems();
+            expect(items).toHaveLength(0);
         });
     });
 });

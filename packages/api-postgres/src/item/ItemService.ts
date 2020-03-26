@@ -24,4 +24,10 @@ export default class ItemService {
     static getItemById(id: string): Promise<Item | undefined> {
         return Item.findOne({ where: { id }, relations: ['submittedBy'] });
     }
+
+    static async deleteItem(id: string): Promise<Item | undefined> {
+        const item = await ItemService.getItemById(id);
+        await Item.delete({ id });
+        return item;
+    }
 }
