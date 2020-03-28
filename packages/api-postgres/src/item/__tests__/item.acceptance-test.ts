@@ -88,4 +88,57 @@ describe('Item route acceptance tests', () => {
             });
         });
     });
+
+    describe('api/items/:id route', () => {
+        let itemId: string;
+        beforeEach(async () => {
+            await client.createItem({
+                category: 'engagement',
+                name: 'games',
+                requestorId: userId
+            });
+            const response = await client.createItem({
+                category: 'household',
+                name: 'pillows',
+                requestorId: userId
+            });
+            itemId = response.body.payload.item.id;
+        });
+
+        describe('GET request method', () => {
+            it('fetches the item with the given id', async () => {
+                const response = await client.getItem(itemId);
+
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: true,
+                        message: 'item fetched',
+                        payload: expect.objectContaining({
+                            item: expect.any(Object)
+                        })
+                    })
+                );
+            });
+
+            it('fetches the item with requestor data sanitized', async () => {
+                const response = await client.getItem(itemId);
+                expect(response.body.payload.item.submittedBy.password).not.toBeDefined();
+            });
+
+            it('with invalid item id returns a null item in the payload', async () => {
+                const badId = '80453b6b-d1af-4142-903b-3ba9f92e7f39';
+                const response = await client.getItem(badId);
+
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: true,
+                        message: 'item fetched',
+                        payload: expect.objectContaining({
+                            item: null
+                        })
+                    })
+                );
+            });
+        });
+    });
 });

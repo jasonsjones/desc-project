@@ -100,6 +100,12 @@ class TestClient {
             .where('email = :email', { email })
             .execute();
     }
+
+    public getItem(id: string): Test {
+        return request(this.app)
+            .get(`/api/items/${id}`)
+            .set('Content-Type', 'application/json');
+    }
 }
 
 export default TestClient;
