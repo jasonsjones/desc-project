@@ -131,8 +131,8 @@ describe('Item route acceptance tests', () => {
 
                 expect(response.body).toEqual(
                     expect.objectContaining({
-                        success: true,
-                        message: 'item fetched',
+                        success: false,
+                        message: 'item not found',
                         payload: expect.objectContaining({
                             item: null
                         })

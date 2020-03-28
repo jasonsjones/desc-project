@@ -42,8 +42,8 @@ class ItemController {
                 });
             } else {
                 return res.json({
-                    success: true,
-                    message: 'item fetched',
+                    success: false,
+                    message: 'item not found',
                     payload: { item: null }
                 });
             }
