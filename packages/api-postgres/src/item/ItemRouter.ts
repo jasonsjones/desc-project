@@ -15,7 +15,10 @@ class ItemRouter {
             .post(ItemController.createItem)
             .get(ItemController.getAllItems);
 
-        ItemRouter.router.route('/:id').get(ItemController.getItem);
+        ItemRouter.router
+            .route('/:id')
+            .get(ItemController.getItem)
+            .delete(ItemController.deleteItem);
     }
 }
 

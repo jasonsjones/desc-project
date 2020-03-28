@@ -49,6 +49,25 @@ class ItemController {
             }
         });
     }
+
+    static deleteItem(req: Request, res: Response): Promise<Response> {
+        const id = req.params.id;
+        return ItemService.deleteItem(id).then(item => {
+            if (item) {
+                return res.json({
+                    success: true,
+                    message: 'item deleted',
+                    payload: { item: item.toClientJSON() }
+                });
+            } else {
+                return res.json({
+                    success: false,
+                    message: 'item not found',
+                    payload: { item: null }
+                });
+            }
+        });
+    }
 }
 
 export default ItemController;

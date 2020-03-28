@@ -106,6 +106,12 @@ class TestClient {
             .get(`/api/items/${id}`)
             .set('Content-Type', 'application/json');
     }
+
+    public deleteItem(id: string): Test {
+        return request(this.app)
+            .delete(`/api/items/${id}`)
+            .set('Content-Type', 'application/json');
+    }
 }
 
 export default TestClient;

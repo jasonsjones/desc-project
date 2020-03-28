@@ -140,5 +140,41 @@ describe('Item route acceptance tests', () => {
                 );
             });
         });
+
+        describe('DELETE request method', () => {
+            it('deletes the item with the given id', async () => {
+                const response = await client.deleteItem(itemId);
+
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: true,
+                        message: 'item deleted',
+                        payload: expect.objectContaining({
+                            item: expect.any(Object)
+                        })
+                    })
+                );
+            });
+
+            it('deletes the item and returns with requestor data sanitized', async () => {
+                const response = await client.deleteItem(itemId);
+                expect(response.body.payload.item.submittedBy.password).not.toBeDefined();
+            });
+
+            it('with invalid item id returns a null item in the payload', async () => {
+                const badId = '80453b6b-d1af-4142-903b-3ba9f92e7f39';
+                const response = await client.deleteItem(badId);
+
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: false,
+                        message: 'item not found',
+                        payload: expect.objectContaining({
+                            item: null
+                        })
+                    })
+                );
+            });
+        });
     });
 });
