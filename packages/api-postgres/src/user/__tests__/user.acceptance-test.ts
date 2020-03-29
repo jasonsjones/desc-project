@@ -28,12 +28,20 @@ describe('User route acceptance tests', () => {
 
             expect(response.body).toEqual(
                 expect.objectContaining({
-                    success: expect.any(Boolean),
+                    success: true,
                     message: expect.any(String),
-                    payload: expect.any(Object)
+                    payload: expect.objectContaining({
+                        // user: expect.any(Object)
+                        user: expect.objectContaining({
+                            id: expect.any(String),
+                            firstName: 'Oliver',
+                            lastName: 'Queen',
+                            email: 'oliver@desc.org',
+                            program: expect.any(String)
+                        })
+                    })
                 })
             );
-            expect(response.body.payload).toHaveProperty('user');
         });
 
         it('GET request method fetches all users', async () => {
@@ -41,12 +49,13 @@ describe('User route acceptance tests', () => {
             const response = await client.getAllUsers();
             expect(response.body).toEqual(
                 expect.objectContaining({
-                    success: expect.any(Boolean),
+                    success: true,
                     message: expect.any(String),
-                    payload: expect.any(Object)
+                    payload: expect.objectContaining({
+                        users: expect.arrayContaining([expect.any(Object)])
+                    })
                 })
             );
-            expect(response.body.payload).toHaveProperty('users');
             expect(response.body.payload.users).toHaveLength(1);
         });
     });
@@ -54,6 +63,7 @@ describe('User route acceptance tests', () => {
     describe('/api/user/:id route', () => {
         let userId: string;
         let client: TestClient;
+        const unknownId = '9ff6515e-814a-4d1c-bc27-9a768c4aa242';
 
         beforeEach(async () => {
             client = new TestClient();
@@ -71,46 +81,100 @@ describe('User route acceptance tests', () => {
             await TestClient.deleteUserByEmail('oliver@desc.org');
         });
 
-        it('GET request method fetches the user with the given id', async () => {
-            const response = await client.getUser(userId);
+        describe('GET request method', () => {
+            it('fetches the user with the given id', async () => {
+                const response = await client.getUser(userId);
 
-            expect(response.body).toEqual(
-                expect.objectContaining({
-                    success: expect.any(Boolean),
-                    message: expect.any(String),
-                    payload: expect.any(Object)
-                })
-            );
-            expect(response.body.payload).toHaveProperty('user');
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: true,
+                        message: expect.any(String),
+                        payload: expect.objectContaining({
+                            user: expect.any(Object)
+                        })
+                    })
+                );
+            });
+
+            it('with invalid user id returns a null user in the payload', async () => {
+                const response = await client.getUser(unknownId);
+
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: false,
+                        message: expect.any(String),
+                        payload: expect.objectContaining({
+                            user: null
+                        })
+                    })
+                );
+            });
         });
 
-        it('PATCH request method updates the user with the given id with the provided data', async () => {
-            const response = await client.updateUser(userId, { firstName: 'Ollie' });
+        describe('PATCH request method', () => {
+            it('updates the user with the given id', async () => {
+                const response = await client.updateUser(userId, { firstName: 'Ollie' });
 
-            expect(response.body).toEqual(
-                expect.objectContaining({
-                    success: expect.any(Boolean),
-                    message: expect.any(String),
-                    payload: expect.any(Object)
-                })
-            );
-            expect(response.body.payload).toHaveProperty('user');
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: true,
+                        message: expect.any(String),
+                        payload: expect.objectContaining({
+                            user: expect.any(Object)
+                        })
+                    })
+                );
+            });
+
+            it('with invalid user id returns a null user in the payload', async () => {
+                const response = await client.updateUser(unknownId, { firstName: 'Ollie' });
+
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: false,
+                        message: expect.any(String),
+                        payload: expect.objectContaining({
+                            user: null
+                        })
+                    })
+                );
+            });
         });
 
-        it('DELETE request method deletes the user with the given id', async () => {
-            const response = await client.deleteUser(userId);
+        describe('DELETE request method', () => {
+            it('deletes the user with the given id', async () => {
+                const response = await client.deleteUser(userId);
 
-            expect(response.body).toEqual(
-                expect.objectContaining({
-                    success: expect.any(Boolean),
-                    message: expect.any(String),
-                    payload: expect.any(Object)
-                })
-            );
-            expect(response.body.payload).toHaveProperty('user');
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: true,
+                        message: expect.any(String),
+                        payload: expect.objectContaining({
+                            user: expect.any(Object)
+                        })
+                    })
+                );
 
-            const verify = await client.getAllUsers();
-            expect(verify.body.payload.users).toHaveLength(0);
+                const verificatonResponse = await client.getAllUsers();
+                expect(verificatonResponse.body.payload.users).toHaveLength(0);
+            });
+
+            it('with invalid user id returns a null user in the payload', async () => {
+                const response = await client.deleteUser(unknownId);
+
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: false,
+                        message: expect.any(String),
+                        payload: expect.objectContaining({
+                            user: null
+                        })
+                    })
+                );
+
+                const verificationResponse = await client.getAllUsers();
+                expect(verificationResponse.body.payload.users).toHaveLength(1);
+            });
         });
     });
 });

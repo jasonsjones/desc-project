@@ -30,11 +30,19 @@ class UserController {
     static getUser(req: Request, res: Response): Promise<Response> {
         const id = req.params.id;
         return UserService.getUserById(id).then(user => {
-            return res.json({
-                success: true,
-                message: 'user fetched',
-                payload: { user }
-            });
+            if (user) {
+                return res.json({
+                    success: true,
+                    message: 'user fetched',
+                    payload: { user }
+                });
+            } else {
+                return res.json({
+                    success: false,
+                    message: 'user not found',
+                    payload: { user: null }
+                });
+            }
         });
     }
 
@@ -46,22 +54,38 @@ class UserController {
         const data = req.body as { firstName: string; lastName: string; email: string };
 
         return UserService.updateUser(id, data).then(updatedUser => {
-            return res.json({
-                success: true,
-                message: 'user updated',
-                payload: { user: updatedUser }
-            });
+            if (updatedUser) {
+                return res.json({
+                    success: true,
+                    message: 'user updated',
+                    payload: { user: updatedUser }
+                });
+            } else {
+                return res.json({
+                    success: false,
+                    message: 'user not found',
+                    payload: { user: null }
+                });
+            }
         });
     }
 
     static deleteUser(req: Request, res: Response): Promise<Response> {
         const id = req.params.id;
         return UserService.deleteUser(id).then(deletedUser => {
-            return res.json({
-                success: true,
-                message: 'user deleted',
-                payload: { user: deletedUser }
-            });
+            if (deletedUser) {
+                return res.json({
+                    success: true,
+                    message: 'user deleted',
+                    payload: { user: deletedUser }
+                });
+            } else {
+                return res.json({
+                    success: false,
+                    message: 'user not found',
+                    payload: { user: null }
+                });
+            }
         });
     }
 
