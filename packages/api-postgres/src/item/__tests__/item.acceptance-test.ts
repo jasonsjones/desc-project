@@ -3,6 +3,7 @@ import { Program } from '../../entity/User';
 import { createPostgresConnection, closeConnection } from '../../config/database';
 import { getRepository } from 'typeorm';
 import Item from '../../entity/Item';
+import { ItemPriority } from '../types';
 
 describe('Item route acceptance tests', () => {
     let userId: string;
@@ -38,6 +39,25 @@ describe('Item route acceptance tests', () => {
                 const response = await client.createItem({
                     category: 'engagement',
                     name: 'games',
+                    requestorId: userId
+                });
+
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: true,
+                        message: expect.any(String),
+                        payload: expect.objectContaining({
+                            item: expect.any(Object)
+                        })
+                    })
+                );
+            });
+
+            it('creates a new urgent item', async () => {
+                const response = await client.createItem({
+                    category: 'engagement',
+                    name: 'games',
+                    priority: ItemPriority.URGENT,
                     requestorId: userId
                 });
 

@@ -3,6 +3,11 @@ export enum ItemCategory {
     HOUSEHOLD = 'household'
 }
 
+export enum ItemPriority {
+    URGENT = 'urgent',
+    STANDARD = 'standard'
+}
+
 export type EngagementItems = 'games' | 'artwork' | 'candy/treats';
 
 export type HouseholdItems =
@@ -17,5 +22,6 @@ export type HouseholdItems =
 export interface ItemData {
     category: ItemCategory;
     name: EngagementItems | HouseholdItems;
+    priority?: ItemPriority;
     requestorId: string;
 }

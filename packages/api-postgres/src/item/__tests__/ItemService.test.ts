@@ -3,7 +3,7 @@ import { createPostgresConnection, closeConnection } from '../../config/database
 import User, { Program } from '../../entity/User';
 import Item from '../../entity/Item';
 import { getRepository } from 'typeorm';
-import { ItemCategory } from '../types';
+import { ItemCategory, ItemPriority } from '../types';
 import UserService from '../../user/UserService';
 import TestClient from '../../testUtils/TestClient';
 
@@ -45,6 +45,7 @@ describe('Item service', () => {
                 expect.objectContaining({
                     id: expect.any(String),
                     category: 'engagement',
+                    priority: 'standard',
                     name: itemName,
                     submittedBy: expect.any(User)
                 })
@@ -62,7 +63,27 @@ describe('Item service', () => {
                 expect.objectContaining({
                     id: expect.any(String),
                     category: 'household',
+                    priority: 'standard',
                     name: 'pillows',
+                    submittedBy: expect.any(User)
+                })
+            );
+        });
+
+        it('creates a new urgent household item', async () => {
+            const item = await ItemService.createItem({
+                category: ItemCategory.HOUSEHOLD,
+                name: 'pillows',
+                priority: ItemPriority.URGENT,
+                requestorId: userId
+            });
+
+            expect(item).toEqual(
+                expect.objectContaining({
+                    id: expect.any(String),
+                    category: 'household',
+                    name: 'pillows',
+                    priority: 'urgent',
                     submittedBy: expect.any(User)
                 })
             );
