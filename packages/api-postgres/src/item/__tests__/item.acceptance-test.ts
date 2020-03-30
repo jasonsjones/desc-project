@@ -1,8 +1,6 @@
 import TestClient from '../../testUtils/TestClient';
 import { Program } from '../../entity/User';
 import { createPostgresConnection, closeConnection } from '../../config/database';
-import { getRepository } from 'typeorm';
-import Item from '../../entity/Item';
 import { ItemPriority } from '../types';
 
 describe('Item route acceptance tests', () => {
@@ -24,12 +22,11 @@ describe('Item route acceptance tests', () => {
     });
 
     afterEach(async () => {
-        const itemRepository = await getRepository(Item);
-        await itemRepository.clear();
+        TestClient.dropItems();
     });
 
     afterAll(async () => {
-        await TestClient.deleteUserByEmail('oliver@desc.org');
+        await TestClient.dropUsers();
         await closeConnection();
     });
 

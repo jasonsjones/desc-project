@@ -37,7 +37,7 @@ describe('Auth route acceptance tests', () => {
         });
 
         afterAll(async () => {
-            await TestClient.deleteUserByEmail('oliver@qc.com');
+            await TestClient.dropUsers();
         });
 
         it('logs in an authorized user', async () => {

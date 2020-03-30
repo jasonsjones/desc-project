@@ -13,7 +13,7 @@ describe('User route acceptance tests', () => {
 
     describe('/api/user route', () => {
         afterAll(async () => {
-            await TestClient.deleteUserByEmail('oliver@desc.org');
+            await TestClient.dropUsers();
         });
 
         it('POST request method creates a new user', async () => {
@@ -79,7 +79,7 @@ describe('User route acceptance tests', () => {
         });
 
         afterEach(async () => {
-            await TestClient.deleteUserByEmail('oliver@desc.org');
+            await TestClient.dropUsers();
         });
 
         describe('GET request method', () => {

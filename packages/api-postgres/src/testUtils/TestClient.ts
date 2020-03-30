@@ -4,6 +4,7 @@ import { getConnection } from 'typeorm';
 import app from '../config/app';
 import UserService from '../user/UserService';
 import User, { Program } from '../entity/User';
+import Item from '../entity/Item';
 
 class TestClient {
     private app: Application;
@@ -98,6 +99,22 @@ class TestClient {
             .delete()
             .from(User)
             .where('email = :email', { email })
+            .execute();
+    }
+
+    public static async dropItems(): Promise<void> {
+        await getConnection()
+            .createQueryBuilder()
+            .delete()
+            .from(Item)
+            .execute();
+    }
+
+    public static async dropUsers(): Promise<void> {
+        await getConnection()
+            .createQueryBuilder()
+            .delete()
+            .from(User)
             .execute();
     }
 
