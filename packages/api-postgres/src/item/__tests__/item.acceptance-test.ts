@@ -42,6 +42,7 @@ describe('Item route acceptance tests', () => {
                     requestorId: userId
                 });
 
+                expect(response.status).toBe(201);
                 expect(response.body).toEqual(
                     expect.objectContaining({
                         success: true,
@@ -61,6 +62,7 @@ describe('Item route acceptance tests', () => {
                     requestorId: userId
                 });
 
+                expect(response.status).toBe(201);
                 expect(response.body).toEqual(
                     expect.objectContaining({
                         success: true,

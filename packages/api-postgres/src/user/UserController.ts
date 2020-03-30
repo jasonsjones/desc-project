@@ -9,7 +9,7 @@ class UserController {
         const { firstName, lastName, email, password, program } = req.body;
 
         return UserService.createUser(firstName, lastName, email, password, program).then(user => {
-            return res.json({
+            return res.status(201).json({
                 success: true,
                 message: 'user created',
                 payload: { user }

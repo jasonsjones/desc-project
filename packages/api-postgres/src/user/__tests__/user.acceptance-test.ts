@@ -26,6 +26,7 @@ describe('User route acceptance tests', () => {
                 program: Program.SURVIVAL
             });
 
+            expect(response.status).toBe(201);
             expect(response.body).toEqual(
                 expect.objectContaining({
                     success: true,

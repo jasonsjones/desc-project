@@ -5,7 +5,7 @@ class ItemController {
     static createItem(req: Request, res: Response): Promise<Response> {
         const { category, name, priority, requestorId } = req.body;
         return ItemService.createItem({ category, name, priority, requestorId }).then(item => {
-            return res.json({
+            return res.status(201).json({
                 success: true,
                 message: 'item created',
                 payload: {
