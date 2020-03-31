@@ -1,7 +1,7 @@
 import UserService from '../UserService';
 import User, { Program } from '../../entity/User';
 import { createPostgresConnection, closeConnection } from '../../config/database';
-import TestClient from '../../testUtils/TestClient';
+import TestUtils from '../../testUtils/TestUtilities';
 
 const testUser = {
     firstName: 'John',
@@ -22,7 +22,7 @@ describe('User service integration tests', () => {
 
     describe('createUser method', () => {
         afterEach(async () => {
-            await TestClient.deleteUserByEmail('john@qc.com');
+            await TestUtils.dropUsers();
         });
 
         it('creates a new user', async () => {
@@ -50,7 +50,7 @@ describe('User service integration tests', () => {
         });
 
         afterEach(async () => {
-            await TestClient.deleteUserByEmail('john@qc.com');
+            await TestUtils.dropUsers();
         });
 
         it('getAllUsers() fetches all the users', async () => {
@@ -77,8 +77,7 @@ describe('User service integration tests', () => {
         });
 
         afterEach(async () => {
-            await TestClient.deleteUserByEmail('john@qc.com');
-            await TestClient.deleteUserByEmail('spartan@qc.com');
+            await TestUtils.dropUsers();
         });
 
         it('returns undefined if user cannot be found with given id', async () => {
@@ -115,8 +114,7 @@ describe('User service integration tests', () => {
         });
 
         afterEach(async () => {
-            await TestClient.deleteUserByEmail('john@qc.com');
-            await TestClient.deleteUserByEmail('barry@starlabs.com');
+            await TestUtils.dropUsers();
         });
 
         it('returns undefined if user cannot be found with given id', async () => {

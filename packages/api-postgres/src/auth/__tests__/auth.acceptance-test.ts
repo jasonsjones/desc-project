@@ -1,5 +1,6 @@
 import { createPostgresConnection, closeConnection } from '../../config/database';
 import TestClient from '../../testUtils/TestClient';
+import TestUtils from '../../testUtils/TestUtilities';
 import { Program } from '../../entity/User';
 
 const expectedUserShape = {
@@ -37,7 +38,7 @@ describe('Auth route acceptance tests', () => {
         });
 
         afterAll(async () => {
-            await TestClient.dropUsers();
+            await TestUtils.dropUsers();
         });
 
         it('logs in an authorized user', async () => {

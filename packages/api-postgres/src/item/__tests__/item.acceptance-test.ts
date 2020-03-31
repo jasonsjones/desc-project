@@ -1,4 +1,5 @@
 import TestClient from '../../testUtils/TestClient';
+import TestUtils from '../../testUtils/TestUtilities';
 import { Program } from '../../entity/User';
 import { createPostgresConnection, closeConnection } from '../../config/database';
 import { ItemPriority } from '../types';
@@ -22,11 +23,11 @@ describe('Item route acceptance tests', () => {
     });
 
     afterEach(async () => {
-        TestClient.dropItems();
+        TestUtils.dropItems();
     });
 
     afterAll(async () => {
-        await TestClient.dropUsers();
+        await TestUtils.dropUsers();
         await closeConnection();
     });
 

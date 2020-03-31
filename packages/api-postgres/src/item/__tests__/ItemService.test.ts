@@ -5,7 +5,7 @@ import Item from '../../entity/Item';
 import { getRepository } from 'typeorm';
 import { ItemCategory, ItemPriority } from '../types';
 import UserService from '../../user/UserService';
-import TestClient from '../../testUtils/TestClient';
+import TestUtils from '../../testUtils/TestUtilities';
 
 describe('Item service', () => {
     let userId: string;
@@ -28,7 +28,7 @@ describe('Item service', () => {
     });
 
     afterAll(async () => {
-        await TestClient.deleteUserByEmail('test@desc.org');
+        await TestUtils.dropUsers();
         await closeConnection();
     });
 
