@@ -25,6 +25,9 @@ export default class Item extends BaseEntity {
     @Column({ type: 'enum', enum: ItemPriority, default: ItemPriority.STANDARD })
     priority: ItemPriority;
 
+    @Column({ type: 'int', default: 1 })
+    quantity: number;
+
     @ManyToOne(() => User)
     @JoinColumn()
     submittedBy: User;
@@ -32,7 +35,6 @@ export default class Item extends BaseEntity {
     // clientId: string;
     // clientRequest -> ClientRequest
     // location: string;
-    // numberOfItems: number;
     // status: string;
     // notes -> Notes[]
 

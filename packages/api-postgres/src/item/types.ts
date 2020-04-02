@@ -22,6 +22,7 @@ export type HouseholdItems =
 export interface ItemData {
     category: ItemCategory;
     name: EngagementItems | HouseholdItems;
+    quantity?: number;
     priority?: ItemPriority;
     requestorId: string;
 }

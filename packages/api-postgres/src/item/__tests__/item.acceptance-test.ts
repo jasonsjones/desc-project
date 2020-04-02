@@ -52,6 +52,26 @@ describe('Item route acceptance tests', () => {
                 );
             });
 
+            it('creates a new item (3 quantities)', async () => {
+                const response = await client.createItem({
+                    category: 'engagement',
+                    name: 'games',
+                    quantity: 3,
+                    requestorId: userId
+                });
+
+                expect(response.status).toBe(201);
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: true,
+                        message: expect.any(String),
+                        payload: expect.objectContaining({
+                            item: expect.any(Object)
+                        })
+                    })
+                );
+            });
+
             it('creates a new urgent item', async () => {
                 const response = await client.createItem({
                     category: 'engagement',

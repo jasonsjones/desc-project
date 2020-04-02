@@ -46,6 +46,7 @@ describe('Item service', () => {
                     id: expect.any(String),
                     category: 'engagement',
                     priority: 'standard',
+                    quantity: 1,
                     name: itemName,
                     submittedBy: expect.any(User)
                 })
@@ -56,6 +57,7 @@ describe('Item service', () => {
             const item = await ItemService.createItem({
                 category: ItemCategory.HOUSEHOLD,
                 name: 'pillows',
+                quantity: 2,
                 requestorId: userId
             });
 
@@ -64,6 +66,7 @@ describe('Item service', () => {
                     id: expect.any(String),
                     category: 'household',
                     priority: 'standard',
+                    quantity: 2,
                     name: 'pillows',
                     submittedBy: expect.any(User)
                 })
@@ -75,6 +78,7 @@ describe('Item service', () => {
                 category: ItemCategory.HOUSEHOLD,
                 name: 'pillows',
                 priority: ItemPriority.URGENT,
+                quantity: 2,
                 requestorId: userId
             });
 
@@ -84,6 +88,7 @@ describe('Item service', () => {
                     category: 'household',
                     name: 'pillows',
                     priority: 'urgent',
+                    quantity: 2,
                     submittedBy: expect.any(User)
                 })
             );
@@ -111,6 +116,7 @@ describe('Item service', () => {
             await ItemService.createItem({
                 category: ItemCategory.HOUSEHOLD,
                 name: 'bedding',
+                quantity: 2,
                 requestorId: userId
             });
         });
@@ -124,6 +130,7 @@ describe('Item service', () => {
                     id: expect.any(String),
                     category: 'household',
                     name: 'bedding',
+                    quantity: 2,
                     submittedBy: expect.any(User)
                 })
             );
@@ -150,6 +157,7 @@ describe('Item service', () => {
                     id: expect.any(String),
                     category: 'engagement',
                     name: 'games',
+                    quantity: 1,
                     submittedBy: expect.any(User)
                 })
             );
