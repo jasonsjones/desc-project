@@ -46,10 +46,10 @@ export default class Item extends BaseEntity {
     @UpdateDateColumn()
     updatedAt: Date;
 
-    toClientJSON = () => {
+    toClientJSON(): Item {
         return {
             ...this,
             submittedBy: this.submittedBy.toClientJSON()
         };
-    };
+    }
 }

@@ -26,6 +26,17 @@ export enum Program {
     UNKNOWN = 'unknown'
 }
 
+interface UserDataForClient {
+    id: string;
+    name: {
+        first: string;
+        last: string;
+    };
+    email: string;
+    program: Program;
+    roles: UserRole[];
+}
+
 @Entity()
 export default class User extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
@@ -77,11 +88,11 @@ export default class User extends BaseEntity {
         return `${this.firstName} ${this.lastName}`;
     }
 
-    verifyPassword = (password: string): boolean => {
+    verifyPassword(password: string): boolean {
         return bcrypt.compareSync(password, this.password);
-    };
+    }
 
-    toClientJSON = () => {
+    toClientJSON(): UserDataForClient {
         return {
             id: this.id,
             name: {
@@ -92,5 +103,5 @@ export default class User extends BaseEntity {
             program: this.program,
             roles: this.roles
         };
-    };
+    }
 }
