@@ -16,7 +16,8 @@ export default class UserService {
         password: string,
         program?: Program
     ): Promise<User> {
-        const hashedPassword = await bcrypt.hash(password, 12);
+        const saltLength = process.env.NODE_ENV === 'testing' ? 4 : 12;
+        const hashedPassword = await bcrypt.hash(password, saltLength);
         const user = User.create({ firstName, lastName, email, password: hashedPassword, program });
         user.emailVerificationToken = v4();
         return user.save();
