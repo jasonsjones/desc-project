@@ -9,7 +9,7 @@ import {
     UpdateDateColumn
 } from 'typeorm';
 import User from './User';
-import { ItemCategory, ItemPriority } from '../item/types';
+import { ItemCategory, ItemPriority, ItemStatus } from '../item/types';
 
 @Entity()
 export default class Item extends BaseEntity {
@@ -32,10 +32,12 @@ export default class Item extends BaseEntity {
     @JoinColumn()
     submittedBy: User;
 
+    @Column({ type: 'enum', enum: ItemStatus, default: ItemStatus.ACTIVE })
+    status: ItemStatus;
+
     // clientId: string;
     // clientRequest -> ClientRequest
     // location: string;
-    // status: string;
     // notes -> Notes[]
 
     @CreateDateColumn()

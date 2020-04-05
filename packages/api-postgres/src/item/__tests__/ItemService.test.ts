@@ -48,7 +48,8 @@ describe('Item service', () => {
                     priority: 'standard',
                     quantity: 1,
                     name: itemName,
-                    submittedBy: expect.any(User)
+                    submittedBy: expect.any(User),
+                    status: 'active'
                 })
             );
         });
@@ -68,7 +69,8 @@ describe('Item service', () => {
                     priority: 'standard',
                     quantity: 2,
                     name: 'pillows',
-                    submittedBy: expect.any(User)
+                    submittedBy: expect.any(User),
+                    status: 'active'
                 })
             );
         });
@@ -89,7 +91,8 @@ describe('Item service', () => {
                     name: 'pillows',
                     priority: 'urgent',
                     quantity: 2,
-                    submittedBy: expect.any(User)
+                    submittedBy: expect.any(User),
+                    status: 'active'
                 })
             );
         });
@@ -131,7 +134,8 @@ describe('Item service', () => {
                     category: 'household',
                     name: 'bedding',
                     quantity: 2,
-                    submittedBy: expect.any(User)
+                    submittedBy: expect.any(User),
+                    status: 'active'
                 })
             );
         });
@@ -158,7 +162,8 @@ describe('Item service', () => {
                     category: 'engagement',
                     name: 'games',
                     quantity: 1,
-                    submittedBy: expect.any(User)
+                    submittedBy: expect.any(User),
+                    status: 'active'
                 })
             );
         });

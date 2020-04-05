@@ -8,6 +8,15 @@ export enum ItemPriority {
     STANDARD = 'standard'
 }
 
+export enum ItemStatus {
+    ACTIVE = 'active',
+    APPROVED = 'approved',
+    DENIED = 'denied',
+    FUFILLED = 'fulfilled',
+    WISHLIST = 'wishlist',
+    ARCHIVED = 'archived'
+}
+
 export type EngagementItems = 'games' | 'artwork' | 'candy/treats';
 
 export type HouseholdItems =
