@@ -90,7 +90,7 @@ class UserController {
     }
 
     static async me(req: Request, res: Response): Promise<Response> {
-        let baseResponse = {
+        const baseResponse = {
             success: true,
             message: 'authenticated user'
         };
