@@ -2,7 +2,7 @@ import TestClient from '../../testUtils/TestClient';
 import TestUtils from '../../testUtils/TestUtilities';
 import { Program } from '../../entity/User';
 import { createPostgresConnection, closeConnection } from '../../config/database';
-import { ItemPriority } from '../types';
+import { ItemPriority, ItemStatus, ItemCategory } from '../types';
 
 describe('Item route acceptance tests', () => {
     let userId: string;
@@ -168,6 +168,52 @@ describe('Item route acceptance tests', () => {
             it('with invalid item id returns a null item in the payload', async () => {
                 const badId = '80453b6b-d1af-4142-903b-3ba9f92e7f39';
                 const response = await client.getItem(badId);
+
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: false,
+                        message: 'item not found',
+                        payload: expect.objectContaining({
+                            item: null
+                        })
+                    })
+                );
+            });
+        });
+
+        describe('PATCH request menthod', () => {
+            it('updates the status of the item with the given id', async () => {
+                const response = await client.updateItem(itemId, { status: ItemStatus.APPROVED });
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: true,
+                        message: 'item updated',
+                        payload: expect.objectContaining({
+                            item: expect.any(Object)
+                        })
+                    })
+                );
+            });
+
+            it('updates the name and category of the item with the given id', async () => {
+                const response = await client.updateItem(itemId, {
+                    category: ItemCategory.ENGAGEMENT,
+                    name: 'artwork'
+                });
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: true,
+                        message: 'item updated',
+                        payload: expect.objectContaining({
+                            item: expect.any(Object)
+                        })
+                    })
+                );
+            });
+
+            it('with invalid item id returns a null item in the payload', async () => {
+                const badId = '80453b6b-d1af-4142-903b-3ba9f92e7f39';
+                const response = await client.updateItem(badId, { quantity: 4 });
 
                 expect(response.body).toEqual(
                     expect.objectContaining({

@@ -52,6 +52,26 @@ class ItemController {
         });
     }
 
+    static updateItem(req: Request, res: Response): Promise<Response> {
+        const id = req.params.id;
+        const updateData = req.body;
+        return ItemService.updateItem(id, updateData).then(item => {
+            if (item) {
+                return res.json({
+                    success: true,
+                    message: 'item updated',
+                    payload: { item: item.toClientJSON() }
+                });
+            } else {
+                return res.json({
+                    success: false,
+                    message: 'item not found',
+                    payload: { item: null }
+                });
+            }
+        });
+    }
+
     static deleteItem(req: Request, res: Response): Promise<Response> {
         const id = req.params.id;
         return ItemService.deleteItem(id).then(item => {

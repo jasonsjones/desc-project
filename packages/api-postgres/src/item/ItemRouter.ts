@@ -18,6 +18,7 @@ class ItemRouter {
         ItemRouter.router
             .route('/:id')
             .get(ItemController.getItem)
+            .patch(ItemController.updateItem)
             .delete(ItemController.deleteItem);
     }
 }

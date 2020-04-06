@@ -1,14 +1,6 @@
 import Item from '../entity/Item';
-import { ItemData, ItemCategory, ItemPriority, ItemStatus } from './types';
+import { ItemData, UpdatableItemFields } from './types';
 import UserService from '../user/UserService';
-
-interface UpdatableItemFields {
-    category?: ItemCategory;
-    name?: string;
-    priority?: ItemPriority;
-    quantity?: number;
-    status?: ItemStatus;
-}
 
 export default class ItemService {
     static async createItem(itemData: ItemData): Promise<Item | undefined> {

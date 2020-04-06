@@ -3,6 +3,7 @@ import request, { Test } from 'supertest';
 import app from '../config/app';
 import UserService from '../user/UserService';
 import User, { Program } from '../entity/User';
+import { UpdatableItemFields } from '../item/types';
 
 class TestClient {
     private app: Application;
@@ -95,6 +96,13 @@ class TestClient {
         return request(this.app)
             .get(`/api/items/${id}`)
             .set('Content-Type', 'application/json');
+    }
+
+    public updateItem(id: string, updatedData: UpdatableItemFields): Test {
+        return request(this.app)
+            .patch(`/api/items/${id}`)
+            .set('Content-Type', 'application/json')
+            .send(updatedData);
     }
 
     public deleteItem(id: string): Test {

@@ -35,3 +35,11 @@ export interface ItemData {
     priority?: ItemPriority;
     requestorId: string;
 }
+
+export interface UpdatableItemFields {
+    category?: ItemCategory;
+    name?: string;
+    priority?: ItemPriority;
+    quantity?: number;
+    status?: ItemStatus;
+}
