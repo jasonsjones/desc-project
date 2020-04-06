@@ -102,6 +102,29 @@ describe('Item service', () => {
             );
         });
 
+        it('creates a new household item with wishlist status', async () => {
+            const item = await ItemService.createItem({
+                clientId,
+                category: ItemCategory.HOUSEHOLD,
+                name: 'pillows',
+                status: ItemStatus.WISHLIST,
+                quantity: 2,
+                requestorId: userId
+            });
+
+            expect(item).toEqual(
+                expect.objectContaining({
+                    id: expect.any(String),
+                    category: 'household',
+                    name: 'pillows',
+                    priority: 'standard',
+                    quantity: 2,
+                    submittedBy: expect.any(User),
+                    status: 'wishlist'
+                })
+            );
+        });
+
         it('does not create a new item if the requestor is not found', async () => {
             const unkownUserId = '4a29f793-ad0f-4388-9a40-0c0423c5b78c';
             const item = await ItemService.createItem({

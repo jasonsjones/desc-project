@@ -4,13 +4,13 @@ import UserService from '../user/UserService';
 
 export default class ItemService {
     static async createItem(itemData: ItemData): Promise<Item | undefined> {
-        const { clientId, category, name, priority, quantity, requestorId } = itemData;
+        const { clientId, category, name, priority, quantity, requestorId, status } = itemData;
         const requestor = await UserService.getUserById(requestorId);
 
         if (!requestor) {
             return;
         }
-        const item = Item.create({ clientId, category, name, priority, quantity });
+        const item = Item.create({ clientId, category, name, priority, quantity, status });
         item.submittedBy = requestor;
 
         return item.save();

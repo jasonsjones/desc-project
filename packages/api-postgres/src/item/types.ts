@@ -34,6 +34,7 @@ export interface ItemData {
     name: EngagementItems | HouseholdItems;
     quantity?: number;
     priority?: ItemPriority;
+    status?: ItemStatus;
     requestorId: string;
 }
 
