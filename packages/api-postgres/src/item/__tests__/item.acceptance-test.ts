@@ -7,6 +7,7 @@ import { ItemPriority, ItemStatus, ItemCategory } from '../types';
 describe('Item route acceptance tests', () => {
     let userId: string;
     let client: TestClient;
+    const clientId = '123456789';
 
     beforeAll(async () => {
         client = new TestClient();
@@ -35,6 +36,7 @@ describe('Item route acceptance tests', () => {
         describe('POST request method', () => {
             it('creates a new item', async () => {
                 const response = await client.createItem({
+                    clientId,
                     category: 'engagement',
                     name: 'games',
                     requestorId: userId
@@ -54,6 +56,7 @@ describe('Item route acceptance tests', () => {
 
             it('creates a new item (3 quantities)', async () => {
                 const response = await client.createItem({
+                    clientId,
                     category: 'engagement',
                     name: 'games',
                     quantity: 3,
@@ -74,6 +77,7 @@ describe('Item route acceptance tests', () => {
 
             it('creates a new urgent item', async () => {
                 const response = await client.createItem({
+                    clientId,
                     category: 'engagement',
                     name: 'games',
                     priority: ItemPriority.URGENT,
@@ -96,11 +100,13 @@ describe('Item route acceptance tests', () => {
         describe('GET request method', () => {
             beforeEach(async () => {
                 await client.createItem({
+                    clientId,
                     category: 'engagement',
                     name: 'games',
                     requestorId: userId
                 });
                 await client.createItem({
+                    clientId,
                     category: 'household',
                     name: 'pillows',
                     requestorId: userId
@@ -133,11 +139,13 @@ describe('Item route acceptance tests', () => {
         let itemId: string;
         beforeEach(async () => {
             await client.createItem({
+                clientId,
                 category: 'engagement',
                 name: 'games',
                 requestorId: userId
             });
             const response = await client.createItem({
+                clientId,
                 category: 'household',
                 name: 'pillows',
                 requestorId: userId

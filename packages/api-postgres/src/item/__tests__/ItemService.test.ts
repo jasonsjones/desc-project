@@ -9,6 +9,8 @@ import TestUtils from '../../testUtils/TestUtilities';
 
 describe('Item service', () => {
     let userId: string;
+    const clientId = '123456789';
+
     beforeAll(async () => {
         await createPostgresConnection();
         userId = (
@@ -36,6 +38,7 @@ describe('Item service', () => {
         it('creates a new engagement item', async () => {
             const itemName = 'games';
             const item = await ItemService.createItem({
+                clientId,
                 category: ItemCategory.ENGAGEMENT,
                 name: itemName,
                 requestorId: userId
@@ -56,6 +59,7 @@ describe('Item service', () => {
 
         it('creates a new household item', async () => {
             const item = await ItemService.createItem({
+                clientId,
                 category: ItemCategory.HOUSEHOLD,
                 name: 'pillows',
                 quantity: 2,
@@ -77,6 +81,7 @@ describe('Item service', () => {
 
         it('creates a new urgent household item', async () => {
             const item = await ItemService.createItem({
+                clientId,
                 category: ItemCategory.HOUSEHOLD,
                 name: 'pillows',
                 priority: ItemPriority.URGENT,
@@ -100,6 +105,7 @@ describe('Item service', () => {
         it('does not create a new item if the requestor is not found', async () => {
             const unkownUserId = '4a29f793-ad0f-4388-9a40-0c0423c5b78c';
             const item = await ItemService.createItem({
+                clientId,
                 category: ItemCategory.HOUSEHOLD,
                 name: 'bedding',
                 requestorId: unkownUserId
@@ -112,11 +118,13 @@ describe('Item service', () => {
     describe('getAllItems() method', () => {
         beforeEach(async () => {
             await ItemService.createItem({
+                clientId,
                 category: ItemCategory.ENGAGEMENT,
                 name: 'games',
                 requestorId: userId
             });
             await ItemService.createItem({
+                clientId,
                 category: ItemCategory.HOUSEHOLD,
                 name: 'bedding',
                 quantity: 2,
@@ -145,6 +153,7 @@ describe('Item service', () => {
         let itemId: string;
         beforeEach(async () => {
             const games = await ItemService.createItem({
+                clientId,
                 category: ItemCategory.ENGAGEMENT,
                 name: 'games',
                 requestorId: userId
@@ -181,6 +190,7 @@ describe('Item service', () => {
 
         beforeEach(async () => {
             const games = await ItemService.createItem({
+                clientId,
                 category: ItemCategory.HOUSEHOLD,
                 name: 'pillows',
                 quantity: 2,
@@ -253,6 +263,7 @@ describe('Item service', () => {
         let itemId: string;
         beforeEach(async () => {
             const games = await ItemService.createItem({
+                clientId,
                 category: ItemCategory.ENGAGEMENT,
                 name: 'games',
                 requestorId: userId

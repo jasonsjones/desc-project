@@ -16,6 +16,9 @@ export default class Item extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
+    @Column()
+    clientId: string;
+
     @Column({ type: 'enum', enum: ItemCategory })
     category: ItemCategory;
 
@@ -35,7 +38,6 @@ export default class Item extends BaseEntity {
     @Column({ type: 'enum', enum: ItemStatus, default: ItemStatus.ACTIVE })
     status: ItemStatus;
 
-    // clientId: string;
     // clientRequest -> ClientRequest
     // location: string;
     // notes -> Notes[]
