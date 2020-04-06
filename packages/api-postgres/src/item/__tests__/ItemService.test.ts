@@ -3,7 +3,7 @@ import { createPostgresConnection, closeConnection } from '../../config/database
 import User, { Program } from '../../entity/User';
 import Item from '../../entity/Item';
 import { getRepository } from 'typeorm';
-import { ItemCategory, ItemPriority } from '../types';
+import { ItemCategory, ItemPriority, ItemStatus } from '../types';
 import UserService from '../../user/UserService';
 import TestUtils from '../../testUtils/TestUtilities';
 
@@ -172,6 +172,80 @@ describe('Item service', () => {
             const badId = '80453b6b-d1af-4142-903b-3ba9f92e7f39';
             const item = await ItemService.getItemById(badId);
             expect(item).toBeUndefined();
+        });
+    });
+
+    describe('updateItem() method', () => {
+        let itemId: string;
+        const unknownId = '80453b6b-d1af-4142-903b-3ba9f92e7f39';
+
+        beforeEach(async () => {
+            const games = await ItemService.createItem({
+                category: ItemCategory.HOUSEHOLD,
+                name: 'pillows',
+                quantity: 2,
+                requestorId: userId
+            });
+
+            itemId = games?.id as string;
+        });
+
+        it('updates the status of the item with the given id', async () => {
+            const updatedItem = await ItemService.updateItem(itemId, {
+                status: ItemStatus.APPROVED
+            });
+
+            expect(updatedItem).toEqual(
+                expect.objectContaining({
+                    status: 'approved'
+                })
+            );
+        });
+
+        it('updates the priority of the item with the given id', async () => {
+            const updatedItem = await ItemService.updateItem(itemId, {
+                priority: ItemPriority.URGENT
+            });
+
+            expect(updatedItem).toEqual(
+                expect.objectContaining({
+                    priority: 'urgent'
+                })
+            );
+        });
+
+        it('updates the quantity of the item with the given id', async () => {
+            const updatedItem = await ItemService.updateItem(itemId, {
+                quantity: 4
+            });
+
+            expect(updatedItem).toEqual(
+                expect.objectContaining({
+                    quantity: 4
+                })
+            );
+        });
+
+        it('updates the name and category of the item with the given id', async () => {
+            const updatedItem = await ItemService.updateItem(itemId, {
+                category: ItemCategory.ENGAGEMENT,
+                name: 'games'
+            });
+            expect(updatedItem).toEqual(
+                expect.objectContaining({
+                    category: 'engagement',
+                    name: 'games'
+                })
+            );
+        });
+
+        it('returns undefined if attemmpts to update item  with unknown id', async () => {
+            const updatedItem = await ItemService.updateItem(unknownId, {
+                category: ItemCategory.ENGAGEMENT,
+                name: 'games'
+            });
+
+            expect(updatedItem).toBeUndefined();
         });
     });
 
