@@ -3,7 +3,7 @@ import { createPostgresConnection, closeConnection } from '../../config/database
 import User, { Program } from '../../entity/User';
 import Item from '../../entity/Item';
 import { getRepository } from 'typeorm';
-import { ItemCategory, ItemPriority, ItemStatus } from '../types';
+import { ItemCategory, ItemPriority, ItemStatus, HouseLocation } from '../types';
 import UserService from '../../user/UserService';
 import TestUtils from '../../testUtils/TestUtilities';
 
@@ -41,6 +41,7 @@ describe('Item service', () => {
                 clientId,
                 category: ItemCategory.ENGAGEMENT,
                 name: itemName,
+                location: HouseLocation.AURORA_HOUSE,
                 requestorId: userId
             });
 
@@ -52,7 +53,8 @@ describe('Item service', () => {
                     quantity: 1,
                     name: itemName,
                     submittedBy: expect.any(User),
-                    status: 'active'
+                    status: 'active',
+                    location: 'aurora house'
                 })
             );
         });
@@ -63,6 +65,7 @@ describe('Item service', () => {
                 category: ItemCategory.HOUSEHOLD,
                 name: 'pillows',
                 quantity: 2,
+                location: HouseLocation.RAINIER_HOUSE,
                 requestorId: userId
             });
 
@@ -74,7 +77,8 @@ describe('Item service', () => {
                     quantity: 2,
                     name: 'pillows',
                     submittedBy: expect.any(User),
-                    status: 'active'
+                    status: 'active',
+                    location: 'rainier house'
                 })
             );
         });
@@ -86,6 +90,7 @@ describe('Item service', () => {
                 name: 'pillows',
                 priority: ItemPriority.URGENT,
                 quantity: 2,
+                location: HouseLocation.CLEMENT_PLACE,
                 requestorId: userId
             });
 
@@ -97,7 +102,8 @@ describe('Item service', () => {
                     priority: 'urgent',
                     quantity: 2,
                     submittedBy: expect.any(User),
-                    status: 'active'
+                    status: 'active',
+                    location: 'clement place'
                 })
             );
         });
@@ -109,6 +115,7 @@ describe('Item service', () => {
                 name: 'pillows',
                 status: ItemStatus.WISHLIST,
                 quantity: 2,
+                location: HouseLocation.AURORA_HOUSE,
                 requestorId: userId
             });
 
@@ -120,7 +127,8 @@ describe('Item service', () => {
                     priority: 'standard',
                     quantity: 2,
                     submittedBy: expect.any(User),
-                    status: 'wishlist'
+                    status: 'wishlist',
+                    location: 'aurora house'
                 })
             );
         });
@@ -131,6 +139,7 @@ describe('Item service', () => {
                 clientId,
                 category: ItemCategory.HOUSEHOLD,
                 name: 'bedding',
+                location: HouseLocation.AURORA_HOUSE,
                 requestorId: unkownUserId
             });
 
@@ -144,6 +153,7 @@ describe('Item service', () => {
                 clientId,
                 category: ItemCategory.ENGAGEMENT,
                 name: 'games',
+                location: HouseLocation.EASTLAKE,
                 requestorId: userId
             });
             await ItemService.createItem({
@@ -151,6 +161,7 @@ describe('Item service', () => {
                 category: ItemCategory.HOUSEHOLD,
                 name: 'bedding',
                 quantity: 2,
+                location: HouseLocation.AURORA_HOUSE,
                 requestorId: userId
             });
         });
@@ -166,7 +177,8 @@ describe('Item service', () => {
                     name: 'bedding',
                     quantity: 2,
                     submittedBy: expect.any(User),
-                    status: 'active'
+                    status: 'active',
+                    location: 'aurora house'
                 })
             );
         });
@@ -179,6 +191,7 @@ describe('Item service', () => {
                 clientId,
                 category: ItemCategory.ENGAGEMENT,
                 name: 'games',
+                location: HouseLocation.AURORA_HOUSE,
                 requestorId: userId
             });
 
@@ -217,6 +230,7 @@ describe('Item service', () => {
                 category: ItemCategory.HOUSEHOLD,
                 name: 'pillows',
                 quantity: 2,
+                location: HouseLocation.AURORA_HOUSE,
                 requestorId: userId
             });
 
@@ -272,6 +286,17 @@ describe('Item service', () => {
             );
         });
 
+        it('updates the location of the item with the given id', async () => {
+            const updatedItem = await ItemService.updateItem(itemId, {
+                location: HouseLocation.EASTLAKE
+            });
+            expect(updatedItem).toEqual(
+                expect.objectContaining({
+                    location: 'eastlake'
+                })
+            );
+        });
+
         it('returns undefined if attemmpts to update item  with unknown id', async () => {
             const updatedItem = await ItemService.updateItem(unknownId, {
                 category: ItemCategory.ENGAGEMENT,
@@ -289,6 +314,7 @@ describe('Item service', () => {
                 clientId,
                 category: ItemCategory.ENGAGEMENT,
                 name: 'games',
+                location: HouseLocation.AURORA_HOUSE,
                 requestorId: userId
             });
 

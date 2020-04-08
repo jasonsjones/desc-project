@@ -9,10 +9,13 @@ import {
     UpdateDateColumn
 } from 'typeorm';
 import User from './User';
-import { ItemCategory, ItemPriority, ItemStatus } from '../item/types';
+import { ItemCategory, ItemPriority, ItemStatus, HouseLocation } from '../item/types';
 
 @Entity()
 export default class Item extends BaseEntity {
+    // clientRequest -> ClientRequest
+    // notes -> Notes[]
+
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -38,9 +41,8 @@ export default class Item extends BaseEntity {
     @Column({ type: 'enum', enum: ItemStatus, default: ItemStatus.ACTIVE })
     status: ItemStatus;
 
-    // clientRequest -> ClientRequest
-    // location: string;
-    // notes -> Notes[]
+    @Column({ type: 'enum', enum: HouseLocation })
+    location: HouseLocation;
 
     @CreateDateColumn()
     createdAt: Date;

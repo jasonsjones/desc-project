@@ -17,6 +17,23 @@ export enum ItemStatus {
     ARCHIVED = 'archived'
 }
 
+export enum HouseLocation {
+    EASTLAKE = 'eastlake',
+    AURORA_HOUSE = 'aurora house',
+    CANADAY_HOUSE = 'canaday house',
+    CLEMENT_PLACE = 'clement place',
+    COTTAGE_GROVE_COMMONS = 'cottage grove commons',
+    ESTELLE = 'estelle',
+    EVANS_HOUSE = 'evans house',
+    INTERBAY_PLACE = 'interbay place',
+    KERNER_SCOTT_HOUSE = 'kerner-scott house',
+    KEYS = 'keys',
+    LYON_BUILDING = 'lyon building',
+    MORRISON = 'morrison',
+    RAINIER_HOUSE = 'rainier house',
+    UNION_HOTEL = 'union hotel'
+}
+
 export type EngagementItems = 'games' | 'artwork' | 'candy/treats';
 
 export type HouseholdItems =
@@ -36,6 +53,7 @@ export interface ItemData {
     priority?: ItemPriority;
     status?: ItemStatus;
     requestorId: string;
+    location: HouseLocation;
 }
 
 export interface UpdatableItemFields {
@@ -44,4 +62,5 @@ export interface UpdatableItemFields {
     priority?: ItemPriority;
     quantity?: number;
     status?: ItemStatus;
+    location?: HouseLocation;
 }

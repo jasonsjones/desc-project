@@ -3,7 +3,16 @@ import ItemService from './ItemService';
 
 class ItemController {
     static createItem(req: Request, res: Response): Promise<Response> {
-        const { clientId, category, name, priority, quantity, status, requestorId } = req.body;
+        const {
+            clientId,
+            category,
+            name,
+            priority,
+            quantity,
+            status,
+            location,
+            requestorId
+        } = req.body;
         return ItemService.createItem({
             clientId,
             category,
@@ -11,6 +20,7 @@ class ItemController {
             priority,
             quantity,
             status,
+            location,
             requestorId
         }).then(item => {
             return res.status(201).json({

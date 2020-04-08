@@ -39,6 +39,7 @@ describe('Item route acceptance tests', () => {
                     clientId,
                     category: 'engagement',
                     name: 'games',
+                    location: 'aurora house',
                     requestorId: userId
                 });
 
@@ -60,6 +61,7 @@ describe('Item route acceptance tests', () => {
                     category: 'engagement',
                     name: 'games',
                     quantity: 3,
+                    location: 'aurora house',
                     requestorId: userId
                 });
 
@@ -80,6 +82,7 @@ describe('Item route acceptance tests', () => {
                     clientId,
                     category: 'engagement',
                     name: 'games',
+                    location: 'aurora house',
                     priority: ItemPriority.URGENT,
                     requestorId: userId
                 });
@@ -102,6 +105,7 @@ describe('Item route acceptance tests', () => {
                     category: 'engagement',
                     name: 'games',
                     status: ItemStatus.WISHLIST,
+                    location: 'aurora house',
                     requestorId: userId
                 });
 
@@ -124,12 +128,14 @@ describe('Item route acceptance tests', () => {
                     clientId,
                     category: 'engagement',
                     name: 'games',
+                    location: 'aurora house',
                     requestorId: userId
                 });
                 await client.createItem({
                     clientId,
                     category: 'household',
                     name: 'pillows',
+                    location: 'aurora house',
                     requestorId: userId
                 });
             });
@@ -163,12 +169,14 @@ describe('Item route acceptance tests', () => {
                 clientId,
                 category: 'engagement',
                 name: 'games',
+                location: 'aurora house',
                 requestorId: userId
             });
             const response = await client.createItem({
                 clientId,
                 category: 'household',
                 name: 'pillows',
+                location: 'aurora house',
                 requestorId: userId
             });
             itemId = response.body.payload.item.id;
