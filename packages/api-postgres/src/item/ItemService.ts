@@ -17,7 +17,7 @@ export default class ItemService {
         const requestor = await UserService.getUserById(requestorId);
 
         if (!requestor) {
-            return;
+            throw new Error('Invalid requestor');
         }
 
         const item = Item.create({

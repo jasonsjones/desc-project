@@ -133,17 +133,20 @@ describe('Item service', () => {
             );
         });
 
-        it('does not create a new item if the requestor is not found', async () => {
+        it('throws an error if the requestor is not found', async () => {
+            expect.assertions(1);
             const unkownUserId = '4a29f793-ad0f-4388-9a40-0c0423c5b78c';
-            const item = await ItemService.createItem({
-                clientId,
-                category: ItemCategory.HOUSEHOLD,
-                name: 'bedding',
-                location: HouseLocation.AURORA_HOUSE,
-                requestorId: unkownUserId
-            });
-
-            expect(item).toBeUndefined();
+            try {
+                await ItemService.createItem({
+                    clientId,
+                    category: ItemCategory.HOUSEHOLD,
+                    name: 'bedding',
+                    location: HouseLocation.AURORA_HOUSE,
+                    requestorId: unkownUserId
+                });
+            } catch (e) {
+                expect(e.message).toBe('Invalid requestor');
+            }
         });
     });
 
