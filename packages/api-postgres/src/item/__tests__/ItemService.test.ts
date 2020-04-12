@@ -1,8 +1,6 @@
 import ItemService from '../ItemService';
 import { createPostgresConnection, closeConnection } from '../../config/database';
 import User, { Program } from '../../entity/User';
-import Item from '../../entity/Item';
-import { getRepository } from 'typeorm';
 import { ItemCategory, ItemPriority, ItemStatus, HouseLocation } from '../types';
 import UserService from '../../user/UserService';
 import TestUtils from '../../testUtils/TestUtilities';
@@ -25,8 +23,7 @@ describe('Item service', () => {
     });
 
     afterEach(async () => {
-        const itemRepository = await getRepository(Item);
-        await itemRepository.clear();
+        await TestUtils.dropItems();
     });
 
     afterAll(async () => {
