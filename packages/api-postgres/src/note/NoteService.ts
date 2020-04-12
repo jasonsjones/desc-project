@@ -1,0 +1,28 @@
+import Note from '../entity/Note';
+import UserService from '../user/UserService';
+import ItemService from '../item/ItemService';
+
+interface NoteData {
+    body: string;
+    userId: string;
+    itemId: string;
+}
+export default class NoteService {
+    static async createNote(noteData: NoteData): Promise<Note | undefined> {
+        const { body, userId, itemId } = noteData;
+        const user = await UserService.getUserById(userId);
+        const item = await ItemService.getItemById(itemId);
+
+        if (!user) {
+            throw new Error('Invalid user');
+        }
+        if (!item) {
+            throw new Error('Invalid item');
+        }
+
+        const note = Note.create({ body });
+        note.submittedBy = user;
+        note.item = item;
+        return note.save();
+    }
+}
