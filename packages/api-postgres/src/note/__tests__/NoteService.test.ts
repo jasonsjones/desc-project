@@ -59,6 +59,7 @@ describe('Note service', () => {
         });
 
         it('throws error if user id is invalid', async () => {
+            expect.assertions(1);
             const invalidUserId = '5a75038a-05e6-404b-8f5f-8bba3fed11f6';
             try {
                 await NoteService.createNote({
@@ -72,6 +73,7 @@ describe('Note service', () => {
         });
 
         it('throws error if item id is invalid', async () => {
+            expect.assertions(1);
             const invalidItemId = 'ad259d3d-3386-4df1-904f-0218b6f6891c';
             try {
                 await NoteService.createNote({
