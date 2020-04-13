@@ -84,4 +84,24 @@ describe('Note service', () => {
             }
         });
     });
+
+    describe('createNoteForItem() method', () => {
+        it('creates a new note', () => {
+            const note = NoteService.createNoteForItem({ body: 'This is a test', userId, itemId });
+
+            expect(note).toEqual(
+                expect.objectContaining({
+                    body: expect.any(String)
+                })
+            );
+
+            expect(note).not.toEqual(
+                expect.objectContaining({
+                    id: expect.any(String),
+                    submittedBy: expect.any(Object),
+                    item: expect.any(Object)
+                })
+            );
+        });
+    });
 });

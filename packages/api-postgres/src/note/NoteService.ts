@@ -25,4 +25,10 @@ export default class NoteService {
         note.item = item;
         return note.save();
     }
+
+    static createNoteForItem(noteData: NoteData): Note {
+        const { body } = noteData;
+        const note = Note.create({ body });
+        return note;
+    }
 }
