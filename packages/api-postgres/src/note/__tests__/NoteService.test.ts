@@ -50,7 +50,10 @@ describe('Note service', () => {
 
             expect(note).toEqual(
                 expect.objectContaining({
-                    id: expect.any(String)
+                    id: expect.any(String),
+                    body: expect.any(String),
+                    submittedBy: expect.any(Object),
+                    item: expect.any(Object)
                 })
             );
         });
