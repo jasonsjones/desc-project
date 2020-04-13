@@ -3,7 +3,6 @@ import {
     BaseEntity,
     PrimaryGeneratedColumn,
     ManyToOne,
-    JoinColumn,
     Column,
     CreateDateColumn,
     UpdateDateColumn
@@ -20,11 +19,9 @@ export default class Note extends BaseEntity {
     body: string;
 
     @ManyToOne(() => User)
-    @JoinColumn()
     submittedBy: User;
 
     @ManyToOne(() => Item)
-    @JoinColumn()
     item: Item;
 
     @CreateDateColumn()
