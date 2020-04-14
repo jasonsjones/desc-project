@@ -106,4 +106,30 @@ describe('Note service', () => {
             );
         });
     });
+
+    describe('getAllNotes() method', () => {
+        beforeEach(async () => {
+            await NoteService.createNote({ body: 'This is the first test note', userId, itemId });
+            await NoteService.createNote({ body: 'This is the second test note', userId, itemId });
+        });
+
+        afterEach(async () => {
+            await TestUtils.dropNotes();
+        });
+
+        it('fetches all notes', async () => {
+            const notes = await NoteService.getAllNotes();
+            expect(notes).toHaveLength(2);
+            expect(notes).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        id: expect.any(String),
+                        body: expect.any(String),
+                        submittedBy: expect.any(Object),
+                        item: expect.any(Object)
+                    })
+                ])
+            );
+        });
+    });
 });

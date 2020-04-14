@@ -31,4 +31,8 @@ export default class NoteService {
         const note = Note.create({ body });
         return note;
     }
+
+    static getAllNotes(): Promise<Note[]> {
+        return Note.find({ relations: ['submittedBy', 'item'] });
+    }
 }
