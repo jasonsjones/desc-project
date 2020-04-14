@@ -132,4 +132,40 @@ describe('Note service', () => {
             );
         });
     });
+
+    describe('getNoteById() method', () => {
+        let noteId: string;
+        beforeEach(async () => {
+            const note = await NoteService.createNote({
+                body: 'This is the first test note',
+                userId,
+                itemId
+            });
+            await NoteService.createNote({ body: 'This is the second test note', userId, itemId });
+
+            noteId = note?.id as string;
+        });
+
+        afterEach(async () => {
+            await TestUtils.dropNotes();
+        });
+
+        it('fetches the item with the given id', async () => {
+            const note = await NoteService.getNoteById(noteId);
+            expect(note).toEqual(
+                expect.objectContaining({
+                    id: expect.any(String),
+                    body: expect.any(String),
+                    submittedBy: expect.any(Object),
+                    item: expect.any(Object)
+                })
+            );
+        });
+
+        it('returns undefined if the note with the given id is not found', async () => {
+            const badId = '80453b6b-d1af-4142-903b-3ba9f92e7f39';
+            const note = await NoteService.getNoteById(badId);
+            expect(note).toBeUndefined();
+        });
+    });
 });
