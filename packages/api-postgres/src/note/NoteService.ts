@@ -39,4 +39,8 @@ export default class NoteService {
     static getNoteById(id: string): Promise<Note | undefined> {
         return Note.findOne({ where: { id }, relations: ['submittedBy', 'item'] });
     }
+
+    static getNoteForItem(itemId: string): Promise<Note[]> {
+        return Note.find({ where: { item: itemId }, relations: ['submittedBy', 'item'] });
+    }
 }

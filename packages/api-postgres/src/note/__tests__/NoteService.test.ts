@@ -168,4 +168,40 @@ describe('Note service', () => {
             expect(note).toBeUndefined();
         });
     });
+
+    describe('getNoteForItem() method', () => {
+        beforeAll(async () => {
+            await NoteService.createNote({
+                body: 'This is the first test note',
+                userId,
+                itemId
+            });
+            await NoteService.createNote({ body: 'This is the second test note', userId, itemId });
+        });
+
+        afterAll(async () => {
+            await TestUtils.dropNotes();
+        });
+
+        it('fetches all the notes for an item', async () => {
+            const notes = await NoteService.getNoteForItem(itemId);
+            expect(notes).toHaveLength(2);
+            expect(notes).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        id: expect.any(String),
+                        body: expect.any(String),
+                        submittedBy: expect.any(Object),
+                        item: expect.any(Object)
+                    })
+                ])
+            );
+        });
+
+        it('returns empty array if the item is not found', async () => {
+            const badId = '80453b6b-d1af-4142-903b-3ba9f92e7f39';
+            const note = await NoteService.getNoteForItem(badId);
+            expect(note).toHaveLength(0);
+        });
+    });
 });
