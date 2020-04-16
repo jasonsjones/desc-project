@@ -43,4 +43,10 @@ export default class NoteService {
     static getNoteForItem(itemId: string): Promise<Note[]> {
         return Note.find({ where: { item: itemId }, relations: ['submittedBy', 'item'] });
     }
+
+    static async deleteNote(id: string): Promise<Note | undefined> {
+        const note = await NoteService.getNoteById(id);
+        await Note.delete({ id });
+        return note;
+    }
 }
