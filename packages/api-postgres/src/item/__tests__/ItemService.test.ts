@@ -4,6 +4,7 @@ import User, { Program } from '../../entity/User';
 import { ItemCategory, ItemPriority, ItemStatus, HouseLocation } from '../types';
 import UserService from '../../user/UserService';
 import TestUtils from '../../testUtils/TestUtilities';
+import NoteService from '../../note/NoteService';
 
 describe('Item service', () => {
     let userId: string;
@@ -23,6 +24,7 @@ describe('Item service', () => {
     });
 
     afterEach(async () => {
+        await TestUtils.dropNotes();
         await TestUtils.dropItems();
     });
 
@@ -105,6 +107,42 @@ describe('Item service', () => {
             );
         });
 
+        it('creates a new urgent household item with a note', async () => {
+            const urgentNote = {
+                body: 'This item is very urgent!'
+            };
+
+            const item = await ItemService.createItem({
+                clientId,
+                category: ItemCategory.HOUSEHOLD,
+                name: 'pillows',
+                priority: ItemPriority.URGENT,
+                quantity: 2,
+                location: HouseLocation.CLEMENT_PLACE,
+                requestorId: userId,
+                note: urgentNote
+            });
+
+            expect(item).toEqual(
+                expect.objectContaining({
+                    id: expect.any(String),
+                    category: 'household',
+                    name: 'pillows',
+                    priority: 'urgent',
+                    quantity: 2,
+                    submittedBy: expect.any(User),
+                    status: 'active',
+                    location: 'clement place',
+                    notes: expect.arrayContaining([
+                        expect.objectContaining({
+                            id: expect.any(String),
+                            body: 'This item is very urgent!'
+                        })
+                    ])
+                })
+            );
+        });
+
         it('creates a new household item with wishlist status', async () => {
             const item = await ItemService.createItem({
                 clientId,
@@ -170,16 +208,18 @@ describe('Item service', () => {
             const items = await ItemService.getAllItems();
 
             expect(items).toHaveLength(2);
-            expect(items[1]).toEqual(
-                expect.objectContaining({
-                    id: expect.any(String),
-                    category: 'household',
-                    name: 'bedding',
-                    quantity: 2,
-                    submittedBy: expect.any(User),
-                    status: 'active',
-                    location: 'aurora house'
-                })
+            expect(items).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        id: expect.any(String),
+                        category: expect.any(String),
+                        name: expect.any(String),
+                        quantity: expect.any(Number),
+                        submittedBy: expect.any(User),
+                        status: 'active',
+                        location: expect.any(String)
+                    })
+                ])
             );
         });
     });
@@ -335,6 +375,31 @@ describe('Item service', () => {
 
             const items = await ItemService.getAllItems();
             expect(items).toHaveLength(0);
+        });
+
+        it('deletes the item with the given id and cascades the delete for the note', async () => {
+            expect.assertions(1);
+
+            const urgentNote = {
+                body: 'This item is very urgent!'
+            };
+
+            const item = await ItemService.createItem({
+                clientId,
+                category: ItemCategory.HOUSEHOLD,
+                name: 'pillows',
+                priority: ItemPriority.URGENT,
+                quantity: 2,
+                location: HouseLocation.CLEMENT_PLACE,
+                requestorId: userId,
+                note: urgentNote
+            });
+
+            if (item) {
+                await ItemService.deleteItem(item.id);
+                const notes = await NoteService.getNoteForItem(item.id);
+                expect(notes).toHaveLength(0);
+            }
         });
     });
 });

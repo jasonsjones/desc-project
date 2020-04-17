@@ -21,7 +21,7 @@ export default class Note extends BaseEntity {
     @ManyToOne(() => User)
     submittedBy: User;
 
-    @ManyToOne(() => Item)
+    @ManyToOne(() => Item, { onDelete: 'CASCADE' })
     item: Item;
 
     @CreateDateColumn()

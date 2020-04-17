@@ -6,15 +6,16 @@ import {
     ManyToOne,
     JoinColumn,
     CreateDateColumn,
-    UpdateDateColumn
+    UpdateDateColumn,
+    OneToMany
 } from 'typeorm';
 import User from './User';
 import { ItemCategory, ItemPriority, ItemStatus, HouseLocation } from '../item/types';
+import Note from './Note';
 
 @Entity()
 export default class Item extends BaseEntity {
     // clientRequest -> ClientRequest
-    // notes -> Notes[]
 
     @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -43,6 +44,14 @@ export default class Item extends BaseEntity {
 
     @Column({ type: 'enum', enum: HouseLocation })
     location: HouseLocation;
+
+    @OneToMany(
+        () => Note,
+        note => note.item,
+        { cascade: true }
+    )
+    @JoinColumn()
+    notes: Note[];
 
     @CreateDateColumn()
     createdAt: Date;

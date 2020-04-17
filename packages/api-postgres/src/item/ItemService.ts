@@ -1,6 +1,7 @@
 import Item from '../entity/Item';
 import { ItemData, UpdatableItemFields } from './types';
 import UserService from '../user/UserService';
+import NoteService from '../note/NoteService';
 
 export default class ItemService {
     static async createItem(itemData: ItemData): Promise<Item | undefined> {
@@ -12,7 +13,8 @@ export default class ItemService {
             quantity,
             requestorId,
             status,
-            location
+            location,
+            note
         } = itemData;
         const requestor = await UserService.getUserById(requestorId);
 
@@ -31,15 +33,22 @@ export default class ItemService {
         });
         item.submittedBy = requestor;
 
+        if (note) {
+            const tempNote = NoteService.createNoteForItem({ body: note.body });
+            tempNote.submittedBy = requestor;
+            tempNote.item = item;
+            item.notes = [tempNote];
+        }
+
         return item.save();
     }
 
     static getAllItems(): Promise<Item[]> {
-        return Item.find({ relations: ['submittedBy'] });
+        return Item.find({ relations: ['submittedBy', 'notes'] });
     }
 
     static getItemById(id: string): Promise<Item | undefined> {
-        return Item.findOne({ where: { id }, relations: ['submittedBy'] });
+        return Item.findOne({ where: { id }, relations: ['submittedBy', 'notes'] });
     }
 
     static async updateItem(id: string, data: UpdatableItemFields): Promise<Item | undefined> {

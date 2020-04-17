@@ -45,6 +45,11 @@ export type HouseholdItems =
     | 'napkins/paper towels'
     | 'shower curtain';
 
+export interface NoteData {
+    body: string;
+    userId?: string;
+    itemId?: string;
+}
 export interface ItemData {
     clientId: string;
     category: ItemCategory;
@@ -54,6 +59,7 @@ export interface ItemData {
     status?: ItemStatus;
     requestorId: string;
     location: HouseLocation;
+    note?: NoteData;
 }
 
 export interface UpdatableItemFields {
