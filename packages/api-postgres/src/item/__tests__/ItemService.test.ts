@@ -478,4 +478,84 @@ describe('Item service', () => {
             }
         });
     });
+
+    describe('deleteNoteFromItem() method', () => {
+        let itemId: string;
+        let noteId: string;
+
+        beforeEach(async () => {
+            const games = await ItemService.createItem({
+                clientId,
+                category: ItemCategory.ENGAGEMENT,
+                name: 'games',
+                location: HouseLocation.AURORA_HOUSE,
+                requestorId: userId,
+                note: {
+                    body: 'This is the first note to go with the request.'
+                }
+            });
+            itemId = games?.id as string;
+
+            const itemWith2Notes = await ItemService.addNoteToItem({
+                body: 'This is the second note to go with the request',
+                authorId: userId,
+                itemId
+            });
+
+            noteId = itemWith2Notes?.notes[0].id as string;
+        });
+
+        it('deletes a note from the item', async () => {
+            const itemWith1Note = await ItemService.deleteNoteFromItem({ noteId, itemId });
+
+            expect(itemWith1Note).toEqual(
+                expect.objectContaining({
+                    id: expect.any(String),
+                    category: 'engagement',
+                    name: 'games',
+                    quantity: 1,
+                    submittedBy: expect.any(User),
+                    status: 'active',
+                    location: 'aurora house',
+                    notes: expect.arrayContaining([
+                        expect.objectContaining({
+                            id: expect.any(String),
+                            body: expect.any(String),
+                            submittedBy: expect.any(User)
+                        })
+                    ])
+                })
+            );
+
+            expect(itemWith1Note?.notes).toHaveLength(1);
+        });
+
+        it('throws an error if the item is not found', async () => {
+            expect.assertions(1);
+            const unkownItemId = '4a29f793-ad0f-4388-9a40-0c0423c5b78c';
+
+            try {
+                await ItemService.deleteNoteFromItem({
+                    noteId,
+                    itemId: unkownItemId
+                });
+            } catch (e) {
+                expect(e.message).toBe('Invalid item');
+            }
+        });
+
+        it('throws an error if the note is not found', async () => {
+            expect.assertions(1);
+            const unkownNoteId = '4a29f793-ad0f-4388-9a40-0c0423c5b78c';
+
+            try {
+                await ItemService.deleteNoteFromItem({
+                    noteId: unkownNoteId,
+                    itemId
+                });
+            } catch (e) {
+                expect(e.message).toBe('Invalid note');
+            }
+        });
+    });
 });

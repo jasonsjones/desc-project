@@ -90,4 +90,22 @@ export default class ItemService {
 
         return ItemService.getItemById(itemId);
     }
+
+    static async deleteNoteFromItem(noteData: {
+        noteId: string;
+        itemId: string;
+    }): Promise<Item | undefined> {
+        const { noteId, itemId } = noteData;
+        const item = await ItemService.getItemById(itemId);
+        if (!item) {
+            throw new Error('Invalid item');
+        }
+        const deletedNote = await NoteService.deleteNote(noteId);
+        if (!deletedNote) {
+            throw new Error('Invalid note');
+        }
+        item.notes = item?.notes.filter(note => note.id !== noteId);
+
+        return ItemService.getItemById(itemId);
+    }
 }
