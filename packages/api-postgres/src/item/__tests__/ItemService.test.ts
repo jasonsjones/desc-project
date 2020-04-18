@@ -402,4 +402,80 @@ describe('Item service', () => {
             }
         });
     });
+
+    describe('addNoteToItem() method', () => {
+        let itemId: string;
+        beforeEach(async () => {
+            const games = await ItemService.createItem({
+                clientId,
+                category: ItemCategory.ENGAGEMENT,
+                name: 'games',
+                location: HouseLocation.AURORA_HOUSE,
+                requestorId: userId,
+                note: {
+                    body: 'This is the first note to go with the request.'
+                }
+            });
+
+            itemId = games?.id as string;
+        });
+
+        it('adds a note to an existing item', async () => {
+            const updatedItem = await ItemService.addNoteToItem({
+                body: 'This is the second note to go with the request',
+                authorId: userId,
+                itemId
+            });
+
+            expect(updatedItem).toEqual(
+                expect.objectContaining({
+                    id: expect.any(String),
+                    category: 'engagement',
+                    name: 'games',
+                    quantity: 1,
+                    submittedBy: expect.any(User),
+                    status: 'active',
+                    location: 'aurora house',
+                    notes: expect.arrayContaining([
+                        expect.objectContaining({
+                            id: expect.any(String),
+                            body: expect.any(String),
+                            submittedBy: expect.any(User)
+                        })
+                    ])
+                })
+            );
+
+            expect(updatedItem?.notes).toHaveLength(2);
+        });
+
+        it('throws an error if the author is not found', async () => {
+            expect.assertions(1);
+            const unkownUserId = '4a29f793-ad0f-4388-9a40-0c0423c5b78c';
+
+            try {
+                await ItemService.addNoteToItem({
+                    body: 'Adding a note here',
+                    authorId: unkownUserId,
+                    itemId
+                });
+            } catch (e) {
+                expect(e.message).toBe('Invalid author');
+            }
+        });
+
+        it('throws an error if the item is not found', async () => {
+            expect.assertions(1);
+            const unknownItemId = '80453b6b-d1af-4142-903b-3ba9f92e7f39';
+            try {
+                await ItemService.addNoteToItem({
+                    body: 'Adding a note here',
+                    authorId: userId,
+                    itemId: unknownItemId
+                });
+            } catch (e) {
+                expect(e.message).toBe('Invalid item');
+            }
+        });
+    });
 });

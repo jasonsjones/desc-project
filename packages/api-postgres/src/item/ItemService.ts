@@ -48,7 +48,10 @@ export default class ItemService {
     }
 
     static getItemById(id: string): Promise<Item | undefined> {
-        return Item.findOne({ where: { id }, relations: ['submittedBy', 'notes'] });
+        return Item.findOne({
+            where: { id },
+            relations: ['submittedBy', 'notes', 'notes.submittedBy']
+        });
     }
 
     static async updateItem(id: string, data: UpdatableItemFields): Promise<Item | undefined> {
@@ -60,5 +63,31 @@ export default class ItemService {
         const item = await ItemService.getItemById(id);
         await Item.delete({ id });
         return item;
+    }
+
+    static async addNoteToItem(noteData: {
+        body: string;
+        itemId: string;
+        authorId: string;
+    }): Promise<Item | undefined> {
+        const { body, itemId, authorId } = noteData;
+        const author = await UserService.getUserById(authorId);
+        const item = await ItemService.getItemById(itemId);
+
+        if (!author) {
+            throw new Error('Invalid author');
+        }
+
+        if (!item) {
+            throw new Error('Invalid item');
+        }
+
+        const note = NoteService.createNoteForItem({ body });
+        note.submittedBy = author;
+        note.item = item;
+        item.notes = [...item.notes, note];
+        await item.save();
+
+        return ItemService.getItemById(itemId);
     }
 }
