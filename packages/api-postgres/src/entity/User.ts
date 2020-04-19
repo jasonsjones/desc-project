@@ -57,7 +57,7 @@ export default class User extends BaseEntity {
     @Column({ type: 'enum', enum: Program, default: Program.UNKNOWN })
     program: Program;
 
-    @Column({ type: 'enum', enum: UserRole, default: [UserRole.REQUESTOR] })
+    @Column({ type: 'enum', enum: UserRole, array: true, default: [UserRole.REQUESTOR] })
     roles: UserRole[];
 
     @Column()
