@@ -120,6 +120,12 @@ class TestClient {
             .set('Content-Type', 'application/json')
             .send({ body, authorId });
     }
+
+    public deleteNoteFromItem(itemId: string, noteId: string): Test {
+        return request(this.app)
+            .delete(`/api/items/${itemId}/notes/${noteId}`)
+            .set('Content-Type', 'application/json');
+    }
 }
 
 export default TestClient;

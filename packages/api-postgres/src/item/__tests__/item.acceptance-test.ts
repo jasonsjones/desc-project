@@ -388,4 +388,96 @@ describe('Item route acceptance tests', () => {
             });
         });
     });
+
+    describe('api/items/:id/notes/:noteId route', () => {
+        let itemId: string;
+        let noteId: string;
+
+        beforeEach(async () => {
+            await client.createItem({
+                clientId,
+                category: 'engagement',
+                name: 'games',
+                location: 'aurora house',
+                requestorId: userId
+            });
+
+            const itemResponse = await client.createItem({
+                clientId,
+                category: 'household',
+                name: 'pillows',
+                location: 'aurora house',
+                requestorId: userId,
+                note: {
+                    body: 'Big, fluffy pillows, please.'
+                }
+            });
+
+            itemId = itemResponse.body.payload.item.id;
+
+            const noteData1 = {
+                body: 'King size pillows, please.',
+                authorId: userId
+            };
+
+            const noteData2 = {
+                body: 'Queen size pillows, please.',
+                authorId: userId
+            };
+
+            const noteResponse = await client.addNoteToItem(itemId, noteData1);
+            noteId = noteResponse.body.payload.item.notes[1].id;
+
+            await client.addNoteToItem(itemId, noteData2);
+        });
+
+        describe('DELETE request method', () => {
+            it('deletes a note from an item', async () => {
+                const response = await client.deleteNoteFromItem(itemId, noteId);
+
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: true,
+                        message: 'note deleted from item',
+                        payload: expect.objectContaining({
+                            item: expect.any(Object)
+                        })
+                    })
+                );
+                expect(response.body.payload.item.notes).toHaveLength(2);
+            });
+
+            it('handles deleting a note to item with bad item id', async () => {
+                const badId = '80453b6b-d1af-4142-903b-3ba9f92e7f39';
+                const response = await client.deleteNoteFromItem(badId, noteId);
+
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: false,
+                        message: 'error deleting note from item',
+                        payload: expect.objectContaining({
+                            error: expect.any(String),
+                            item: null
+                        })
+                    })
+                );
+            });
+
+            it('handles deleting a note to item with bad note id', async () => {
+                const badId = '80453b6b-d1af-4142-903b-3ba9f92e7f39';
+                const response = await client.deleteNoteFromItem(itemId, badId);
+
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: false,
+                        message: 'error deleting note from item',
+                        payload: expect.objectContaining({
+                            error: expect.any(String),
+                            item: null
+                        })
+                    })
+                );
+            });
+        });
+    });
 });

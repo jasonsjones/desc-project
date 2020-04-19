@@ -22,6 +22,7 @@ class ItemRouter {
             .delete(ItemController.deleteItem);
 
         ItemRouter.router.route('/:id/notes').post(ItemController.addNoteToItem);
+        ItemRouter.router.route('/:id/notes/:noteId').delete(ItemController.deleteNoteFromItem);
     }
 }
 

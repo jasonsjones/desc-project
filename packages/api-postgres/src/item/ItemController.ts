@@ -142,6 +142,38 @@ class ItemController {
                 });
             });
     }
+
+    static deleteNoteFromItem(req: Request, res: Response): Promise<Response> {
+        const itemId = req.params.id;
+        const noteId = req.params.noteId;
+
+        return ItemService.deleteNoteFromItem({ noteId, itemId })
+            .then(item => {
+                if (item) {
+                    return res.json({
+                        success: true,
+                        message: 'note deleted from item',
+                        payload: { item }
+                    });
+                } else {
+                    return res.json({
+                        success: false,
+                        message: 'unable to delete note from item',
+                        payload: { item: null }
+                    });
+                }
+            })
+            .catch(err => {
+                return res.json({
+                    success: false,
+                    message: 'error deleting note from item',
+                    payload: {
+                        error: err.message,
+                        item: null
+                    }
+                });
+            });
+    }
 }
 
 export default ItemController;
