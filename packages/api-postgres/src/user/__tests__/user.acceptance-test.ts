@@ -33,13 +33,13 @@ describe('User route acceptance tests', () => {
                     success: true,
                     message: expect.any(String),
                     payload: expect.objectContaining({
-                        // user: expect.any(Object)
                         user: expect.objectContaining({
                             id: expect.any(String),
                             firstName: 'Oliver',
                             lastName: 'Queen',
                             email: 'oliver@desc.org',
-                            program: expect.any(String)
+                            program: expect.any(String),
+                            roles: expect.arrayContaining(['requestor'])
                         })
                     })
                 })

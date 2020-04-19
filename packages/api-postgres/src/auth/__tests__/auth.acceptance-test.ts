@@ -11,7 +11,7 @@ const expectedUserShape = {
     }),
     email: expect.any(String),
     program: expect.any(String),
-    roles: 'requestor'
+    roles: ['requestor']
 };
 
 describe('Auth route acceptance tests', () => {
