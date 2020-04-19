@@ -11,7 +11,8 @@ class ItemController {
             quantity,
             status,
             location,
-            requestorId
+            requestorId,
+            note
         } = req.body;
         return ItemService.createItem({
             clientId,
@@ -21,8 +22,15 @@ class ItemController {
             quantity,
             status,
             location,
-            requestorId
+            requestorId,
+            note
         }).then(item => {
+            // need to remove the reference to the item in the note since it causes a circular reference
+            // and JSON does not handle it
+            if (item && item.notes && item.notes.length > 0) {
+                delete item.notes[0].item;
+            }
+
             return res.status(201).json({
                 success: true,
                 message: 'item created',
@@ -105,6 +113,34 @@ class ItemController {
                 });
             }
         });
+    }
+
+    static addNoteToItem(req: Request, res: Response): Promise<Response> {
+        const itemId = req.params.id;
+        const { body, authorId } = req.body;
+        return ItemService.addNoteToItem({ body, itemId, authorId })
+            .then(item => {
+                if (item) {
+                    return res.json({
+                        success: true,
+                        message: 'note added to item',
+                        payload: { item }
+                    });
+                } else {
+                    return res.json({
+                        success: false,
+                        message: 'note note added to item',
+                        payload: { item: null }
+                    });
+                }
+            })
+            .catch(err => {
+                return res.json({
+                    success: false,
+                    message: 'error adding note to item',
+                    payload: { error: err.message, item: null }
+                });
+            });
     }
 }
 

@@ -110,6 +110,16 @@ class TestClient {
             .delete(`/api/items/${id}`)
             .set('Content-Type', 'application/json');
     }
+
+    public addNoteToItem(
+        itemId: string,
+        { body, authorId }: { body: string; authorId: string }
+    ): Test {
+        return request(this.app)
+            .post(`/api/items/${itemId}/notes`)
+            .set('Content-Type', 'application/json')
+            .send({ body, authorId });
+    }
 }
 
 export default TestClient;

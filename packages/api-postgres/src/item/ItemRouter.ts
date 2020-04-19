@@ -20,6 +20,8 @@ class ItemRouter {
             .get(ItemController.getItem)
             .patch(ItemController.updateItem)
             .delete(ItemController.deleteItem);
+
+        ItemRouter.router.route('/:id/notes').post(ItemController.addNoteToItem);
     }
 }
 

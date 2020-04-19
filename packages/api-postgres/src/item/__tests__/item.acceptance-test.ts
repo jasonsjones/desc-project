@@ -24,6 +24,7 @@ describe('Item route acceptance tests', () => {
     });
 
     afterEach(async () => {
+        TestUtils.dropNotes();
         TestUtils.dropItems();
     });
 
@@ -293,6 +294,93 @@ describe('Item route acceptance tests', () => {
                         success: false,
                         message: 'item not found',
                         payload: expect.objectContaining({
+                            item: null
+                        })
+                    })
+                );
+            });
+        });
+    });
+
+    describe('api/items/:id/notes route', () => {
+        let itemId: string;
+        beforeEach(async () => {
+            await client.createItem({
+                clientId,
+                category: 'engagement',
+                name: 'games',
+                location: 'aurora house',
+                requestorId: userId
+            });
+
+            const response = await client.createItem({
+                clientId,
+                category: 'household',
+                name: 'pillows',
+                location: 'aurora house',
+                requestorId: userId,
+                note: {
+                    body: 'Big, fluffy pillows, please.'
+                }
+            });
+
+            itemId = response.body.payload.item.id;
+        });
+
+        describe('POST request method', () => {
+            it('adds a note to an itme', async () => {
+                const noteData = {
+                    body: 'King size pillows, please.',
+                    authorId: userId
+                };
+                const response = await client.addNoteToItem(itemId, noteData);
+
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: true,
+                        message: 'note added to item',
+                        payload: expect.objectContaining({
+                            item: expect.any(Object)
+                        })
+                    })
+                );
+                expect(response.body.payload.item.notes).toHaveLength(2);
+            });
+
+            it('handles adding note to item with bad item id', async () => {
+                const badId = '80453b6b-d1af-4142-903b-3ba9f92e7f39';
+                const noteData = {
+                    body: 'King size pillows, please.',
+                    authorId: userId
+                };
+                const response = await client.addNoteToItem(badId, noteData);
+
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: false,
+                        message: 'error adding note to item',
+                        payload: expect.objectContaining({
+                            error: expect.any(String),
+                            item: null
+                        })
+                    })
+                );
+            });
+
+            it('handles adding note to item with bad author id', async () => {
+                const badId = '80453b6b-d1af-4142-903b-3ba9f92e7f39';
+                const noteData = {
+                    body: 'King size pillows, please.',
+                    authorId: badId
+                };
+                const response = await client.addNoteToItem(itemId, noteData);
+
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: false,
+                        message: 'error adding note to item',
+                        payload: expect.objectContaining({
+                            error: expect.any(String),
                             item: null
                         })
                     })
