@@ -29,4 +29,11 @@ export default class Note extends BaseEntity {
 
     @UpdateDateColumn()
     updatedAt: Date;
+
+    toClientJSON(): Note {
+        return {
+            ...this,
+            submittedBy: this.submittedBy.toClientJSON()
+        };
+    }
 }

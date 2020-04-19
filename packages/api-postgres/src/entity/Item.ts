@@ -60,9 +60,20 @@ export default class Item extends BaseEntity {
     updatedAt: Date;
 
     toClientJSON(): Item {
-        return {
-            ...this,
-            submittedBy: this.submittedBy.toClientJSON()
-        };
+        const hasNotes = this.notes && this.notes.length > 0;
+        const sanitizedNotes = hasNotes && this.notes.map(note => note.toClientJSON());
+
+        if (hasNotes) {
+            return {
+                ...this,
+                submittedBy: this.submittedBy.toClientJSON(),
+                notes: sanitizedNotes
+            };
+        } else {
+            return {
+                ...this,
+                submittedBy: this.submittedBy.toClientJSON()
+            };
+        }
     }
 }
