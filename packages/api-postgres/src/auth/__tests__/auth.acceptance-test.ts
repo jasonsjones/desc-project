@@ -43,12 +43,13 @@ describe('Auth route acceptance tests', () => {
 
         it('logs in an authorized user', async () => {
             const response = await client.loginUser('oliver@qc.com', '123456');
+
             expect(response.body).toEqual(
                 expect.objectContaining({
                     success: true,
                     message: 'user authenticated',
                     payload: expect.objectContaining({
-                        user: expectedUserShape,
+                        user: expect.objectContaining(expectedUserShape),
                         accessToken: expect.any(String)
                     })
                 })
@@ -57,6 +58,7 @@ describe('Auth route acceptance tests', () => {
 
         it('sends back status 401 for an unauthorized user', async () => {
             const response = await client.loginUser('oliver@qc.com', '654321');
+
             expect(response.status).toBe(401);
             expect(response.body).toStrictEqual({});
         });

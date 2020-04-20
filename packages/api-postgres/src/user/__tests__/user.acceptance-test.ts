@@ -49,6 +49,7 @@ describe('User route acceptance tests', () => {
         it('GET request method fetches all users', async () => {
             const client = new TestClient();
             const response = await client.getAllUsers();
+
             expect(response.body).toEqual(
                 expect.objectContaining({
                     success: true,

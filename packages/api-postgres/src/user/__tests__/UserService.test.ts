@@ -44,8 +44,14 @@ describe('User service integration tests', () => {
         let userId: string;
 
         beforeEach(async () => {
-            const { firstName, lastName, email, password } = testUser;
-            const user = await UserService.createUser(firstName, lastName, email, password);
+            const { firstName, lastName, email, password, program } = testUser;
+            const user = await UserService.createUser(
+                firstName,
+                lastName,
+                email,
+                password,
+                program
+            );
             userId = user.id;
         });
 
@@ -71,8 +77,14 @@ describe('User service integration tests', () => {
         let userId: string;
 
         beforeEach(async () => {
-            const { firstName, lastName, email, password } = testUser;
-            const user = await UserService.createUser(firstName, lastName, email, password);
+            const { firstName, lastName, email, password, program } = testUser;
+            const user = await UserService.createUser(
+                firstName,
+                lastName,
+                email,
+                password,
+                program
+            );
             userId = user.id;
         });
 
@@ -108,8 +120,14 @@ describe('User service integration tests', () => {
 
         beforeEach(async () => {
             await UserService.createUser('Barry', 'Allen', 'barry@starlabs.com', 'test1234');
-            const { firstName, lastName, email, password } = testUser;
-            const user = await UserService.createUser(firstName, lastName, email, password);
+            const { firstName, lastName, email, password, program } = testUser;
+            const user = await UserService.createUser(
+                firstName,
+                lastName,
+                email,
+                password,
+                program
+            );
             userIdToDelete = user.id;
         });
 
