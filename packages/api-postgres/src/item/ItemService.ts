@@ -44,7 +44,7 @@ export default class ItemService {
     }
 
     static getAllItems(): Promise<Item[]> {
-        return Item.find({ relations: ['submittedBy', 'notes'] });
+        return Item.find({ relations: ['submittedBy', 'notes', 'notes.submittedBy'] });
     }
 
     static getItemById(id: string): Promise<Item | undefined> {
