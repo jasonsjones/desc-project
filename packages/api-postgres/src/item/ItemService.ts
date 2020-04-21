@@ -34,7 +34,7 @@ export default class ItemService {
         item.submittedBy = requestor;
 
         if (note) {
-            const tempNote = NoteService.createNoteForItem({ body: note.body });
+            const tempNote = NoteService.createNoteForItem({ body: note });
             tempNote.submittedBy = requestor;
             tempNote.item = item;
             item.notes = [tempNote];

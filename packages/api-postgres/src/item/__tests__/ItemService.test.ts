@@ -108,10 +108,6 @@ describe('Item service', () => {
         });
 
         it('creates a new urgent household item with a note', async () => {
-            const urgentNote = {
-                body: 'This item is very urgent!'
-            };
-
             const item = await ItemService.createItem({
                 clientId,
                 category: ItemCategory.HOUSEHOLD,
@@ -120,7 +116,7 @@ describe('Item service', () => {
                 quantity: 2,
                 location: HouseLocation.CLEMENT_PLACE,
                 requestorId: userId,
-                note: urgentNote
+                note: 'This item is very urgent!'
             });
 
             expect(item).toEqual(
@@ -380,10 +376,6 @@ describe('Item service', () => {
         it('deletes the item with the given id and cascades the delete for the note', async () => {
             expect.assertions(1);
 
-            const urgentNote = {
-                body: 'This item is very urgent!'
-            };
-
             const item = await ItemService.createItem({
                 clientId,
                 category: ItemCategory.HOUSEHOLD,
@@ -392,7 +384,7 @@ describe('Item service', () => {
                 quantity: 2,
                 location: HouseLocation.CLEMENT_PLACE,
                 requestorId: userId,
-                note: urgentNote
+                note: 'This item is very urgent!'
             });
 
             if (item) {
@@ -412,9 +404,7 @@ describe('Item service', () => {
                 name: 'games',
                 location: HouseLocation.AURORA_HOUSE,
                 requestorId: userId,
-                note: {
-                    body: 'This is the first note to go with the request.'
-                }
+                note: 'This is the first note to go with the request.'
             });
 
             itemId = games?.id as string;
@@ -490,9 +480,7 @@ describe('Item service', () => {
                 name: 'games',
                 location: HouseLocation.AURORA_HOUSE,
                 requestorId: userId,
-                note: {
-                    body: 'This is the first note to go with the request.'
-                }
+                note: 'This is the first note to go with the request.'
             });
             itemId = games?.id as string;
 

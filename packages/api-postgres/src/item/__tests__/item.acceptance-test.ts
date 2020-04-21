@@ -319,9 +319,7 @@ describe('Item route acceptance tests', () => {
                 name: 'pillows',
                 location: 'aurora house',
                 requestorId: userId,
-                note: {
-                    body: 'Big, fluffy pillows, please.'
-                }
+                note: 'Big, fluffy pillows, please.'
             });
 
             itemId = response.body.payload.item.id;

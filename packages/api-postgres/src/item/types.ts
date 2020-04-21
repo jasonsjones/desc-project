@@ -59,7 +59,7 @@ export interface ItemData {
     status?: ItemStatus;
     requestorId: string;
     location: HouseLocation;
-    note?: NoteData;
+    note?: string;
 }
 
 export interface UpdatableItemFields {
