@@ -40,8 +40,10 @@ export default class ClientRequestService {
             clientRequest.items = [tempItem];
         }
 
-        // then remove all references to this clienRequest for its own items to avoid a
-        // circular reference situation -- actually this can be done in the controller, when created.
         return clientRequest.save();
+    }
+
+    static async getAllClientRequests(): Promise<ClientRequest[]> {
+        return ClientRequest.find({ relations: ['submittedBy', 'items'] });
     }
 }
