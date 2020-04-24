@@ -157,4 +157,38 @@ describe('ClientRequest service', () => {
             );
         });
     });
+
+    describe('getClientRequestById() method', () => {
+        let clientRequestId: string;
+
+        beforeEach(async () => {
+            const cr = await ClientRequestService.createClientRequest({
+                clientId,
+                requestorId: userId,
+                items: [item1, item2]
+            });
+
+            clientRequestId = cr.id;
+        });
+
+        it('fetches a client request by id', async () => {
+            const cr = await ClientRequestService.getClientRequestById(clientRequestId);
+            expect(cr).toEqual(
+                expect.objectContaining({
+                    id: expect.any(String),
+                    clientId: expect.any(String),
+                    submittedBy: expect.any(User),
+                    items: expect.arrayContaining([expect.any(Object), expect.any(Object)]),
+                    createdAt: expect.any(Date),
+                    updatedAt: expect.any(Date)
+                })
+            );
+        });
+
+        it('returns undefined if the client request with the given id is not found', async () => {
+            const badId = '80453b6b-d1af-4142-903b-3ba9f92e7f39';
+            const cr = await ClientRequestService.getClientRequestById(badId);
+            expect(cr).toBeUndefined();
+        });
+    });
 });

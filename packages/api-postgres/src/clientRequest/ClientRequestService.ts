@@ -46,4 +46,11 @@ export default class ClientRequestService {
     static async getAllClientRequests(): Promise<ClientRequest[]> {
         return ClientRequest.find({ relations: ['submittedBy', 'items'] });
     }
+
+    static getClientRequestById(id: string): Promise<ClientRequest | undefined> {
+        return ClientRequest.findOne({
+            where: { id },
+            relations: ['submittedBy', 'items']
+        });
+    }
 }
