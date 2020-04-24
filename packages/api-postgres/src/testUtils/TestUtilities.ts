@@ -2,6 +2,7 @@ import { getConnection } from 'typeorm';
 import User from '../entity/User';
 import Item from '../entity/Item';
 import Note from '../entity/Note';
+import ClientRequest from '../entity/ClientRequest';
 
 class TestUtilities {
     public static async deleteUserByEmail(email: string): Promise<void> {
@@ -34,6 +35,14 @@ class TestUtilities {
             .createQueryBuilder()
             .delete()
             .from(Note)
+            .execute();
+    }
+
+    public static async dropClientRequests(): Promise<void> {
+        await getConnection()
+            .createQueryBuilder()
+            .delete()
+            .from(ClientRequest)
             .execute();
     }
 }

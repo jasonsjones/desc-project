@@ -9,19 +9,21 @@ import {
     UpdateDateColumn,
     OneToMany
 } from 'typeorm';
+import ClientRequest from './ClientRequest';
+import Note from './Note';
 import User from './User';
 import { ItemCategory, ItemPriority, ItemStatus, HouseLocation } from '../item/types';
-import Note from './Note';
 
 @Entity()
 export default class Item extends BaseEntity {
-    // clientRequest -> ClientRequest
-
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
     @Column()
     clientId: string;
+
+    @ManyToOne(() => ClientRequest)
+    clientRequest: ClientRequest;
 
     @Column({ type: 'enum', enum: ItemCategory })
     category: ItemCategory;
