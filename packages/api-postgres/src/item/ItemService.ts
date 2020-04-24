@@ -4,7 +4,7 @@ import UserService from '../user/UserService';
 import NoteService from '../note/NoteService';
 
 export default class ItemService {
-    static async createItem(itemData: ItemData): Promise<Item | undefined> {
+    static async createItem(itemData: ItemData): Promise<Item> {
         const {
             clientId,
             category,
