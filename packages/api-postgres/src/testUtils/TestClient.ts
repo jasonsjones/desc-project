@@ -126,6 +126,13 @@ class TestClient {
             .delete(`/api/items/${itemId}/notes/${noteId}`)
             .set('Content-Type', 'application/json');
     }
+
+    public createClientRequest(requestData: any): Test {
+        return request(this.app)
+            .post('/api/clientrequests')
+            .set('Content-Type', 'application/json')
+            .send(requestData);
+    }
 }
 
 export default TestClient;

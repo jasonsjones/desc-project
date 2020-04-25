@@ -10,6 +10,7 @@ import AuthRouter from '../auth/AuthRouter';
 import UserRouter from '../user/UserRouter';
 import AuthController from '../auth/AuthController';
 import ItemRouter from '../item/ItemRouter';
+import ClientRequestRouter from '../clientRequest/ClientRequestRouter';
 
 const app = express();
 
@@ -27,5 +28,6 @@ app.use('/', IndexRouter.getRouter());
 app.use('/api/auth', AuthRouter.getRouter(passport));
 app.use('/api/users', UserRouter.getRouter());
 app.use('/api/items', ItemRouter.getRouter());
+app.use('/api/clientrequests', ClientRequestRouter.getRouter());
 
 export default app;
