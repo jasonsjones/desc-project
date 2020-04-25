@@ -196,4 +196,54 @@ describe('ClientRequest route acceptance tests', () => {
             });
         });
     });
+
+    describe('/api/clientrequests/:id route', () => {
+        describe('GET request method', () => {
+            let clientRequestId: string;
+            beforeAll(async () => {
+                await client.createClientRequest({
+                    clientId,
+                    requestorId: userId,
+                    items: [item1, item2]
+                });
+
+                const response = await client.createClientRequest({
+                    clientId,
+                    requestorId: userId,
+                    items: [item1, item3]
+                });
+
+                clientRequestId = response.body.payload.clientRequest.id;
+            });
+
+            it('fetches all client requests', async () => {
+                const response = await client.getClientRequest(clientRequestId);
+
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: true,
+                        message: 'client request fetched',
+                        payload: expect.objectContaining({
+                            clientRequest: expect.any(Object)
+                        })
+                    })
+                );
+            });
+
+            it('with invalid client reuqest id returns a null client request in the payload', async () => {
+                const badId = '80453b6b-d1af-4142-903b-3ba9f92e7f39';
+                const response = await client.getClientRequest(badId);
+
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: false,
+                        message: 'client request not found',
+                        payload: expect.objectContaining({
+                            clientRequest: null
+                        })
+                    })
+                );
+            });
+        });
+    });
 });

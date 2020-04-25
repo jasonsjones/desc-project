@@ -139,6 +139,12 @@ class TestClient {
             .get('/api/clientrequests')
             .set('Content-Type', 'application/json');
     }
+
+    public getClientRequest(id: string): Test {
+        return request(this.app)
+            .get(`/api/clientrequests/${id}`)
+            .set('Content-Type', 'application/json');
+    }
 }
 
 export default TestClient;

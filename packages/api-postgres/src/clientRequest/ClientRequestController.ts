@@ -40,15 +40,60 @@ class ClientRequestController {
     }
 
     static getAllClientRequests(_: Request, res: Response): Promise<Response> {
-        return ClientRequestService.getAllClientRequests().then(requests => {
-            return res.json({
-                success: true,
-                message: 'client requests fetched',
-                payload: {
-                    clientRequests: requests
-                }
+        return ClientRequestService.getAllClientRequests()
+            .then(requests => {
+                return res.json({
+                    success: true,
+                    message: 'client requests fetched',
+                    payload: {
+                        clientRequests: requests
+                    }
+                });
+            })
+            .catch(err => {
+                return res.json({
+                    success: false,
+                    message: 'error fetching client requests',
+                    payload: {
+                        error: err.message,
+                        clientRequest: null
+                    }
+                });
             });
-        });
+    }
+
+    static getClientRequest(req: Request, res: Response): Promise<Response> {
+        const id = req.params.id;
+        return ClientRequestService.getClientRequestById(id)
+            .then(cr => {
+                if (cr) {
+                    return res.json({
+                        success: true,
+                        message: 'client request fetched',
+                        payload: {
+                            clientRequest: cr
+                        }
+                    });
+                } else {
+                    return res.json({
+                        success: false,
+                        message: 'client request not found',
+                        payload: {
+                            clientRequest: null
+                        }
+                    });
+                }
+            })
+            .catch(err => {
+                return res.json({
+                    success: false,
+                    message: 'error fetching client request',
+                    payload: {
+                        error: err.message,
+                        clientRequest: null
+                    }
+                });
+            });
     }
 }
 
