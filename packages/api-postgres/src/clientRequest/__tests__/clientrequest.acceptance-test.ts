@@ -10,6 +10,7 @@ describe('ClientRequest route acceptance tests', () => {
     let client: TestClient;
     let item1: ItemData;
     let item2: ItemData;
+    let item3: ItemData;
 
     beforeAll(async () => {
         client = new TestClient();
@@ -40,6 +41,15 @@ describe('ClientRequest route acceptance tests', () => {
             location: HouseLocation.AURORA_HOUSE,
             requestorId: userId,
             note: 'Board games are perfect'
+        };
+
+        item3 = {
+            clientId,
+            category: ItemCategory.HOUSEHOLD,
+            name: 'bedding',
+            location: HouseLocation.AURORA_HOUSE,
+            requestorId: userId,
+            note: '400 count sheets'
         };
     });
 
@@ -147,6 +157,39 @@ describe('ClientRequest route acceptance tests', () => {
                         payload: expect.objectContaining({
                             error: expect.any(String),
                             clientRequest: null
+                        })
+                    })
+                );
+            });
+        });
+
+        describe('GET request method', () => {
+            beforeAll(async () => {
+                await client.createClientRequest({
+                    clientId,
+                    requestorId: userId,
+                    items: [item1, item2]
+                });
+
+                await client.createClientRequest({
+                    clientId,
+                    requestorId: userId,
+                    items: [item1, item3]
+                });
+            });
+
+            it('fetches all client requests', async () => {
+                const response = await client.getAllClientRequests();
+
+                expect(response.body).toEqual(
+                    expect.objectContaining({
+                        success: true,
+                        message: 'client requests fetched',
+                        payload: expect.objectContaining({
+                            clientRequests: expect.arrayContaining([
+                                expect.any(Object),
+                                expect.any(Object)
+                            ])
                         })
                     })
                 );

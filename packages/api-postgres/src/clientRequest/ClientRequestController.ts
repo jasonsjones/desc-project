@@ -38,6 +38,18 @@ class ClientRequestController {
                 });
             });
     }
+
+    static getAllClientRequests(_: Request, res: Response): Promise<Response> {
+        return ClientRequestService.getAllClientRequests().then(requests => {
+            return res.json({
+                success: true,
+                message: 'client requests fetched',
+                payload: {
+                    clientRequests: requests
+                }
+            });
+        });
+    }
 }
 
 export default ClientRequestController;

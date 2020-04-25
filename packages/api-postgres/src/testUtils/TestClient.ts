@@ -133,6 +133,12 @@ class TestClient {
             .set('Content-Type', 'application/json')
             .send(requestData);
     }
+
+    public getAllClientRequests(): Test {
+        return request(this.app)
+            .get('/api/clientrequests')
+            .set('Content-Type', 'application/json');
+    }
 }
 
 export default TestClient;
