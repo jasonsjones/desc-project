@@ -31,10 +31,10 @@ const css = {
 
 const initCollapsibleElements = () => {
     const bgClasses = ['teal', 'lighten-5'];
-    const onOpenStartCb = el => {
+    const onOpenStartCb = (el) => {
         el.querySelector('.collapsible-header').classList.add(...bgClasses);
     };
-    const onCloseEndCb = el => {
+    const onCloseEndCb = (el) => {
         el.querySelector('.collapsible-header').classList.remove(...bgClasses);
     };
     const elems = document.querySelectorAll('.collapsible.expandable');
@@ -58,7 +58,7 @@ const AddNoteForm = React.memo(({ itemId, onNoteAdd }) => {
     const authContext = useContext(AuthContext);
     const [note, setNote] = useState('');
 
-    const handleSubmit = e => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         if (note.length > 0) {
             const noteBody = {
@@ -69,14 +69,14 @@ const AddNoteForm = React.memo(({ itemId, onNoteAdd }) => {
             // TODO: refactor this out to its own custom hook that encapsulates the token check before making
             // the API call to mutate the data
             getValidToken(authContext.token)
-                .then(token => {
+                .then((token) => {
                     if (token !== authContext.token) {
                         authContext.updateToken(token);
                     }
                     return token;
                 })
-                .then(token => addNoteToItem(itemId, noteBody, token))
-                .then(res => {
+                .then((token) => addNoteToItem(itemId, noteBody, token))
+                .then((res) => {
                     if (res.success) {
                         onNoteAdd(itemId, res.payload.item);
                         setNote('');
@@ -87,7 +87,7 @@ const AddNoteForm = React.memo(({ itemId, onNoteAdd }) => {
         }
     };
 
-    const handleChange = e => {
+    const handleChange = (e) => {
         setNote(e.target.value);
     };
 
@@ -128,12 +128,12 @@ const List = ({ items, filter }) => {
     }, []);
 
     useEffect(() => {
-        setDisplayableItems(items.filter(item => item.status === filter));
+        setDisplayableItems(items.filter((item) => item.status === filter));
     }, [items, filter]);
 
     const handleNoteAdd = (itemId, itemData) => {
         setDisplayableItems(
-            displayableItems.map(item => {
+            displayableItems.map((item) => {
                 if (item.id === itemId) {
                     return {
                         ...item,
@@ -152,7 +152,7 @@ const List = ({ items, filter }) => {
         <ul className="collapsible expandable">
             <ListHeader />
             {displayableItems &&
-                displayableItems.map(item => {
+                displayableItems.map((item) => {
                     return (
                         <li key={item.id}>
                             <div className="collapsible-header" style={css.itemHeader}>
@@ -167,7 +167,7 @@ const List = ({ items, filter }) => {
                                 <p style={{ fontSize: '1.125rem', marginBottom: '.5rem' }}>
                                     Notes:
                                 </p>
-                                {item.notes.map(note => (
+                                {item.notes.map((note) => (
                                     <NoteDetails key={note.id} note={note} />
                                 ))}
                                 <AddNoteForm itemId={item.id} onNoteAdd={handleNoteAdd} />
@@ -225,6 +225,9 @@ const RequestorInbox = () => {
                             </li>
                             <li className="tab col s3">
                                 <a href="#wishlist">Wishlist</a>
+                            </li>
+                            <li className="tab col s3">
+                                <a href="#fulfilled">Fulfilled</a>
                             </li>
                         </ul>
                     </div>

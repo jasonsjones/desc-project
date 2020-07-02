@@ -14,13 +14,13 @@ class Tabs extends React.Component {
         M.Tabs.init(document.querySelectorAll('.tabs'), {});
 
         getValidToken(this.context.token)
-            .then(token => {
+            .then((token) => {
                 if (token !== this.context.token) {
                     this.context.updateToken(token);
                 }
                 return token;
             })
-            .then(token => this.props.fetchItems(token));
+            .then((token) => this.props.fetchItems(token));
     }
 
     render() {
@@ -31,17 +31,18 @@ class Tabs extends React.Component {
                         <ul className="tabs">
                             <li className="tab col s3">
                                 <a className="active" href="#active">
-                                    Active
+                                    Open
                                 </a>
                             </li>
                             <li className="tab col s3">
-                                <a href="#approved">Approved</a>
+                                <a href="#approved">In Process</a>
                             </li>
                             <li className="tab col s3">
                                 <a href="#wishlist">Wishlist</a>
                             </li>
-                            <li className="tab col s3 disabled">
-                                <a href="#archive">Archive</a>
+                            <li className="tab col s3">
+                                {/* Fullfilled, rejected, or archived */}
+                                <a href="#archive">Closed</a>
                             </li>
                         </ul>
                     </div>
@@ -63,9 +64,9 @@ class Tabs extends React.Component {
     }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
     return {
-        fetchItems: token => dispatch(actions.fetchItems(token))
+        fetchItems: (token) => dispatch(actions.fetchItems(token))
     };
 };
 
