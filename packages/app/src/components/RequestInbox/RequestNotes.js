@@ -47,13 +47,13 @@ class RequestNotes extends React.Component {
         };
 
         getValidToken(this.context.token)
-            .then(token => {
+            .then((token) => {
                 if (token !== this.context.token) {
                     this.context.updateToken(token);
                 }
                 return token;
             })
-            .then(token => this.props.postNoteToItem(noteData, this.context.token))
+            .then((token) => this.props.postNoteToItem(noteData, this.context.token))
             .then(() => {
                 // Once note is posted, reset text input
                 this.setState({ currentNote: '' });
@@ -68,7 +68,7 @@ class RequestNotes extends React.Component {
                 <h6>Notes</h6>
                 <ul>{this.getNotes()}</ul>
                 <input
-                    placeholder="Add a note"
+                    placeholder="Add a note(avoid including PII)"
                     id=""
                     type="text"
                     value={this.state.currentNote}
@@ -90,7 +90,7 @@ RequestNotes.propTypes = {
     postNoteToItem: PropTypes.func
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
     return {
         postNoteToItem: (noteData, token) => dispatch(actions.postNoteToItem(noteData, token))
     };

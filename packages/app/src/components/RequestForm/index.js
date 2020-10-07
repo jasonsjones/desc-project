@@ -30,8 +30,8 @@ const ItemForm = ({ onItemAdd }) => {
         return state.selectedItem.length === 0;
     };
 
-    const handleSelection = field => {
-        return e => {
+    const handleSelection = (field) => {
+        return (e) => {
             switch (field) {
                 case 'category':
                     dispatch({ type: 'CATEGORY_SELECTED', payload: e.target.value });
@@ -54,7 +54,7 @@ const ItemForm = ({ onItemAdd }) => {
         };
     };
 
-    const handleSubmit = evt => {
+    const handleSubmit = (evt) => {
         evt.preventDefault();
         if (state.selectedItem.length > 0 && state.count > 0) {
             onItemAdd({
@@ -109,7 +109,7 @@ const ItemForm = ({ onItemAdd }) => {
             />
 
             <TextField
-                label="Add a Note"
+                label="Add a Note (avoid including PII)"
                 type="text"
                 name="note"
                 value={state.note}
@@ -175,7 +175,7 @@ const NewRequestForm = () => {
         });
     }, [form.location]);
 
-    const handleChange = e => {
+    const handleChange = (e) => {
         if (e.target.id === 'remember') {
             setForm({
                 ...form,
@@ -189,7 +189,7 @@ const NewRequestForm = () => {
         }
     };
 
-    const handleAddItem = itemState => {
+    const handleAddItem = (itemState) => {
         const transformedItem = {
             clientId: form.clientId,
             requestorId: form.requestorId,
@@ -210,7 +210,7 @@ const NewRequestForm = () => {
         });
     };
 
-    const handleDeleteItem = id => {
+    const handleDeleteItem = (id) => {
         setForm(() => {
             return {
                 ...form,
@@ -223,14 +223,14 @@ const NewRequestForm = () => {
         return form.clientId && form.location && form.items.length > 0;
     };
 
-    const handleSubmitRequest = e => {
+    const handleSubmitRequest = (e) => {
         e.preventDefault();
 
         if (isRequestValid()) {
             // make clone of form data to tranform a bit so the API is happy
             const formData = {
                 ...form,
-                items: form.items.map(item => {
+                items: form.items.map((item) => {
                     return {
                         ...item,
                         category: ItemUtil.itemCategoryMap[item.category],
@@ -242,14 +242,14 @@ const NewRequestForm = () => {
             // TODO: refactor this out to its own custom hook that encapsulates the token check before making
             // the API call to mutate the data
             getValidToken(authCtx.token)
-                .then(token => {
+                .then((token) => {
                     if (token !== authCtx.token) {
                         authCtx.updateToken(token);
                     }
                     return token;
                 })
-                .then(token => makeClientRequest(formData, token))
-                .then(data => {
+                .then((token) => makeClientRequest(formData, token))
+                .then((data) => {
                     if (data.success) {
                         if (form.remember) {
                             setForm({
@@ -278,7 +278,7 @@ const NewRequestForm = () => {
                         });
                     }
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log(err);
                 });
         }
