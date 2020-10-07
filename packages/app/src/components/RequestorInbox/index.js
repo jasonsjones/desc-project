@@ -94,7 +94,7 @@ const AddNoteForm = React.memo(({ itemId, onNoteAdd }) => {
     return (
         <form onSubmit={handleSubmit}>
             <TextField
-                label="Add a Note"
+                label="Add a Note (avoid including PII)"
                 type="text"
                 name={`note${itemId}`}
                 value={note}
