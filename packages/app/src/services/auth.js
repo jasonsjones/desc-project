@@ -50,7 +50,7 @@ export function getValidToken(currentToken) {
 }
 
 export function refreshToken() {
-    return fetch('http://localhost:3001/api/auth/refreshtoken', {
+    return fetch(`${BASE_URL}/api/auth/refreshtoken`, {
         credentials: 'include'
     }).then((res) => res.json());
 }
