@@ -1,4 +1,3 @@
-import { createPostgresConnection, closeConnection } from '../../config/database';
 import UserService from '../../user/UserService';
 import { ItemCategory, HouseLocation, Program } from '../../common/types/enums';
 import TestUtils from '../../testUtils/TestUtilities';
@@ -10,7 +9,6 @@ describe('Note service', () => {
     let itemId: string;
 
     beforeAll(async () => {
-        await createPostgresConnection();
         userId = (
             await UserService.createUser({
                 firstName: 'Test',
@@ -36,7 +34,6 @@ describe('Note service', () => {
         // order matters
         await TestUtils.dropItems();
         await TestUtils.dropUsers();
-        await closeConnection();
     });
 
     describe('createNote() method', () => {
