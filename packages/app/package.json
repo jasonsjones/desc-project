@@ -2,6 +2,15 @@
     "name": "@desc/app",
     "version": "0.1.0",
     "private": true,
+    "scripts": {
+        "dev": "PORT=4200 react-scripts start",
+        "start": "serve -s build",
+        "build": "react-scripts build",
+        "lint": "eslint src/**/**/*.js",
+        "test": "react-scripts test",
+        "test:e2e": "BROWSER=none yarn dev",
+        "eject": "react-scripts eject"
+    },
     "dependencies": {
         "materialize-css": "1.0.0",
         "prop-types": "15.7.2",
@@ -16,14 +25,11 @@
         "redux-thunk": "2.3.0",
         "serve": "11.3.2"
     },
-    "scripts": {
-        "dev": "PORT=4200 react-scripts start",
-        "start": "serve -s build",
-        "build": "react-scripts build",
-        "lint": "eslint src/**/**/*.js",
-        "test": "react-scripts test",
-        "test:e2e": "BROWSER=none yarn dev",
-        "eject": "react-scripts eject"
+    "devDependencies": {
+        "@testing-library/jest-dom": "5.11.9",
+        "@testing-library/react": "11.2.5",
+        "@testing-library/user-event": "12.8.3",
+        "jest": "26.6.0"
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -39,12 +45,6 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
-    },
-    "devDependencies": {
-        "@testing-library/jest-dom": "5.11.9",
-        "@testing-library/react": "11.2.5",
-        "@testing-library/user-event": "12.8.3",
-        "jest": "26.6.0"
     },
     "engines": {
         "node": ">=12.20.0 <16.0.0",
